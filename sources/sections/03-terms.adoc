@@ -1,0 +1,28 @@
+
+[[terms]]
+== Terms and definitions
+
+
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and  "OPTIONAL" in this document are to be interpreted as described in <<RFC2119>>.
+
+The notation used in this memo to (re-)define iCalendar elements is
+the ABNF notation of <<RFC5234>> as used by <<RFC5545>>.  Any syntax
+elements shown below that are not explicitly defined in this
+specification come from iCalendar <<RFC5545>>.
+
+Additionally the following terms are used:
+
+=== consensus scheduling
+
+The process whereby users come to some agreement on meeting
+or task alternatives and then book that meeting or task.
+
+// TODO
+=== active Vpoll
+
+A VPoll may have a DTSTART, DTEND and DURATION which
+may define the start and end of the active voting period
+
+=== voter
+
+A participant who votes on the alternatives. A voter need not be an attendee of any of the alternatives presented.

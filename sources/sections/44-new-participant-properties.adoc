@@ -1,0 +1,335 @@
+[[new-participant-properties-for-itip]]
+== New Participant Properties for iTip
+
+The following properties are defined to be used within PARTICIPANT during scheduling and take the place of ATTENDEE and ORGANIZER properties and parameters. These are not solely for VPOLL but may be used in any future component.
+
+[[new-prop-kind]]
+=== Kind
+
+Property name:: KIND
+
+Purpose:: This is what kind of entity this participant is, if known.
+
+Property Parameters:: Non-standard or iana parameters can be
+specified on this property.
+
+Conformance:: This property MAY be specified in a PARTICIPANT component.
+
+Description:: When used in a PARTICIPANT component this property indicates the kind of entity, individual, group etc. +
++
+It takes the va;ues hown below which are a redefinition of the CUTYPE parameter values defined in <<RFC5545>> and aligned with <<RFC8984>> .
+
+Format Definition::
+This property is defined by the following notation:
+[source,abnf]
+----
+kind = "KIND" kindparams ":"
+                "INDIVIDUAL"   ; An individual
+              / "GROUP"        ; A group of individuals
+              / "RESOURCE"     ; A physical resource
+              / "LOCATION"     ; A location resource e.g a room
+known
+              iana-token ("," iana-token) CRLF
+
+kindparams = *(";" other-param)
+----
+
+[[redefined-participation-type]]
+=== Redefined participation type
+
+This specification redefines the PARTICIPATION-TYPE property allowing it to take multiple values and extending those values to align with <<RFC8984>> roles and add a new "VOTER" role. There are also changes to the description to clarify it's use defining the roles that participant takes.
+
+Property name:: PARTICIPANT-TYPE
+
+Purpose:: This property is equivalent to the <<RFC5545>> ATTENDEE ROLE parameter but includes more values to align with <<RFC8984>>.
+
+Value Type:: The value type for this property is TEXT. The allowable values are defined below.
+
+Property Parameters:: Non-standard or iana parameters can be
+specified on this property.
+
+Conformance:: This property MUST be specified once within a "PARTICIPANT" component.
+
+Description:: This property defines the type of participation, that is the
+roles the participant takes. +
++
+It includes the values defined in <<RFC8984>>.
++
+Note that the kind of participant, for example individual or group, is defined in the KIND property specified here.
++
+Some of the roles are required for the participant to be a schedulable object. These are the roles that are shown below.
+*
+Do we need a separate registry or should we extend that one?
+
+Format Definition::
+This property is defined by the following notation:
+[source,abnf]
+----
+participanttype   = "PARTICIPANT-TYPE" partvalueparam ":"
+                     partvalue
+                     *("," partvalue) CRLF
+
+partvalue    = ("OWNER"
+               / "ATTENDEE"
+               / "OPTIONAL"
+               / "INFORMATIONAL"
+               / "CHAIR"
+               / "VOTER"
+               / "ACTIVE"
+               / "INACTIVE"
+               / "SPONSOR"
+               / "CONTACT"
+               / "BOOKING-CONTACT"
+               / "EMERGENCY-CONTACT"
+               / "PUBLICITY-CONTACT"
+               / "PLANNER-CONTACT"
+               / "PERFORMER"
+               / "SPEAKER"
+               / iana-token)     ; Other IANA-registered
+                                 ; values
+
+partvalueparam   = *(";" other-param)
+----
+
+The values other than VOTER have the same meaning as defined in <<RFC8984>> and <<RFC9073>>.
+
+The VOTER roles value is used for a PARTICIPANT within a VPOLL to indicate a voting participant.
+
+Other roles defined here have no direct equivalent in <<RFC5545>>
+
+To map <<RFC5545>> ATTENDEE ROLE values to PARTICIPANT-TYPE or jsCalendar values use the following.
+
+[cols="a,a,a",options="header"]
+|===
+| RFC5545 ROLE
+| PARTICIPANT-TYPE
+| jsCalendar
+
+| CHAIR | CHAIR | chair
+| REQ-PARTICIPANT | ATTENDEE | attendee
+| OPT-PARTICIPANT | OPTIONAL | optional
+| NON-PARTICIPANT | INFORMATIONAL | information
+
+|===
+
+The following table shows those roles that MUST appear in the PARTICIPANT-TYPE for group-scheduling. Additionally, the mapping  PARTICIPANT-TYPE or jscalendar roles to <<RFC5545>> ATTENDEE and ORGANIZER values are shown.
+
+[cols="a,a,a",options="header"]
+|===
+| PARTICIPANT-TYPE
+| jsCalendar
+| RFC5545 ROLE
+
+| OWNER | owner | Create ORGANIZER
+
+| ATTENDEE | attendee | REQ-PARTICIPANT
+
+| OPTIONAL | optional | OPT-PARTICIPANT
+
+| INFORMATIONAL | informational | NON-PARTICIPANT
+
+| CHAIR | chair | CHAIR
+
+ 3+| Subsequent values have no <<RFC5545>> equivalent
+
+| CONTACT | contact |
+
+| VOTER | |
+
+| ACTIVE | |
+
+| INACTIVE | |
+
+| SPONSOR | |
+
+| BOOKING-CONTACT | |
+
+| EMERGENCY-CONTACT | |
+
+| PUBLICITY-CONTACT | |
+
+| PLANNER-CONTACT | |
+
+| PERFORMER | |
+
+| SPEAKER | |
+
+|===
+
+Examples::
+*  PARTICIPANT-TYPE=OWNER,... equivalent to an ORGANIZER
+* PARTICIPANT-TYPE=ATTENDEE,... equivalent to the ATTENDEE property
+
+
+[[new-prop-participation-status]]
+=== Participation-status
+
+Property name:: PARTICIPATION-STATUS
+
+Purpose:: This property is used in the PARTICIPANT component to indicate the participation status - if any.
+
+Property Parameters:: Non-standard or iana parameters can be
+specified on this property.
+
+Conformance:: This property MAY be specified in a PARTICIPANT component.
+
+Description:: When used in a PARTICIPANT component this property indicates what
+status, if any, the participant has. +
++
+It takes the same values as the PARTSTAT parameter defined in <<RFC5545>>.
+
+Format Definition::
+This property is defined by the following notation:
+[source,abnf]
+----
+participation-status = "PARTICIPATION-STATUS"
+                       participation-statusparams ":"
+              NEEDS-ACTION / ; No status
+                    ; has yet been set by the participant.
+
+              ACCEPTED / ; The invited
+                    ; participant will participate.
+              DECLINED / ; The invited
+                    ; participant will not participate.
+               TENTATIVE / ; The invited participant
+                     ; may participate.
+                DELEGATED / ; The invited participant
+                     ; has delegated their attendance to
+                     ; another participant, as specified
+                      ; in the PARTICIPATION-DELEGATED-TO property.
+                    iana-token ("," iana-token) CRLF
+
+participation-statusparams = *(";" other-param)
+----
+
+[[new-prop-participation-delegated-from]]
+=== Participation delegated from
+
+Property name:: PARTICIPATION-DELEGATED-FROM
+
+Purpose:: This property is used in the PARTICIPANT component to indicate who has delegated their participation to this participant.
+
+Property Parameters:: Non-standard or iana parameters can be
+specified on this property.
+
+Conformance:: This property MAY be specified in a PARTICIPANT component.
+
+Description:: This property specifies those calendar
+users that have delegated their participation in a group-scheduled
+component to the calendar user specified by the component.
+
+Format Definition::
+This property is defined by the following notation:
+[source,abnf]
+----
+participation-delfrom = "PARTICIPATION-DELEGATED-FROM"
+                        participation-delfromparams ":"
+              CAL-ADDRESS
+              *("," CAL-ADDRESS)
+              iana-token ("," iana-token) CRLF
+
+participation-delfromparams = *(";" other-param)
+----
+
+[[new-prop-participation-delegated-to]]
+=== Participation delegated to
+
+Property name:: PARTICIPATION-DELEGATED-TO
+
+Purpose:: To specify the calendar users to whom the calendar user
+specified by the component has delegated participation.
+
+Property Parameters:: Non-standard or iana parameters can be
+specified on this property.
+
+Conformance:: This property MAY be specified in a PARTICIPANT component.
+
+Description:: This property specifies those calendar
+users that have been delegated participation in a group-scheduled
+component by the calendar user specified by the component.
+
+Format Definition::
+This property is defined by the following notation:
+[source,abnf]
+----
+participation-delto = "PARTICIPATION-DELEGATED-TO"
+                      participation-deltoparams ":"
+              CAL-ADDRESS
+              *("," CAL-ADDRESS)
+              iana-token ("," iana-token) CRLF
+
+participation-deltoparams = *(";" other-param)
+----
+
+[[new-prop-member-of]]
+=== Member of
+
+Property name:: MEMBER-OF
+
+Purpose:: To specify the group or list membership of the calendar
+user specified by the component.
+
+Property Parameters:: Non-standard or iana parameters can be
+specified on this property.
+
+Conformance:: This property MAY be specified in a PARTICIPANT component.
+
+Description:: This property  identifies the groups or
+list membership for the calendar user specified by the component.
+The value is one or more calendar addresses.
+
+Format Definition::
+This property is defined by the following notation:
+[source,abnf]
+----
+member-of = "MEMBER-OF" member-ogparams ":"
+              CAL-ADDRESS
+              *("," CAL-ADDRESS)
+              iana-token ("," iana-token) CRLF
+
+memberofparams = *(";" other-param)
+----
+
+[[new-prop-lang]]
+=== Lang
+
+Property name:: LANG
+
+Purpose:: This is the language tag, as defined in <<RFC5646>>, that best describes the participant's preferred language, if known.
+
+Property Parameters:: Non-standard or iana parameters can be
+specified on this property.
+
+Conformance:: This property MAY be specified in any appropriate component.
+
+Format Definition::
+This property is defined by the following notation:
+[source,abnf]
+----
+lang = "LANG" langparams ":" TEXT CRLF
+
+langparams = *(";" other-param)
+----
+
+[[new-prop-expect-reply]]
+=== Expect reply
+
+Property name:: EXPECT-REPLY
+
+Purpose:: If true, the organizer is expecting the participant to notify them of their participation status.
+
+Property Parameters:: Non-standard or iana parameters can be
+specified on this property.
+
+Conformance:: This property MAY be specified once in the PARTICIPANT component.
+
+Format Definition::
+This property is defined by the following notation:
+[source,abnf]
+----
+expect-reply = "EXPECT-REPLY"
+              expect-replyparams ":"
+              ( "TRUE" / "FALSE") CRLF
+
+expect-replyparams = *(";" other-param)
+----

@@ -1,0 +1,4 @@
+
+== Scope
+
+This document provides a mechanism in iCalendar for consensus scheduling.

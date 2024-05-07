@@ -1,0 +1,63 @@
+
+[appendix,obligation=informative]
+== Change log
+
+Calext V01: 2019-10-17 MD::
+Replace VVOTER and VOTER with PARTICIPANT.
+
+Calext V00: 2019-05-17 MD::
+First calext version. Moved source to metanorma. No changes to specification.
+
+V03: 2014-10-28 MD::
+
+* Add VVOTER and VOTE components.
+
+* Add RESPONSE property.
+
+* Remove RESPONSE parameter from VOTER.
+
+V03: 2014-05-12 MD::
+
+* Add reply-url property and required parameter.
+
+* Fix ACCEPT-RESPONSE definition.
+
+V02: 2014-05-12 MD::
+
+* Typos fixed, clarifications made.
+
+* Removed spurious COMMENT param.  Switched some to PUBLIC-COMMENT
+
+* Changed STAY-INFORMED to remove boolean value type and state
+  explicit TRUE/FALSE values.
+
+* iTip: Allow VPOLL DTSTART to be optional and allow VAVAILABILITY
+  as subcomponent
+
+* iTip: fix broken table cells
+
+* Add POLL-PROPERTIES, POLL-WINNER to 5545 extensions table
+
+* Added Caldav scheduling section
+
+V01: 2013-08-07 MD::
+
+* Removed method CONFIRM
+
+* Removed pollitemid from VPOLL abnf.  Added text for pollwinner
+
+* Added POLL-WINNER and verbiage
+
+* Added STATUS values
+
+* Added RELTYPE=POLL
+
+* Added supported-vpoll-component-sets
+
+* Added CalDAV related parameters to VOTER
+
+* Removed bad CalDAV query example.  State that queries cannot
+  target the sub-components.
+
+Initial version: 2012-11-02 MD::
+

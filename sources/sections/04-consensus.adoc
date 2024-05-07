@@ -1,0 +1,350 @@
+
+[[simple-consensus-scheduling]]
+== Simple Consensus Scheduling
+
+This specification defines components and properties which can be
+used for simple consensus scheduling but also have the generality to
+handle more complex cases.  To provide an easy (and for many a
+sufficient) introduction to consensus scheduling and VPOLL we will
+outline the flow of information for the simple case of voting on a
+number of meeting alternatives which differ only in time of the meeting.  In
+addition the voters will all be potential attendees.
+
+This specification not only defines data structures but adds new
+iTip methods, one used when consensus has been reached and one to
+distribute the current status of the poll.
+
+This document will
+show how a VPOLL object is used to inform voters of the state of a
+simple vote on some alternatives.
+
+=== The VPOLL Component: An Overview
+
+The VPOLL component acts as a wrapper for a number of alternatives to
+be voted on, together with some properties and a new component used
+to maintain the state of the voting.  For our simple example the
+following VPOLL properties and sub-components are either required or
+appropriate:
+
+DTSTAMP:: The usual <<RFC5545>> property.
+
+SEQUENCE:: The usual <<RFC5545>> property.  See below for SEQUENCE
+  behavior.
+
+UID:: The usual <<RFC5545>> property.
+
+SUMMARY:: The usual <<RFC5545>> property.  This optional but
+  recommended property provides the a short title to the poll.
+
+DESCRIPTION:: The usual <<RFC5545>> property.  This optional property
+  provides more details.
+
+DTEND:: The usual <<RFC5545>> property.  This optional property
+  provides a poll closing time and date after which the VPOLL is no
+  longer active.
+
+POLL-MODE:: A new property which defines how the votes are used to
+  obtain a result.  For our use case it will take the value "BASIC"
+  meaning one event will be chosen from the alternatives.
+
+POLL-COMPLETION:: A new property which defines who (server or client)
+  chooses and/or submits the winning choice.  In our example the
+  value is "SERVER-SUBMIT" which means the client chooses the winner
+  but the server will submit the winning choice.
+
+POLL-PROPERTIES:: A new property which defines which icalendar
+  properties are being voted on.  For our use case it will take the
+  value "DTSTART, LOCATION" meaning only those properties are
+  significant for voting.  Other properties in the events may differ
+  but are not considered significant for the voting process.
+
+PARTICIPANT:: There is one of these components for each voter with
+  the PARTICIPANT-TYPE set to "VOTER". The
+  CALENDAR-ADDRESS property identifies the voter and this component
+  will contain one VOTE component for each item being voted on.
+
+VOTE:: A new component.  There is one of these for each voter and
+  choice.  It usually contains at least a POLL-ITEM-ID property to
+  identify the choice and a RESPONSE property to provide a vote.
+  For more complex poll modes it may contain other information such
+  as cost or estimated duration.
+
+VEVENT:: In our simple use case there will be multiple VEVENT sub-
+  components defining the alternatives.  Each will have a different
+  date and or time for the meeting.
+
+[example]
+--
+VPOLL with 3 voters and 3 alternative meetings:
+
+[source]
+----
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Example//Example
+METHOD:REQUEST
+BEGIN:VPOLL
+POLL-MODE:BASIC
+POLL-COMPLETION:SERVER-SUBMIT
+POLL-PROPERTIES:DTSTART,LOCATION
+UID:sched01-1234567890
+DTSTAMP:20120101T000000Z
+SUMMARY:What to do this week
+DTEND:20120101T000000Z
+BEGIN:PARTICIPANT
+PARTICIPANT-TYPE: VOTER
+CALENDAR-ADDRESS:mailto:cyrus@example.com
+UID:schedpart-7890123456
+END:PARTICIPANT
+BEGIN:PARTICIPANT
+PARTICIPANT-TYPE: VOTER
+CALENDAR-ADDRESS:mailto:eric@example.com
+UID:schedpart-0987654321
+END:PARTICIPANT
+BEGIN:PARTICIPANT
+PARTICIPANT-TYPE: VOTER,OWNER
+CALENDAR-ADDRESS:mailto:mike@example.com
+UID:schedpart-1234567890
+END:PARTICIPANT
+BEGIN:VEVENT.......(with a poll-item-id=1)
+END:VEVENT
+BEGIN:VEVENT.......(with a poll-item-id=2)
+END:VEVENT
+BEGIN:VEVENT.......(with a poll-item-id=3)
+END:VEVENT
+END:VPOLL
+END:VCALENDAR
+----
+--
+
+As can be seen in the example above, there is an iTip METHOD property
+with the value REQUEST.  The VPOLL object will be distributed to all
+the voters, either through iMip or through some VPOLL enabled
+service.
+
+=== The VPOLL Alternative Choices: An Overview
+
+Within the VPOLL component we have the alternatives to vote on.  In
+many respects these are standard <<RFC5545>> components.  For our
+simple use case they are all VEVENT components.  In addition to the
+usual <<RFC5545>> properties some extra properties are used for a
+VPOLL.
+
+POLL-ITEM-ID:: This provides a unique reference to the sub-component
+  within the VPOLL.  It's value SHOULD be a small integer.
+
+=== VPOLL responses
+
+Upon receipt of a VPOLL REQUEST the voter will reply with a VPOLL
+component containing their vote.  In our simple case it will have the
+following properties and components:
+
+DTSTAMP:: The usual <<RFC5545>> property.
+
+SEQUENCE:: The usual <<RFC5545>> property.  See below for SEQUENCE
+  behavior.
+
+UID:: Same as the request.
+
+SUMMARY:: Same as the request.
+
+PARTICIPANT:: One only with a CALENDAR-ADDRESS identifying the voter replying.
+
+VOTE:: One per item being voted on.
+
+POLL-ITEM-ID:: One inside each VOTE component to identify the choice.
+
+RESPONSE:: One inside each VOTE component to specify the vote.
+
+Note that a voter can send a number of REPLYs for each REQUEST sent
+by the organizer.  in BASIC mode each REPLY completely replaces the voting record
+for that voter for all components being voted on.  In our example, if
+Eric responds and votes for items 1 and 2 and then responds again
+with a vote for only item 3, the final outcome is one vote on item 3.
+
+NOTE:: This is poll-mode specific behavior.
+
+[example]
+--
+REPLY VPOLL from Cyrus:
+
+[source]
+----
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Example//Example
+METHOD: REPLY
+BEGIN:VPOLL
+UID:sched01-1234567890
+DTSTAMP:20120101T010000Z
+SUMMARY:What to do this week
+BEGIN:PARTICIPANT
+PARTICIPANT-TYPE: VOTER
+CALENDAR-ADDRESS:mailto:cyrus@example.com
+UID:schedpart-7890123456
+BEGIN:VOTE
+POLL-ITEM-ID:1
+RESPONSE:50
+COMMENT:Work on iTIP
+END:VOTE
+BEGIN:VOTE
+POLL-ITEM-ID:2
+RESPONSE:100
+COMMENT:Work on WebDAV
+END:VOTE
+BEGIN:VOTE
+POLL-ITEM-ID:3
+RESPONSE:0
+END:VOTE
+END:PARTICIPANT
+END:VPOLL
+END:VCALENDAR
+----
+--
+
+=== VPOLL updates
+
+When the owner receives a response from one or more voters the
+current state of the poll is sent to all voters.  The new iTip method
+POLLSTATUS is used.  The VPOLL can contain a reduced set of
+properties but MUST contain DTSTAMP, SEQUENCE (if not 0), UID, and
+one or more PARTICIPANT components each populated with zero or more VOTE components.
+
+[example]
+--
+[source]
+----
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Example//Example
+METHOD: POLLSTATUS
+BEGIN:VPOLL
+UID:sched01-1234567890
+DTSTAMP:20120101T020000Z
+SEQUENCE:0
+SUMMARY:What to do this week
+BEGIN:PARTICIPANT
+PARTICIPANT-TYPE: VOTER
+CALENDAR-ADDRESS:mailto:cyrus@example.com
+UID:schedpart-7890123456
+BEGIN: VOTE
+POLL-ITEM-ID:1
+RESPONSE:50
+COMMENT:Work on iTIP
+END:VOTE
+BEGIN:VOTE
+POLL-ITEM-ID:2
+RESPONSE:100
+COMMENT:Work on WebDAV
+END:VOTE
+BEGIN:VOTE
+POLL-ITEM-ID:3
+RESPONSE:0
+END:VOTE
+END:PARTICIPANT
+BEGIN:PARTICIPANT
+PARTICIPANT-TYPE: VOTER
+CALENDAR-ADDRESS:mailto:eric@example.com
+UID:schedpart-0987654321
+BEGIN:VOTE
+POLL-ITEM-ID:1
+RESPONSE:100
+END:VOTE
+BEGIN:VOTE
+POLL-ITEM-ID:2
+RESPONSE:100
+END:VOTE
+BEGIN:VOTE
+POLL-ITEM-ID:3
+RESPONSE:0
+END:VOTE
+END:PARTICIPANT
+BEGIN:PARTICIPANT
+PARTICIPANT-TYPE: VOTER,OWNER
+CALENDAR-ADDRESS:mailto:mike@example.com
+UID:schedpart-1234567890
+BEGIN: VOTE
+POLL-ITEM-ID:1
+RESPONSE:50
+COMMENT:Work on iTIP
+END:VOTE
+BEGIN:VOTE
+POLL-ITEM-ID:2
+RESPONSE:100
+COMMENT:Work on WebDAV
+END:VOTE
+BEGIN:VOTE
+POLL-ITEM-ID:3
+RESPONSE:0
+END:VOTE
+END:PARTICIPANT
+END:VPOLL
+END:VCALENDAR
+----
+--
+
+=== VPOLL Completion
+
+After a number of REPLY messages have been received the poll will be
+considered complete.  If there is a DTEND on the poll the system may
+automatically close the poll, or the organizer may, at any time,
+consider the poll complete.  A VPOLL can be completed (and
+effectively closed for voting) by sending an iTip REQUEST message
+with the VPOLL STATUS property set to COMPLETED.
+
+The poll winner is confirmed by sending a final iTip REQUEST message
+with the VPOLL STATUS property set to CONFIRMED.  In this case the
+VPOLL component contains all the events being voted on along with a
+POLL-WINNER property to identify the winning event.  As the POLL-
+COMPLETION property is set to SERVER-SUBMIT the server will submit
+the winning choice and when it has done so set the STATUS to
+"SUBMITTED".
+
+[example]
+--
+VPOLL confirmation:
+
+[source]
+----
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Example//Example
+METHOD: REQUEST
+BEGIN:VPOLL
+UID:sched01-1234567890
+DTSTAMP:20120101T030000Z
+COMPLETED:20120101T030000Z
+POLL-COMPLETION:SERVER-SUBMIT
+SEQUENCE:0
+SUMMARY:What to do this week
+STATUS:CONFIRMED
+POLL-WINNER:3
+BEGIN:PARTICIPANT
+PARTICIPANT-TYPE: OWNER
+CALENDAR-ADDRESS:mailto:mike@example.com
+UID:schedpart-1234567890
+END:PARTICIPANT
+BEGIN:VEVENT.......(with a poll-item-id=1)
+END:VEVENT
+BEGIN:VEVENT.......(with a poll-item-id=2)
+END:VEVENT
+BEGIN:VEVENT.......(with a poll-item-id=3)
+END:VEVENT
+END:VPOLL
+END:VCALENDAR
+----
+--
+
+=== Other Responses
+
+A voter being asked to choose between a number of ORGANIZER supplied
+alternatives may find none of them acceptable or may simply not care.
+
+An alternative response, which may be disallowed by the ORGANIZER, is
+to send back the respondees availability or freebusy or even one or
+more new, alternative choices.
+
+This is accomplished by responding with a VOTE component which has no
+POLL-ITEM-ID property.  In this case it MUST contain some alternative
+information.  What form this takes depends on the poll mode in
+effect.

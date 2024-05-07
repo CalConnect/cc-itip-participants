@@ -1,0 +1,40 @@
+
+[[poll-modes]]
+== Poll Modes
+
+The VPOLL component is intended to allow for various forms of
+polling.  The particular form in efffect is indicated by the POLL-
+MODE property.
+
+New poll modes can be registered by including a completed POLL-MODE
+Registration Template (see <<poll-registration-template>>) in a published RFC.
+
+=== POLL-MODE:BASIC
+
+BASIC poll mode is the form of voting in which one possible outcome
+is chosen from a set of possibilities.  Usually this will be
+represented as a number of possible event objects one of which will
+be selected.
+
+==== Property restrictions
+
+This poll mode has the following property requirements:
+
+POLL-ITEM-ID:: Each contained sub-component that is being voted upon
+  MUST contain a POLL-ITEM_ID property which is unique within the
+  context of the POLL.  The value MUST NOT be reused when events are
+  removed and/or added to the poll.
+
+POLL-WINNER:: On confirmation of the poll this property MUST be
+  present and identifies the winning component.
+
+==== Outcome reporting
+
+To confirm the winner the POLL-WINNER property MUST be present and
+the STATUS MUST be set to CONFIRMED.
+
+When the winning VEVENT or VTODO is not a scheduled entity, that is,
+it has no ORGANIZER or ATTENDEES it MUST be assigned an ORGANIZER
+property and a list of non-participating ATTENDEEs.  This allows the
+winning entity to be distributed to the participants through iTip or
+some other protocol.

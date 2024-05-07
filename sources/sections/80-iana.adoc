@@ -1,0 +1,63 @@
+
+[[iana]]
+== IANA Considerations
+
+=== Parameter Registrations
+
+This document defines the following new iCalendar property parameters
+to be added to the registry defined in <<RFC5545,section=8.2.4>>:
+
+[cols="a,a,a",options="header"]
+|===
+| Property Parameter | Status  | Reference
+
+| REQUIRED | Current | <<new-prop-para-required>>
+| STAY-INFORMED | Current | <<new-prop-para-stay-informed>>
+
+|===
+
+=== Property Registrations
+
+This document defines the following new iCalendar properties to be
+added to the registry defined in <<RFC5545,section=8.2.3>>:
+
+[cols="a,a,a",options="header"]
+|===
+| Property        | Status  | Reference
+
+| ACCEPT-RESPONSE | Current | <<new-prop-reply-url>>
+| POLL-ITEM-ID    | Current | <<new-prop-poll-item-id>>
+| POLL-MODE       | Current | <<new-prop-poll-mode>>
+| POLL-PROPERTIES | Current | <<new-prop-poll-properties>>
+| POLL-WINNER     | Current | <<new-prop-poll-winner>>
+| RESPONSE        | Current | <<new-prop-response>>
+
+|===
+
+[[poll-registration-template]]
+=== POLL-MODE Registration Template
+
+A poll mode is defined by completing the following template.
+
+Poll mode name:: The name of the poll mode.
+
+Purpose:: The purpose of the poll mode.  Give a short but clear
+  description.
+
+Reference:: A reference to the RFC in which the poll mode is defined
+
+=== POLL-MODE Registrations
+
+This document defines the following registered poll modes.
+
+[cols="a,a,a",options=header]
+|===
+
+| Poll mode name | Purpose | Reference
+
+| BASIC
+| To provide simple voting for a single outcome from a number of candidates.
+| Current
+
+|===
+

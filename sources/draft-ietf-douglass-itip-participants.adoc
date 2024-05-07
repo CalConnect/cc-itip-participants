@@ -1,0 +1,68 @@
+= VPOLL: Consensus Scheduling Component for iCalendar
+:doctype: internet-draft
+:docnumber: draft-ietf-calext-vpoll-06
+:abbrev: VPOLL
+:status: standard
+:ipr: trust200902
+:submissionType: individual
+:area: Internet
+:intended-series: full-standard
+:revdate: 2024-04-22
+:fullname: Eric York
+:lastname: York
+:forename_initials: E.
+:organization: California Things, Inc
+:street: 650 Main Street
+:city: Redwood City
+:state: CA
+:code: 94063
+:country: United States of America
+:uri: www.linkedin.com/in/eryork
+:email: eric.york@gmail.com
+:fullname_2: Michael Douglass
+:lastname_2: Douglass
+:forename_initials_2: M.
+:organization_2: Bedework
+:street_2: 226 3rd Street
+:city_2: Troy
+:code_2: 12180
+:country_2: United States of America
+:ur_2i: http://bedework.com
+:email_2: mdouglass@bedework.com
+:docfile: draft-ietf-calext-vpoll.adoc
+:mn-document-class: ietf
+:mn-output-extensions: xml,txt,html
+:technical-committee: TC Freebusy
+
+:sectnums!:
+
+include::sections/00-abstract.adoc[]
+// CSD Foreword is not used in IETF
+//include::sections/00-foreword.adoc[]
+include::sections/00-intro.adoc[]
+
+:sectnums:
+
+// CSD: these sections are not used in IETF
+//include::sections/01-scope.adoc[]
+//include::sections/02-normrefs.adoc[]
+
+include::sections/03-terms.adoc[]
+include::sections/04-consensus.adoc[]
+include::sections/30-icalendar-extensions.adoc[]
+include::sections/40-poll-modes.adoc[]
+include::sections/44-new-participant-properties.adoc[]
+include::sections/45-itip-with-participants.adoc[]
+include::sections/50-itip-extensions.adoc[]
+include::sections/60-caldav-extensions.adoc[]
+include::sections/70-security.adoc[]
+include::sections/80-iana.adoc[]
+
+include::sections-ietf/50-acknowledgements.adoc[]
+// IETF uses special references
+include::sections-ietf/98-references.adoc[]
+
+include::sections/xa-open-issues.adoc[]
+include::sections/xb-change-log.adoc[]
+
+

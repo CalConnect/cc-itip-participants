@@ -1,0 +1,534 @@
+
+[[icalendar-extensions]]
+== iCalendar Extensions
+
+=== Updated Participant Type Value
+
+Participant type property values are defined in section 11.2.1. of
+<<RFC9073>>.  This specification updates that type to include the new
+participant type VOTER to provide information about the voter and to contain their votes.
+
+Format Definition::
+This property parameter is redefined by the following notation:
+[source,abnf]
+----
+partvalue       /= "VOTER"
+----
+
+Description:: The new property value indicates that the associated PARTICIPANT component identifies a voter in a VPOLL.
+
+=== Updated Relation Type Value
+
+Relationship parameter type values are defined in section 3.2.15. of
+<<RFC5545>>.  This specification updates that type to include the new
+relationship value POLL to provide a link to the VPOLL component in
+which the current component appears.
+
+Format Definition::
+This property parameter is redefined by the following notation:
+[source,abnf]
+----
+reltypeparam       /= "RELTYPE" "=" "POLL"
+; Property value is a VPOLL uid
+----
+
+Description:: This parameter can be specified on a property that
+  references another related calendar component.  The new parameter
+  value indicates that the associated property references a VPOLL
+  component which contains the current component.
+
+=== Updated Status Value
+
+Status property values are defined in section 3.8.1.11. of <<RFC5545>>.
+This specification updates that type to define valid VPOLL status
+values.
+
+Format Definition::
+This property parameter is redefined by the following notation:
+[source,abnf]
+----
+statvalue /= statvalue-poll
+   ; Status values for "VPOLL".
+statvalue-poll = "IN-PROCESS"
+          / "COMPLETED"  ; Poll has closed,
+                         ; nothing has been chosen yet
+          / "CONFIRMED"  ; Poll has closed and
+                         ; winning items confirmed
+          / "SUBMITTED"  ; The winning item has been
+                         ; submitted
+          / "CANCELLED"
+----
+
+Description:: These values allow clients and servers to handle the
+  choosing and submission of winning choices.
+
+  If the client is choosing and the server submitting then the
+  client should set the POLL-WINNER property, set the status to
+  CONFIRMED and save the poll.  When the server submits the winning
+  choice it will set the status to SUBMITTED.
+
+=== New Property Parameters
+
+[[new-prop-para-required]]
+==== Required
+
+Parameter name:: REQUIRED
+
+Purpose:: To specify whether the associated property is required in
+  the current context.
+
+Format Definition::
+This parameter is defined by the following notation:
+[source,abnf]
+----
+requirededparam = "REQUIRED"  "=" ("TRUE" / "FALSE")
+  ; Default is FALSE
+----
+
+Description:: This parameter MAY be specified on REPLY-URL and, if
+  the value is TRUE, indicates the organizer requires all replies to
+  be made via the specified service rather than iTip replies.
+
+[[new-prop-para-stay-informed]]
+==== Stay-Informed
+
+Parameter name:: STAY-INFORMED
+
+Purpose:: To specify the voter also wants to be added as an ATTENDEE
+  when the poll is confirmed.
+
+Format Definition::
+This parameter is defined by the following notation:
+[source,abnf]
+----
+stayinformedparam = "STAY-INFORMED"  "=" ("TRUE" / "FALSE")
+                  ; Default is FALSE
+----
+
+Description:: This parameter MAY be specified on the CALENDAR-ADDRESS
+  property in the PARTICIPANT component and, if the
+  value is TRUE, indicates the voter wishes to be added to the final
+  choice as a non participant.
+
+=== New Properties
+
+[[new-prop-accept-response]]
+==== Accept-Response
+
+Property name:: ACCEPT-RESPONSE
+
+Purpose:: This property is used in VPOLL to indicate the types of
+  component that may be supplied in a response.
+
+Property Parameters:: Non-standard or iana parameters can be
+  specified on this property.
+
+Conformance:: This property MAY be specified in a VPOLL component.
+
+Description:: When used in a VPOLL this property indicates what
+allowable component types may be returned in a reply.  Typically
+this would allow a voter to respond with their freebusy or
+availability rather than choosing one of the presented
+alternatives. +
++
+If this property is not present voters are only allowed to respond
+to the choices in the request.
+
+Format Definition::
+This property is defined by the following notation:
+[source,abnf]
+----
+acceptresponse = "ACCEPT-RESPONSE" acceptresponseparams ":"
+                    iana-token ("," iana-token) CRLF
+
+acceptresponseparams = *(";" other-param)
+----
+
+[[new-prop-poll-completion]]
+==== Poll-Completion
+
+Property name:: POLL-COMPLETION
+
+Purpose:: This property is used in VPOLL to indicate whether the
+  client or server is responsible for choosing and/or submitting the
+  winner(s).
+
+Description:: When a VPOLL is stored on a server which is capable of
+  handling choosing and submission of winning choices a value of
+  SERVER indicates that the server should close the poll, choose the
+  winner and submit whenever it is appropriate to do so. +
++
+For example, in BASIC poll-mode, reaching the DTEND of the poll
+could trigger this server side action.
++
+Server initiated submission requires that the submitted choice
+MUST be a valid calendaring component.
++
+POLL-COMPLETION=SERVER-SUBMIT allows the client to set the poll-
+winner, set the status to CONFIRMED and then store the poll on the
+server.  The server will then submit the winning choice and set
+the status to SUBMITTED.
+
+Format Definition::
+This property is defined by the following notation:
+[source,abnf]
+----
+poll-completion = "POLL-COMPLETION" pcparam ":" pcvalue CRLF
+
+pcparam = *(";" other-param)
+
+pcvalue = "SERVER"  ; The server is responsible for both choosing and
+                   ; submitting the winner(s)
+        / "SERVER-SUBMIT" ; The server is responsible for
+                   ; submitting the winner(s). The client chooses.
+        / "SERVER-CHOICE"  ; The server is responsible for
+                   ; choosing the winner(s). The client will submit.
+        / "CLIENT" ; The client is responsible for both choosing and
+                   ; submitting the winner(s)
+        / iana-token
+        / x-name
+        ;Default is CLIENT
+----
+
+Example::
+The following is an example of this property:
+
+[source]
+----
+POLL-COMPLETION: SERVER-SUBMIT
+----
+
+[[new-prop-poll-item-id]]
+==== Poll-Item-Id
+
+Property name:: POLL-ITEM-ID
+
+Purpose:: This property is used in VPOLL child components as an
+  identifier.
+
+Value type:: INTEGER
+
+Property Parameters:: Non-standard parameters can be specified on
+  this property.
+
+Conformance:: This property MUST be specified in a VOTE component and
+  in VPOLL choice items.
+
+Description:: In a METHOD:REQUEST each choice component MUST have a
+POLL-ITEM-ID property.  Each set of components with the same POLL-
+ITEM-ID value represents one overall set of items to be voted on. +
++
+POLL-ITEM-ID SHOULD be a unique small integer for each component
+or set of components.  If it remains the same between REQUESTs
+then the previous response for that component MAY be re-used.  To
+force a re-vote on a component due to a significant change, the
+POLL-ITEM-ID MUST change.
+
+Format Definition::
+This property is defined by the following notation:
+[source,abnf]
+----
+pollitemid = "POLL-ITEM-ID" pollitemdparams ":"
+                  integer CRLF
+
+pollitemidparams = *(
+                   (";" other-param)
+            )
+----
+
+[[new-prop-poll-mode]]
+==== Poll-Mode
+
+Property name:: POLL-MODE
+
+Purpose:: This property is used in VPOLL to indicate what voting mode
+  is to be applied.
+
+Property Parameters:: Non-standard or iana parameters can be
+  specified on this property.
+
+Conformance:: This property MAY be specified in a VPOLL component or
+  its sub-components.
+
+Description:: The poll mode defines how the votes are applied to
+obtain a result.  BASIC mode, the default, means that the voters
+are selecting one component (or group of components) with a given
+POLL=ITEM-ID. +
++
+Other polling modes may be defined in updates to this
+specification.  These may allow for such modes as ranking or task
+assignment.
+
+Format Definition::
+This property is defined by the following notation:
+[source,abnf]
+----
+pollmode = "POLL-MODE" pollmodeparams ":"
+             ("BASIC" / iana-token / other-token) CRLF
+
+pollmodeparams = *(";" other-param)
+----
+
+[[new-prop-poll-properties]]
+==== Poll-properties
+
+Property name:: POLL-PROPERTIES
+
+Purpose:: This property is used in VPOLL to define which icalendar
+  properties are being voted on.
+
+Property Parameters:: Non-standard or iana parameters can be
+  specified on this property.
+
+Conformance:: This property MAY be specified in a VPOLL component.
+
+Description:: This property defines which icalendar properties are
+significant in the voting process.  It may not be clear to voters
+which properties are varying in a significant manner.  Clients may
+use this property to highlight those listed properties.
+
+Format Definition::
+This property is defined by the following notation:
+[source,abnf]
+----
+pollproperties = "POLL-PROPERTIES" pollpropparams ":"
+             text *("," text) CRLF
+
+pollpropparams = *(";" other-param)
+----
+
+[[new-prop-poll-winner]]
+==== Poll-Winner
+
+Property name:: POLL-WINNER
+
+Purpose:: This property is used in a basic mode VPOLL to indicate
+  which of the VPOLL sub-components won.
+
+Value type:: INTEGER
+
+Property Parameters:: Non-standard parameters can be specified on
+  this property.
+
+Conformance:: This property MAY be specified in a VPOLL component.
+
+Description:: For poll confirmation each child component MUST have a
+  POLL-ITEM-ID property.  For basic mode the VPOLL component SHOULD
+  have a POLL-WINNER property which MUST correspond to one of the
+  POLL-ITEM-ID properties and indicates which sub-component was the
+  winner.
+
+Format Definition::
+This property is defined by the following notation:
+[source,abnf]
+----
+pollwinner = "POLL-WINNER" pollwinnerparams ":"
+                 integer CRLF
+
+pollwinnerparams = *(";" other-param)
+
+       ; Used with a STATUS:CONFIRMED VPOLL to indicate which
+       ; components have been confirmed
+----
+
+[[new-prop-reply-url]]
+==== Reply-URL
+
+Property name:: REPLY-URL
+
+Purpose:: This property may be used in scheduling messages to
+  indicate additional reply methods, for example a web-service.
+
+Value type:: URI
+
+Property Parameters:: Non-standard, required or iana parameters can
+  be specified on this property.
+
+Conformance:: This property MAY be specified in a VPOLL component.
+
+Description:: When used in a scheduling message this property
+  indicates additional or required services that can be used to
+  reply.  Typically this would be a web service of some form.
+
+Format Definition::
+This property is defined by the following notation:
+[source,abnf]
+----
+reply-url = "REPLY-URL" reply-urlparams ":" uri CRLF
+
+reply-urlparams = *(
+                  (";" requiredparam) /
+                  (";" other-param)
+                  )
+----
+
+[[new-prop-response]]
+==== Response
+
+Property name:: RESPONSE
+
+Purpose:: To specify a response vote.
+
+Value type:: INTEGER
+
+Format Definition::
+This property is defined by the following notation:
+[source,abnf]
+----
+response = "RESPONSE" response-params ":" integer CRLF
+                 ; integer value 0..100
+
+responseparams = *(";" other-param)
+----
+
+Description:: This parameter can be specified on the POLL-ITEM-ID
+property to provide the value of the voters response.  This
+parameter allows for fine grained responses which are appropriate
+to some applications.  For the case of individuals voting for a
+choice of events, client applications SHOULD conform to the
+following convention: +
++
+*  0 - 39 A "NO vote"
+*  40 - 79 A "MAYBE" vote
+*  80 - 89 A "YES - but not preferred vote"
+*  90-100 A "YES" vote.
++
+Clients MUST preserve the response value when there is no change
+from the user even if they have a UI with fixed states (e.g.
+yes/no/maybe).
+
+=== New Components
+
+[[component-vpoll]]
+==== VPOLL Component
+
+Component name:: VPOLL
+
+Purpose:: This component provides a mechanism by which voters can
+  vote on provided choices.
+
+Format Definition::
+This property is defined by the following notation:
+[source,abnf]
+----
+pollc    = "BEGIN" ":" "VPOLL" CRLF
+            pollprop
+            *participantc *eventc *todoc *journalc *freebusyc
+            *availabilityc *alarmc *iana-comp *x-comp
+            "END" ":" "VPOLL" CRLF
+
+pollprop = *(
+          ;
+          ; The following are REQUIRED,
+          ; but MUST NOT occur more than once.
+          ;
+          dtstamp / uid /
+          ;
+          ; The following are OPTIONAL,
+          ; but MUST NOT occur more than once.
+          ;
+          acceptresponse / class / created / completed /
+          description / dtstart / last-mod / pollmode /
+          pollproperties / priority / seq / status /
+          summary / url /
+          ;
+          ; Either 'dtend' or 'duration' MAY appear in
+          ; a 'pollprop', but 'dtend' and 'duration'
+          ; MUST NOT occur in the same 'pollprop'.
+          ; 'duration' MUST only occur when 'dtstart'
+          ; is present
+          ;
+          dtend / duration /
+          ;
+          ; The following are OPTIONAL,
+          ; and MAY occur more than once.
+          ;
+          attach / categories / comment /
+          contact / rstatus / related /
+          resources / x-prop / iana-prop
+          ;
+          ; The following is OPTIONAL, it SHOULD appear
+          ; once for the confirmation of a BASIC mode
+          ; VPOLL. Other modes may define differing
+          ; requirements.
+          ;
+          pollwinner /
+          ;
+          )
+----
+
+Description:: This component provides a mechanism by which voters can
+vote on provided choices.  The outcome depends upon the POLL-MODE
+in effect. +
++
+The PARTICIPANT components in VPOLL requests provide information on
+each recipient who will be voting - both their identity through
+the CALENDAR-ADDRESS property and their votes through the VOTE components. +
++
+If specified, the "DTSTART" property defines the start or opening
+of the poll active period.  If absent the poll is presumed to have
+started when created. +
++
+If "DTSTART" is present "DURATION" MAY be specified and indicates
+the duration, and hence the ending, of the poll.  The value of the
+property MUST be a positive duration. +
++
+"DTEND" MAY be specified with or without "DTSTART" and indicates
+the ending of the poll.  If DTEND is specified it MUST be later
+than the DTSTART or CREATED property. +
++
+If one or more VALARM components are included in the VPOLL they
+are not components to be voted on and MUST NOT contain a POLL-
+ITEM-ID property.  VALARM sub-components may be used to provide
+warnings to the user when polls are due to start or end.
+
+// TODO: Need some text to describe what relative alarms are relative to.
+
+==== VOTE Component
+
+Component name:: VOTE
+
+Purpose:: This component provides a mechanism by which voters can
+  vote on provided choices.
+
+Conformance:: This component may be specified zero or more times in a PARTICIPANT component which identifies the voter.
+
+Format Definition::
+This property is defined by the following notation:
+[source,abnf]
+----
+votec     = "BEGIN" ":" "VOTE" CRLF
+            voteprop
+            *eventc *todoc *journalc *freebusyc
+            *availabilityc *alarmc *iana-comp *x-comp
+            "END" ":" "VOTE" CRLF
+
+voteprop = *(
+           ;
+           ; The following are REQUIRED,
+           ; but MUST NOT occur more than once.
+           ;
+           pollitemid / response /
+           ;
+           ; The following are OPTIONAL,
+           ; and MAY occur more than once.
+           ;
+           comment / x-prop / iana-prop
+           ;
+           )
+----
+
+Description:: This component appears inside the PARTICIPANT component
+with a PARTICIPANT-TYPE of VOTER to identify the voter. This component
+contains that participants responses. +
++
+The required and optional properties and their meanings will depend
+upon the POLL-MODE in effect. +
++
+For any POLL-MODE, POLL-ITEM-ID is used to associate the
+information to a choice supplied by the organizer. This means that each VOTE component only provides information about that choice. +
++
+If allowed by the POLL-MODE a VOTE component without a POLL-ITEM-
+ID may be provided in a REPLY to indicate a possible new choice or
+to provide information to the ORGANIZER - such as the respondees
+availability.
