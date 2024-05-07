@@ -1,20 +1,20 @@
 :repo-name: csd-vpoll
 
-= CalConnect Standard: Calendaring and scheduling -- Consensus scheduling -- iCalendar VPOLL component
+= CalConnect Standard: Calendaring and scheduling -- iTip scheduling using participants
 
 This work item belongs to TC FREEBUSY.
 
-image:https://travis-ci.com/CalConnect/csd-vpoll.svg?branch=master["Build Status", link="https://travis-ci.com/calconnect/csd-vpoll"]
+image:https://travis-ci.com/CalConnect/csd-itip-participants.svg?branch=master["Build Status", link="https://travis-ci.com/calconnect/csd-itip-participants"]
 
 This document is available in its rendered forms here:
 
-* https://calconnect.github.io/csd-vpoll/[CalConnect+IETF: Calendaring and scheduling -- Consensus scheduling -- iCalendar VPOLL component (HTML)]
+* https://calconnect.github.io/csd-itip-participants/[CalConnect+IETF: Calendaring and scheduling -- iTip scheduling using participants (HTML)]
 
 == Fetching the document
 
 [source,sh]
 ----
-git clone https://github.com/CalConnect/csd-vpoll/
+git clone https://github.com/CalConnect/csd-itip-participants/
 ----
 
 == Installing Build Tools
