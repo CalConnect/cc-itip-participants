@@ -26,38 +26,31 @@ added to the registry defined in <<RFC5545,section=8.2.3>>:
 | Property        | Status  | Reference
 
 | ACCEPT-RESPONSE | Current | <<new-prop-reply-url>>
-| POLL-ITEM-ID    | Current | <<new-prop-poll-item-id>>
-| POLL-MODE       | Current | <<new-prop-poll-mode>>
+| EXPECT-REPLY | Current | <<new-prop-expect-reply>>
+| KIND    | Current | <<new-prop-kind>>
+| LANG    | Current | <<new-prop-lang>>
+| MEMBER-OF    | Current | <<new-prop-member-of>>
+| PARTICIPATION-DELEGATED-FROM | Current | <<new-prop-participation-delegated-from>>
+| PARTICIPATION-DELEGATED-TO | Current | <<new-prop-participation-delegated-to>>
+| PARTICIPATION-STATUS | Current | <<new-prop-participation-status>>
 | POLL-PROPERTIES | Current | <<new-prop-poll-properties>>
-| POLL-WINNER     | Current | <<new-prop-poll-winner>>
+| PARTICIPANT-TYPE     | Current | <<new-prop-part>>
 | RESPONSE        | Current | <<new-prop-response>>
 
 |===
 
-[[poll-registration-template]]
-=== POLL-MODE Registration Template
+=== Updated Participant Type Registrations
+This updates the participant types registry defined in <<RFC9073,section=11.2.1>>
 
-A poll mode is defined by completing the following template.
 
-Poll mode name:: The name of the poll mode.
-
-Purpose:: The purpose of the poll mode.  Give a short but clear
-  description.
-
-Reference:: A reference to the RFC in which the poll mode is defined
-
-=== POLL-MODE Registrations
-
-This document defines the following registered poll modes.
-
-[cols="a,a,a",options=header]
+[cols="a,a,a",options="header"]
 |===
+| Participant Type | Status | Reference
 
-| Poll mode name | Purpose | Reference
-
-| BASIC
-| To provide simple voting for a single outcome from a number of candidates.
-| Current
+| OWNER | Current | RFC8984 <<RFC8984, section=4.4.6>>
+| ATTENDEE | Current |RFC8984 <<RFC8984, section=4.4.6>>
+| OPTIONAL | Current |RFC8984 <<RFC8984, section=4.4.6>>
+| INFORMATIONAL | Current |RFC8984 <<RFC8984, section=4.4.6>>
+| CHAIR | Current | RFC8984 <<RFC8984, section=4.4.6>>
 
 |===
-

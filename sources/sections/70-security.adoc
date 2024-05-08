@@ -2,6 +2,5 @@
 [[security]]
 == Security Considerations
 
-Applications using these property need to be aware of the risks
-entailed in using the URIs provided as values.  See <<RFC3986>> for a
-discussion of the security considerations relating to URIs.
+There should be no new security risks
+additional to those noted in <<RFC5546>>.

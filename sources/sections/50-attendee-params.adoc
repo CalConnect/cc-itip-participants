@@ -1,0 +1,33 @@
+[[attendee-params]]
+== Attendee parameters mapping
+
+[cols="a,a",options="header"]
+|===
+| Parameter
+| iCalendar PARTICIPANT
+
+| CN | NAME (defined in <<RFC7986>>
+
+| CUTYPE | KIND (defined here)
+
+| DELEGATED-FROM | PARTICIPATION-DELEGATED-FROM <<new-prop-participation-delegated-from>>
+
+| DELEGATED-TO | PARTICIPATION-DELEGATED-TO (Defined here)
+
+| DIR | LINK <<RFC9253>>
+
+| LANGUAGE | LANG (defined here)
+
+| MEMBER | MEMBER-OF (defined here)
+
+| PARTSTAT | PARTICIPATION-STATUS (defined here)
+
+| ROLE | PARTICIPATION-TYPE (Updated here)
+
+| RSVP | EXPECT-REPLY (Defined here)
+
+| SENT-BY |
+
+
+|===
+

@@ -2,4 +2,4 @@
 [[acknowledgements]]
 == Acknowledgements
 
-The authors would like to thank the members of the Calendaring and Scheduling Consortium (CalConnect) for contributing their ideas and support, in particular Cyrus Daboo for his help with the specification and implementations.
+The authors would like to thank the members of the Calendaring and Scheduling Consortium (CalConnect) for contributing their ideas and support.

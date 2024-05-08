@@ -10,19 +10,16 @@ the ABNF notation of <<RFC5234>> as used by <<RFC5545>>.  Any syntax
 elements shown below that are not explicitly defined in this
 specification come from iCalendar <<RFC5545>>.
 
-Additionally the following terms are used:
+Additionally, the following terms are used:
 
-=== consensus scheduling
+=== participant
 
-The process whereby users come to some agreement on meeting
-or task alternatives and then book that meeting or task.
+Represents an agent that takes part in scheduling or publishing. A participant may be a human, for example an attendee, or a resource, for example a conference room.
 
-// TODO
-=== active Vpoll
+=== publishable
 
-A VPoll may have a DTSTART, DTEND and DURATION which
-may define the start and end of the active voting period
+A component which takes part in <<RFC5546>> publishing operations.
 
-=== voter
+=== schedulable
 
-A participant who votes on the alternatives. A voter need not be an attendee of any of the alternatives presented.
+A component which takes part in <<RFC5546>> scheduling operations.

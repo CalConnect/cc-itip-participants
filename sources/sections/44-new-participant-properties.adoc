@@ -1,7 +1,7 @@
 [[new-participant-properties-for-itip]]
 == New Participant Properties for iTip
 
-The following properties are defined to be used within PARTICIPANT during scheduling and take the place of ATTENDEE and ORGANIZER properties and parameters. These are not solely for VPOLL but may be used in any future component.
+The following properties are defined to be used within PARTICIPANT during scheduling and take the place of ATTENDEE and ORGANIZER properties and parameters.
 
 [[new-prop-kind]]
 === Kind
@@ -37,7 +37,7 @@ kindparams = *(";" other-param)
 [[redefined-participation-type]]
 === Redefined participation type
 
-This specification redefines the PARTICIPATION-TYPE property allowing it to take multiple values and extending those values to align with <<RFC8984>> roles and add a new "VOTER" role. There are also changes to the description to clarify it's use defining the roles that participant takes.
+This specification redefines the PARTICIPATION-TYPE property allowing it to take multiple values and extending those values to align with <<RFC8984>> roles. There are also changes to the description to clarify its use defining the roles that participant takes.
 
 Property name:: PARTICIPANT-TYPE
 
@@ -58,8 +58,6 @@ It includes the values defined in <<RFC8984>>.
 Note that the kind of participant, for example individual or group, is defined in the KIND property specified here.
 +
 Some of the roles are required for the participant to be a schedulable object. These are the roles that are shown below.
-*
-Do we need a separate registry or should we extend that one?
 
 Format Definition::
 This property is defined by the following notation:
@@ -74,7 +72,6 @@ partvalue    = ("OWNER"
                / "OPTIONAL"
                / "INFORMATIONAL"
                / "CHAIR"
-               / "VOTER"
                / "ACTIVE"
                / "INACTIVE"
                / "SPONSOR"
@@ -91,68 +88,64 @@ partvalue    = ("OWNER"
 partvalueparam   = *(";" other-param)
 ----
 
-The values other than VOTER have the same meaning as defined in <<RFC8984>> and <<RFC9073>>.
-
-The VOTER roles value is used for a PARTICIPANT within a VPOLL to indicate a voting participant.
+The values have the same meaning as defined in <<RFC8984>> and <<RFC9073>>.
 
 Other roles defined here have no direct equivalent in <<RFC5545>>
 
-To map <<RFC5545>> ATTENDEE ROLE values to PARTICIPANT-TYPE or jsCalendar values use the following.
+To map <<RFC5545>> ATTENDEE ROLE values to PARTICIPANT-TYPE values use the following.
 
-[cols="a,a,a",options="header"]
+[cols="a,a",options="header"]
 |===
 | RFC5545 ROLE
 | PARTICIPANT-TYPE
-| jsCalendar
 
-| CHAIR | CHAIR | chair
-| REQ-PARTICIPANT | ATTENDEE | attendee
-| OPT-PARTICIPANT | OPTIONAL | optional
-| NON-PARTICIPANT | INFORMATIONAL | information
+| CHAIR | CHAIR
+| REQ-PARTICIPANT | ATTENDEE
+| OPT-PARTICIPANT | OPTIONAL
+| NON-PARTICIPANT | INFORMATIONAL
 
 |===
 
-The following table shows those roles that MUST appear in the PARTICIPANT-TYPE for group-scheduling. Additionally, the mapping  PARTICIPANT-TYPE or jscalendar roles to <<RFC5545>> ATTENDEE and ORGANIZER values are shown.
+The following table shows those roles that MUST appear in the PARTICIPANT-TYPE for group-scheduling. Additionally, the mapping for PARTICIPANT-TYPE to <<RFC5545>> ATTENDEE and ORGANIZER values are shown.
 
-[cols="a,a,a",options="header"]
+[cols="a,a",options="header"]
 |===
 | PARTICIPANT-TYPE
-| jsCalendar
 | RFC5545 ROLE
 
-| OWNER | owner | Create ORGANIZER
+| OWNER |  Create ORGANIZER
 
-| ATTENDEE | attendee | REQ-PARTICIPANT
+| ATTENDEE |  REQ-PARTICIPANT
 
-| OPTIONAL | optional | OPT-PARTICIPANT
+| OPTIONAL |  OPT-PARTICIPANT
 
-| INFORMATIONAL | informational | NON-PARTICIPANT
+| INFORMATIONAL  | NON-PARTICIPANT
 
-| CHAIR | chair | CHAIR
+| CHAIR | CHAIR
 
- 3+| Subsequent values have no <<RFC5545>> equivalent
+ 2+| Subsequent values have no <<RFC5545>> equivalent
 
-| CONTACT | contact |
+| CONTACT |
 
-| VOTER | |
+| VOTER |
 
-| ACTIVE | |
+| ACTIVE |
 
-| INACTIVE | |
+| INACTIVE |
 
-| SPONSOR | |
+| SPONSOR |
 
-| BOOKING-CONTACT | |
+| BOOKING-CONTACT  |
 
-| EMERGENCY-CONTACT | |
+| EMERGENCY-CONTACT  |
 
-| PUBLICITY-CONTACT | |
+| PUBLICITY-CONTACT  |
 
-| PLANNER-CONTACT | |
+| PLANNER-CONTACT |
 
-| PERFORMER | |
+| PERFORMER |
 
-| SPEAKER | |
+| SPEAKER |
 
 |===
 
@@ -333,3 +326,137 @@ expect-reply = "EXPECT-REPLY"
 
 expect-replyparams = *(";" other-param)
 ----
+
+
+[[new-prop-scheduling-agent]]
+=== Scheduling-agent
+
+Property name:: SCHEDULING-AGENT
+
+Purpose:: This is who is responsible for sending scheduling messages with this calendar object to the participant.
+
+Property Parameters:: Non-standard or iana parameters can be
+specified on this property.
+
+Conformance:: This property MAY be specified once in the PARTICIPANT component.
+
+Format Definition::
+This property is defined by the following notation:
+[source,abnf]
+----
+scheduling-agent = "SCHEDULING-AGENT"
+              scheduling-agentparams ":"
+              ( "SERVER" /
+                "CLIENT" /
+                "NONE") CRLF
+
+scheduling-agentparams = *(";" other-param)
+----
+
+The value MUST be one of the following values, another value registered in the IANA "JSCalendar Enum Values" registry, or a vendor-specific value.
+
+SERVER::
+The calendar server will send the scheduling messages.
+
+CLIENT::
+The calendar client will send the scheduling messages.
+
+NONE::
+No scheduling messages are to be sent to this participant.
+
+
+[[new-prop-scheduling-force-send]]
+=== Scheduling-force-send
+
+Property name:: SCHEDULING-FORCE-SEND
+
+Purpose:: A client may set the property on a participant to true to request that the server send a scheduling message to the participant when it would not normally do so (e.g., if no significant change is made the object or the scheduleAgent is set to client). The property MUST NOT be stored in the JSCalendar object on the server or appear in a scheduling message.
+
+Property Parameters:: Non-standard or iana parameters can be
+specified on this property.
+
+Conformance:: This property MAY be specified once in the PARTICIPANT component.
+
+Format Definition::
+This property is defined by the following notation:
+[source,abnf]
+----
+scheduling-force-send = "SCHEDULING-FORCE-SEND"
+              scheduling-force-sendparams ":"
+              ( "TRUE" / "FALSE") CRLF
+
+scheduling-force-sendparams = *(";" other-param)
+----
+
+[[new-prop-scheduling-status]]
+=== Scheduling-status
+
+Property name:: SCHEDULING-STATUS
+
+Purpose:: This is a list of status codes, returned from the processing of the most recent scheduling message sent to this participant. The status codes MUST be valid statcode values as defined in the ABNF in Section 3.8.8.3 of [RFC5545].
++
+Servers MUST only add or change this property when they send a scheduling message to the participant. Clients SHOULD NOT change or remove this property if it was provided by the server. Clients MAY add, change, or remove the property for participants where the client is handling the scheduling.This property MUST NOT be included in scheduling messages.
+
+Property Parameters:: Non-standard or iana parameters can be
+specified on this property.
+
+Conformance:: This property MAY be specified in any appropriate component.
+
+Format Definition::
+This property is defined by the following notation:
+[source,abnf]
+----
+scheduling-status = "SCHEDULING-STATUS"
+            scheduling-statusparams ":" TEXT CRLF
+
+scheduling-statusparams = *(";" other-param)
+----
+
+[[new-prop-scheduling-dtstamp]]
+=== Scheduling-dtstamp
+
+Property name:: SCHEDULING-DTSTAMP
+
+Purpose:: This is the timestamp for the most recent response from this participant.
++
+This is the updated property of the last response when using iTIP. It can be compared to the updated property in future responses to detect and discard older responses delivered out of order.
+
+Property Parameters:: Non-standard or iana parameters can be
+specified on this property.
+
+Conformance:: This property MAY be specified in any appropriate component.
+
+Format Definition::
+This property is defined by the following notation:
+[source,abnf]
+----
+scheduling-dtstamp = "SCHEDULING-DTSTAMP"
+            scheduling-dtstampparams ":" DATE-TIME CRLF
+
+scheduling-dtstampparams = *(";" other-param)
+----
+
+
+[[new-prop-invited-by]]
+=== Invited-by
+
+Property name:: INVITED-BY
+
+invitedBy: Id (optional)
+Purpose:: This is calendar address of the participant who added this participant to the entity, if known.
+
+Property Parameters:: Non-standard or iana parameters can be
+specified on this property.
+
+Conformance:: This property MAY be specified in any appropriate component.
+
+Format Definition::
+This property is defined by the following notation:
+[source,abnf]
+----
+invited-by = "INVITED-BY"
+            invited-byparams ":" CAL-ADDRESS CRLF
+
+invited-byparams = *(";" other-param)
+----
+
