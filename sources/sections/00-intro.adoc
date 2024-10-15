@@ -7,7 +7,7 @@ For all existing schedulable and publishable components, VEVENT, VTODO, VFREEBUS
 
 A participant object that takes part in group scheduling MUST have the following characteristics:
 
-* It MUST have a calendar address as definied in <<RFC9073, section=6.4>>.
+* It MUST have a calendar address as defined in <<RFC9073, section=6.4>>.
 * It must have one or more scheduling roles defined in PARTICIPANT-TYPE
 
 Scheduling with PARTICIPANT components behaves exactly as with ATTENDEE and ORGANIZER properties. When iTip specifies the setting of ATTENDEE or ORGANIZER parameters then the appropriate PARTICIPANT property will be set.

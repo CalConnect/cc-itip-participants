@@ -12,7 +12,6 @@ to be added to the registry defined in <<RFC5545,section=8.2.4>>:
 | Property Parameter | Status  | Reference
 
 | REQUIRED | Current | <<new-prop-para-required>>
-| STAY-INFORMED | Current | <<new-prop-para-stay-informed>>
 
 |===
 
@@ -25,17 +24,23 @@ added to the registry defined in <<RFC5545,section=8.2.3>>:
 |===
 | Property        | Status  | Reference
 
-| ACCEPT-RESPONSE | Current | <<new-prop-reply-url>>
 | EXPECT-REPLY | Current | <<new-prop-expect-reply>>
+
+| INVITED-BY    | Current | <<new-prop-invited-by>>
+
 | KIND    | Current | <<new-prop-kind>>
+
 | LANG    | Current | <<new-prop-lang>>
 | MEMBER-OF    | Current | <<new-prop-member-of>>
+
 | PARTICIPATION-DELEGATED-FROM | Current | <<new-prop-participation-delegated-from>>
 | PARTICIPATION-DELEGATED-TO | Current | <<new-prop-participation-delegated-to>>
 | PARTICIPATION-STATUS | Current | <<new-prop-participation-status>>
-| POLL-PROPERTIES | Current | <<new-prop-poll-properties>>
-| PARTICIPANT-TYPE     | Current | <<new-prop-part>>
-| RESPONSE        | Current | <<new-prop-response>>
+| REPLY-URL | Current | <<new-prop-reply-url>>
+| SCHEDULING-AGENT | Current | <<new-prop-scheduling-agent>>
+| SCHEDULING-DTSTAMP  | Current | <<new-prop-scheduling-dtstamp>>
+| SCHEDULING-FORCE-SEND     | Current | <<new-prop-scheduling-force-send>>
+| SCHEDULING-STATUS  | Current | <<new-prop-scheduling-status>>
 
 |===
 

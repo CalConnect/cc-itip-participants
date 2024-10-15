@@ -4,5 +4,5 @@ metanorma:
     email: "travis-ci@metanorma.org"
 relaton:
   collection:
-    name: Calendaring and scheduling -- Consensus scheduling -- iCalendar VPOLL component
+    name: Calendaring and scheduling -- iTip with participants component
     organization: CalConnect

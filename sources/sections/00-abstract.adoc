@@ -1,8 +1,7 @@
 
 .Abstract
 
-This specification specifies updates to RFC5546 iTip which allow
-scheduling using the PARTICIPANT components specified in RFC9073.
+This specification defines updates to RFC5546 iTip which allow scheduling using the PARTICIPANT components specified in RFC9073.
 
 New properties are also defined for use within the PARTICIPANT component.
 

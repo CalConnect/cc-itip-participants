@@ -1,4 +1,4 @@
-:repo-name: csd-vpoll
+:repo-name: csd-itip-participants
 
 = CalConnect Standard: Calendaring and scheduling -- iTip scheduling using participants
 

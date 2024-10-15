@@ -1,6 +1,6 @@
-= VPOLL: Consensus Scheduling Component for iCalendar
+= iTip using PARTICIPANT only
 :doctype: internet-draft
-:docnumber: draft-douglass-itip-participants-01
+:docnumber: draft-douglass-itip-participants-00
 :abbrev: iTip participants
 :status: standard
 :ipr: trust200902
@@ -25,7 +25,7 @@
 
 :sectnums!:
 
-include::sections/00-abstract.adoc[]0
+include::sections/00-abstract.adoc[]
 // CSD Foreword is not used in IETF
 //include::sections/00-foreword.adoc[]
 include::sections/00-intro.adoc[]
