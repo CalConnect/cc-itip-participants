@@ -1,7 +1,9 @@
 [[new-participant-properties-for-itip]]
 == New Participant Properties for iTip
 
-The following properties are defined to be used within PARTICIPANT during scheduling and take the place of ATTENDEE and ORGANIZER properties and parameters.
+The following properties are defined to be used within the
+"PARTICIPANT" calendar component during scheduling and take the
+place of "ATTENDEE" and "ORGANIZER" properties and parameters.
 
 [[new-prop-kind]]
 === Kind
@@ -17,7 +19,9 @@ Conformance:: This property MAY be specified in a "PARTICIPANT" calendar compone
 
 Description:: When used in a "PARTICIPANT" calendar component this property indicates the kind of entity, individual, group etc. +
 +
-It takes the values shown below which are a redefinition of the CUTYPE parameter values defined in <<RFC5545>> and aligned with <<RFC8984>> .
+It takes the values shown below which are a redefinition of the
+"CUTYPE" property parameter values defined in <<RFC5545>> and
+aligned with <<RFC8984>> .
 
 Format Definition::
 This property is defined by the following notation:
@@ -48,7 +52,8 @@ Conformance:: This property MAY be specified in a "PARTICIPANT" calendar compone
 Description:: When used in a "PARTICIPANT" calendar component this property indicates what
 status, if any, the participant has. +
 +
-It takes the same values as the PARTSTAT parameter defined in <<RFC5545>>.
+It takes the same values as the "PARTSTAT" property parameter
+defined in <<RFC5545>>.
 
 Format Definition::
 This property is defined by the following notation:
@@ -57,23 +62,22 @@ This property is defined by the following notation:
 participation-status = "PARTICIPATION-STATUS"
                        participation-statusparams ":"
               NEEDS-ACTION / ; No status
-                    ; has yet been set by the participant.
-
+                       ; has yet been set by the participant.
               ACCEPTED / ; The invited
-                    ; participant will participate.
+                       ; participant will participate.
               DECLINED / ; The invited
-                    ; participant will not participate.
-               TENTATIVE / ; The invited participant
-                     ; may participate.
-                DELEGATED / ; The invited participant
-                     ; has delegated their attendance to
-                     ; another participant, as specified
-                      ; in the PARTICIPATION-DELEGATED-TO property.
-                COMPLETED / ; The assigned task is
-                     ; completed.
-                IN-PROCESS / ; The assigned task is
-                     ; being worked on.
-                    iana-token ("," iana-token) CRLF
+                       ; participant will not participate.
+              TENTATIVE / ; The invited participant
+                       ; may participate.
+              DELEGATED / ; The invited participant
+                       ; has delegated their attendance to
+                       ; another participant, as specified
+                       ; in the PARTICIPATION-DELEGATED-TO property.
+              COMPLETED / ; The assigned task is
+                       ; completed.
+              IN-PROCESS / ; The assigned task is
+                       ; being worked on.
+              iana-token ("," iana-token) CRLF
 
 participation-statusparams = *(";" other-param)
 ----

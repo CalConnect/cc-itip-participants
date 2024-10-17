@@ -186,6 +186,6 @@ mapping for "PARTICIPANT-TYPE" property values to <<RFC5545>> values are shown.
 |===
 
 Examples::
-*  PARTICIPANT-TYPE=OWNER,... equivalent to an ORGANIZER
-* PARTICIPANT-TYPE=ATTENDEE,... equivalent to the ATTENDEE property
+*  PARTICIPANT-TYPE=OWNER,... equivalent to the "ORGANIZER" property
+* PARTICIPANT-TYPE=ATTENDEE,... equivalent to the "ATTENDEE" property
 
