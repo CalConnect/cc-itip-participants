@@ -20,9 +20,11 @@ requirededparam = "REQUIRED"  "=" ("TRUE" / "FALSE")
   ; Default is FALSE
 ----
 
-Description:: This parameter MAY be specified on REPLY-URL and, if
-  the value is TRUE, indicates the organizer requires all replies to
+Description:: This parameter MAY be specified on "REPLY-URL" property and, if
+  the value is TRUE, indicates the "Owner" requires all replies to
   be made via the specified service rather than iTip replies.
+
+=== New Properties
 
 [[new-prop-reply-url]]
 ==== Reply-URL
@@ -37,11 +39,15 @@ Value type:: URI
 Property Parameters:: Non-standard, required or iana parameters can
   be specified on this property.
 
-Conformance:: This property MAY be specified in any schedulable component.
+Conformance:: This property MAY be specified once in any schedulable component.
 
 Description:: When used in a scheduling message this property
-  indicates additional or required services that can be used to
-  reply.  Typically, this would be a web service of some form.
+  indicates an additional or required service that can be used to
+  reply. Typically, this would be a web service of some form.
++
+When the "REQUIRED" property parameter is absent then this property provides an alternative to standard iTip based scheduling.
++
+When the "REQUIRED" property parameter is present then this property provides the only mechanism by which participants can reply. This allows the implementation of a web-based service without the ability to accept incoming mail for example.
 
 Format Definition::
 This property is defined by the following notation:
@@ -58,27 +64,33 @@ reply-urlparams = *(
 [[redefined-participation-type]]
 === Redefined participation type
 
-This specification redefines the PARTICIPANT-TYPE property allowing it to take multiple values and extending those values to align with <<RFC8984>> roles. There are also changes to the description to clarify its use defining the roles that participant takes.
+This specification redefines the "PARTICIPANT-TYPE" property allowing it to take
+multiple values and extending those values to align with <<RFC8984>> roles.
+There are also changes to the description to clarify its use defining the roles
+that participant takes.
 
 Property name:: PARTICIPANT-TYPE
 
-Purpose:: This property is equivalent to the <<RFC5545>> ATTENDEE ROLE parameter but includes more values to align with <<RFC8984>>.
+Purpose:: This property is equivalent to the <<RFC5545>> "ROLE" property parameter
+but includes more values to align with <<RFC8984>>.
 
 Value Type:: The value type for this property is TEXT. The allowable values are defined below.
 
 Property Parameters:: Non-standard or iana parameters can be
 specified on this property.
 
-Conformance:: This property MUST be specified once within a "PARTICIPANT" component.
+Conformance:: This property MUST be specified once within a "PARTICIPANT" calendar component.
 
 Description:: This property defines the type of participation, that is the
 roles the participant takes. +
 +
 It includes the values defined in <<RFC8984>>.
 +
-Note that the kind of participant, for example individual or group, is defined in the KIND property specified here.
+Note that the kind of participant, for example individual or group, is
+defined in the "KIND" property specified here.
 +
-Some of the roles are required for the participant to be a schedulable object. These are the roles that are shown below.
+Some of the roles are required for the participant to be a "schedulable" object.
+These are the roles that are shown below.
 
 Format Definition::
 This property is defined by the following notation:
@@ -113,7 +125,8 @@ The values have the same meaning as defined in <<RFC8984>> and <<RFC9073>>.
 
 Other roles defined here have no direct equivalent in <<RFC5545>>
 
-To map <<RFC5545>> ATTENDEE ROLE values to PARTICIPANT-TYPE values use the following.
+To map <<RFC5545>> "ROLE" property parameter values to "PARTICIPANT-TYPE" property
+values use the following.
 
 [cols="a,a",options="header"]
 |===
@@ -127,7 +140,9 @@ To map <<RFC5545>> ATTENDEE ROLE values to PARTICIPANT-TYPE values use the follo
 
 |===
 
-The following table shows those roles that MUST appear in the PARTICIPANT-TYPE for group-scheduling. Additionally, the mapping for PARTICIPANT-TYPE to <<RFC5545>> ATTENDEE and ORGANIZER values are shown.
+The following table shows those roles that MUST appear in the
+"PARTICIPANT-TYPE" property for group-scheduling. Additionally, the
+mapping for "PARTICIPANT-TYPE" property values to <<RFC5545>> values are shown.
 
 [cols="a,a",options="header"]
 |===

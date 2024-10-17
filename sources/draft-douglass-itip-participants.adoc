@@ -1,13 +1,13 @@
 = iTip using PARTICIPANT only
 :doctype: internet-draft
-:docnumber: draft-douglass-itip-participants-00
+:docnumber: draft-douglass-itip-participants-02
 :abbrev: iTip participants
 :status: standard
 :ipr: trust200902
 :submissionType: individual
 :area: Internet
 :intended-series: full-standard
-:revdate: 2024-05-07
+:revdate: 2024-10-14
 :fullname: Michael Douglass
 :lastname: Douglass
 :forename_initials: M.

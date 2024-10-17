@@ -13,9 +13,9 @@ Purpose:: This is what kind of entity this participant is, if known.
 Property Parameters:: Non-standard or iana parameters can be
 specified on this property.
 
-Conformance:: This property MAY be specified in a PARTICIPANT component.
+Conformance:: This property MAY be specified in a "PARTICIPANT" calendar component.
 
-Description:: When used in a PARTICIPANT component this property indicates the kind of entity, individual, group etc. +
+Description:: When used in a "PARTICIPANT" calendar component this property indicates the kind of entity, individual, group etc. +
 +
 It takes the values shown below which are a redefinition of the CUTYPE parameter values defined in <<RFC5545>> and aligned with <<RFC8984>> .
 
@@ -38,14 +38,14 @@ kindparams = *(";" other-param)
 
 Property name:: PARTICIPATION-STATUS
 
-Purpose:: This property is used in the PARTICIPANT component to indicate the participation status - if any.
+Purpose:: This property is used in the "PARTICIPANT" calendar component to indicate the participation status - if any.
 
 Property Parameters:: Non-standard or iana parameters can be
 specified on this property.
 
-Conformance:: This property MAY be specified in a PARTICIPANT component.
+Conformance:: This property MAY be specified in a "PARTICIPANT" calendar component.
 
-Description:: When used in a PARTICIPANT component this property indicates what
+Description:: When used in a "PARTICIPANT" calendar component this property indicates what
 status, if any, the participant has. +
 +
 It takes the same values as the PARTSTAT parameter defined in <<RFC5545>>.
@@ -83,15 +83,15 @@ participation-statusparams = *(";" other-param)
 
 Property name:: PARTICIPATION-DELEGATED-FROM
 
-Purpose:: This property is used in the PARTICIPANT component to indicate who has delegated their participation to this participant.
+Purpose:: This property is used in the "PARTICIPANT" calendar component to indicate who has delegated their participation to this participant.
 
 Property Parameters:: Non-standard or iana parameters can be
 specified on this property.
 
-Conformance:: This property MAY be specified in a PARTICIPANT component.
+Conformance:: This property MAY be specified in a "PARTICIPANT" calendar component 0 or more times.
 
-Description:: This property specifies those calendar
-users that have delegated their participation in a group-scheduled
+Description:: This property specifies a calendar
+user that has delegated their participation in a group-scheduled
 component to the calendar user specified by the component.
 
 Format Definition::
@@ -101,7 +101,6 @@ This property is defined by the following notation:
 participation-delfrom = "PARTICIPATION-DELEGATED-FROM"
                         participation-delfromparams ":"
               CAL-ADDRESS
-              *("," CAL-ADDRESS)
               iana-token ("," iana-token) CRLF
 
 participation-delfromparams = *(";" other-param)
@@ -112,16 +111,16 @@ participation-delfromparams = *(";" other-param)
 
 Property name:: PARTICIPATION-DELEGATED-TO
 
-Purpose:: To specify the calendar users to whom the calendar user
+Purpose:: To specify the calendar user to whom the calendar user
 specified by the component has delegated participation.
 
 Property Parameters:: Non-standard or iana parameters can be
 specified on this property.
 
-Conformance:: This property MAY be specified in a PARTICIPANT component.
+Conformance:: This property MAY be specified in a "PARTICIPANT" calendar component 0 or more times.
 
-Description:: This property specifies those calendar
-users that have been delegated participation in a group-scheduled
+Description:: This property specifies the calendar
+user that has been delegated participation in a group-scheduled
 component by the calendar user specified by the component.
 
 Format Definition::
@@ -131,7 +130,6 @@ This property is defined by the following notation:
 participation-delto = "PARTICIPATION-DELEGATED-TO"
                       participation-deltoparams ":"
               CAL-ADDRESS
-              *("," CAL-ADDRESS)
               iana-token ("," iana-token) CRLF
 
 participation-deltoparams = *(";" other-param)
@@ -148,11 +146,10 @@ user specified by the component.
 Property Parameters:: Non-standard or iana parameters can be
 specified on this property.
 
-Conformance:: This property MAY be specified in a PARTICIPANT component.
+Conformance:: This property MAY be specified in a "PARTICIPANT" calendar component 0 or more times.
 
-Description:: This property  identifies the groups or
+Description:: This property identifies the group or
 list membership for the calendar user specified by the component.
-The value is one or more calendar addresses.
 
 Format Definition::
 This property is defined by the following notation:
@@ -160,7 +157,6 @@ This property is defined by the following notation:
 ----
 member-of = "MEMBER-OF" member-ogparams ":"
               CAL-ADDRESS
-              *("," CAL-ADDRESS)
               iana-token ("," iana-token) CRLF
 
 memberofparams = *(";" other-param)
@@ -197,7 +193,7 @@ Purpose:: If true, the organizer is expecting the participant to notify them of 
 Property Parameters:: Non-standard or iana parameters can be
 specified on this property.
 
-Conformance:: This property MAY be specified once in the PARTICIPANT component.
+Conformance:: This property MAY be specified once in the "PARTICIPANT" calendar component.
 
 Format Definition::
 This property is defined by the following notation:
@@ -221,7 +217,7 @@ Purpose:: This is who is responsible for sending scheduling messages with this c
 Property Parameters:: Non-standard or iana parameters can be
 specified on this property.
 
-Conformance:: This property MAY be specified once in the PARTICIPANT component.
+Conformance:: This property MAY be specified once in the "PARTICIPANT" calendar component.
 
 Format Definition::
 This property is defined by the following notation:
@@ -236,7 +232,7 @@ scheduling-agent = "SCHEDULING-AGENT"
 scheduling-agentparams = *(";" other-param)
 ----
 
-The value MUST be one of the following values, another value registered in the IANA "JSCalendar Enum Values" registry, or a vendor-specific value.
+The value MUST be one of the following values from the registry defined in <<RFC6638, section=12.4.1>>, or a vendor-specific value.
 
 SERVER::
 The calendar server will send the scheduling messages.
@@ -253,12 +249,12 @@ No scheduling messages are to be sent to this participant.
 
 Property name:: SCHEDULING-FORCE-SEND
 
-Purpose:: A client may set the property on a participant to true to request that the server send a scheduling message to the participant when it would not normally do so (e.g., if no significant change is made the object or the scheduleAgent is set to client). The property MUST NOT be stored in the JSCalendar object on the server or appear in a scheduling message.
+Purpose:: A client may set the property on a participant to true to request that the server send a scheduling message to the participant when it would not normally do so (e.g., if no significant change is made the object or the scheduleAgent is set to client). The property MUST NOT be stored in the object on the server or appear in a scheduling message.
 
 Property Parameters:: Non-standard or iana parameters can be
 specified on this property.
 
-Conformance:: This property MAY be specified once in the PARTICIPANT component.
+Conformance:: This property MAY be specified once in the "PARTICIPANT" calendar component.
 
 Format Definition::
 This property is defined by the following notation:
@@ -270,6 +266,35 @@ scheduling-force-send = "SCHEDULING-FORCE-SEND"
 
 scheduling-force-sendparams = *(";" other-param)
 ----
+
+Description::
+This property MAY be specified in "PARTICIPANT" calendar components
+for which the "SCHEDULE-AGENT" property is set to the value
+"SERVER" or is absent. This property is used to force a server
+to send a scheduling message to a specific calendar user in
+situations where the server would not send a scheduling message
+otherwise (e.g., when no change that warrants the delivery of
+a new scheduling message was performed on the scheduling object
+resource). An "Owner" MAY specify this property for a
+PARTICIPANT with the value "REQUEST" to force a "REQUEST"
+scheduling message to be sent to the user.
++
+Participants who are not the "Owner" MAY specify this property
+in the "Owner" PARTICIPANT with the value "REPLY" to force a
+"REPLY" scheduling message to be sent to the "Owner".
++
+Servers MUST NOT preserve this property in scheduling
+object resources, nor include it in any scheduling messages sent
+as the result of a scheduling operation.
++
+Clients MUST NOT include this property in any scheduling messages
+ that they themselves send.
++
+Servers MUST set the "SCHEDULING-STATUS" property of the
+participant to 2.5 (i.e., "Success; unknown, non-standard
+property value ignored."; see <<RFC5546, section=3.6.6>>) when
+the "SCHEDULE-FORCE-SEND" property is set to an iana-token
+value they do not recognize.
 
 [[new-prop-scheduling-status]]
 === Scheduling-status

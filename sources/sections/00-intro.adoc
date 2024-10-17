@@ -1,13 +1,14 @@
 [[introduction]]
 == Introduction
 
-This specification details how the PARTICIPANT component introduced in <<RFC9073>> may be used for scheduling in place of <<RFC5545>> ATTENDEE and ORGANIZER properties. Additionally, some properties are defined in this specification to be used within the PARTICIPANT component.
+This specification details how the "PARTICIPANT" calendar component introduced in <<RFC9073>> may be used for scheduling in place of <<RFC5545>> "ATTENDEE" and "ORGANIZER" properties. Additionally, some properties are defined in this specification to be used within the "PARTICIPANT" calendar component.
 
-For all existing schedulable and publishable components, VEVENT, VTODO, VFREEBUSY, and VAVAILABILITY; the ORGANIZER and ATTENDEE properties MUST be supplied as appropriate. For new components such as VPOLL, defined elsewhere, only PARTICIPANT components MUST be used.
-
+For "VEVENT", "VTODO", "VFREEBUSY", and "VAVAILABILITY" calendar components; the "ORGANIZER" and "ATTENDEE" properties MUST be supplied as specified in <<RFC5546>>.
+For new components such as the "VPOLL" calendar component, defined elsewhere, only "PARTICIPANT" calendar components MUST be used.
 A participant object that takes part in group scheduling MUST have the following characteristics:
 
 * It MUST have a calendar address as defined in <<RFC9073, section=6.4>>.
 * It must have one or more scheduling roles defined in PARTICIPANT-TYPE
+* Exactly 1 PARTICIPANT MUST have the OWNER role
 
-Scheduling with PARTICIPANT components behaves exactly as with ATTENDEE and ORGANIZER properties. When iTip specifies the setting of ATTENDEE or ORGANIZER parameters then the appropriate PARTICIPANT property will be set.
+Scheduling with "PARTICIPANT" calendar components behaves exactly as with "ATTENDEE" and "ORGANIZER" properties. When iTip specifies the setting of "ATTENDEE" or "ORGANIZER" property parameters then the appropriate properties will be set within the "PARTICIPANT" calendar component.

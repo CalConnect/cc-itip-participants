@@ -23,3 +23,7 @@ A component which takes part in <<RFC5546>> publishing operations.
 === schedulable
 
 A component which takes part in <<RFC5546>> scheduling operations.
+
+=== owner
+
+The "Owner" of a "Schedulable" component is equivalent to the "Organizer" in <<RFC5546>>. As such, there may be only one "Owner" though future specifications may relax or extend that constraint. The "Owner" is indicated by a role of "OWNER".
