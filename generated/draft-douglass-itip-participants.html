@@ -1983,14 +1983,14 @@ partvalueparam   = *(";" other-param)</pre><a href="#section-3.3-3" class="pilcr
           </tbody>
         </table>
 </div>
-<span class="break"></span><div id="_d3030ffc-5357-cf66-477e-7cd84914626d">
+<span class="break"></span><div id="_1730aef5-084f-5d01-785f-dd6751ebb981">
 <dl class="dlParallel" id="section-3.3-10">
           <dt id="section-3.3-10.1">Examples</dt>
           <dd style="margin-left: 1.5em" id="section-3.3-10.2">
             <ul class="normal">
-<li class="normal" id="section-3.3-10.2.1.1">PARTICIPANT-TYPE=OWNER,... equivalent to an ORGANIZER<a href="#section-3.3-10.2.1.1" class="pilcrow">¶</a>
+<li class="normal" id="section-3.3-10.2.1.1">PARTICIPANT-TYPE=OWNER,... equivalent to the "ORGANIZER" property<a href="#section-3.3-10.2.1.1" class="pilcrow">¶</a>
 </li>
-              <li class="normal" id="section-3.3-10.2.1.2">PARTICIPANT-TYPE=ATTENDEE,... equivalent to the ATTENDEE property<a href="#section-3.3-10.2.1.2" class="pilcrow">¶</a>
+              <li class="normal" id="section-3.3-10.2.1.2">PARTICIPANT-TYPE=ATTENDEE,... equivalent to the "ATTENDEE" property<a href="#section-3.3-10.2.1.2" class="pilcrow">¶</a>
 </li>
             </ul>
 </dd>
@@ -2006,15 +2006,15 @@ partvalueparam   = *(";" other-param)</pre><a href="#section-3.3-3" class="pilcr
       <h2 id="name-new-participant-properties-">
 <a href="#section-4" class="section-number selfRef">4. </a><a href="#name-new-participant-properties-" class="section-name selfRef">New Participant Properties for iTip</a>
       </h2>
-<div id="_1a3cccf6-df90-53da-6f3e-39bfea0a2e8f">
-<p id="section-4-1">The following properties are defined to be used within PARTICIPANT during scheduling and take the place of ATTENDEE and ORGANIZER properties and parameters.<a href="#section-4-1" class="pilcrow">¶</a></p>
+<div id="_fcf62e16-7374-c9df-c841-72dcf3ffa115">
+<p id="section-4-1">The following properties are defined to be used within the "PARTICIPANT" calendar component during scheduling and take the place of "ATTENDEE" and "ORGANIZER" properties and parameters.<a href="#section-4-1" class="pilcrow">¶</a></p>
 </div>
 <div id="new-prop-kind">
 <section id="section-4.1">
         <h3 id="name-kind">
 <a href="#section-4.1" class="section-number selfRef">4.1. </a><a href="#name-kind" class="section-name selfRef">Kind</a>
         </h3>
-<span class="break"></span><div id="_13fc9ae3-7dd2-f9ba-e9cf-cc4127d4f9d7">
+<span class="break"></span><div id="_6ce9f2b7-cd63-9b62-0c32-8919d7200cde">
 <dl class="dlParallel" id="section-4.1-1">
           <dt id="section-4.1-1.1">Property name</dt>
           <dd style="margin-left: 1.5em" id="section-4.1-1.2">
@@ -2049,8 +2049,8 @@ partvalueparam   = *(";" other-param)</pre><a href="#section-3.3-3" class="pilcr
             <div id="_c5a4b2c6-d5c6-3f1f-0936-420b6efbf407">
 <p id="section-4.1-1.10.1">When used in a "PARTICIPANT" calendar component this property indicates the kind of entity, individual, group etc.<br><a href="#section-4.1-1.10.1" class="pilcrow">¶</a></p>
 </div>
-<div id="_8e1eb347-7043-c12d-ffd5-c8fc6b986916">
-<p id="section-4.1-1.10.2">It takes the values shown below which are a redefinition of the CUTYPE parameter values defined in <span>[<a href="#RFC5545" class="cite xref">RFC5545</a>]</span> and aligned with <span>[<a href="#RFC8984" class="cite xref">RFC8984</a>]</span> .<a href="#section-4.1-1.10.2" class="pilcrow">¶</a></p>
+<div id="_fd44a28f-a685-14d7-da76-7ca9333171c1">
+<p id="section-4.1-1.10.2">It takes the values shown below which are a redefinition of the "CUTYPE" property parameter values defined in  <span>[<a href="#RFC5545" class="cite xref">RFC5545</a>]</span> and aligned with  <span>[<a href="#RFC8984" class="cite xref">RFC8984</a>]</span> .<a href="#section-4.1-1.10.2" class="pilcrow">¶</a></p>
 </div>
 </dd>
           <dd class="break"></dd>
@@ -2082,7 +2082,7 @@ kindparams = *(";" other-param)</pre><a href="#section-4.1-2" class="pilcrow">¶
         <h3 id="name-participation-status">
 <a href="#section-4.2" class="section-number selfRef">4.2. </a><a href="#name-participation-status" class="section-name selfRef">Participation-status</a>
         </h3>
-<span class="break"></span><div id="_6e7c37b1-7459-45ae-b605-01150bb84dd8">
+<span class="break"></span><div id="_2710116c-c158-3b3c-66ca-db6e464812f2">
 <dl class="dlParallel" id="section-4.2-1">
           <dt id="section-4.2-1.1">Property name</dt>
           <dd style="margin-left: 1.5em" id="section-4.2-1.2">
@@ -2117,8 +2117,8 @@ kindparams = *(";" other-param)</pre><a href="#section-4.1-2" class="pilcrow">¶
             <div id="_bc69fc1a-7153-fee1-c3f7-bdd01c2135d0">
 <p id="section-4.2-1.10.1">When used in a "PARTICIPANT" calendar component this property indicates what status, if any, the participant has.<br><a href="#section-4.2-1.10.1" class="pilcrow">¶</a></p>
 </div>
-<div id="_4ee8ce3b-ff9d-cb61-c307-adb10932e64e">
-<p id="section-4.2-1.10.2">It takes the same values as the PARTSTAT parameter defined in <span>[<a href="#RFC5545" class="cite xref">RFC5545</a>]</span>.<a href="#section-4.2-1.10.2" class="pilcrow">¶</a></p>
+<div id="_96c87801-50dc-418d-3740-56d27bf9132b">
+<p id="section-4.2-1.10.2">It takes the same values as the "PARTSTAT" property parameter defined in  <span>[<a href="#RFC5545" class="cite xref">RFC5545</a>]</span>.<a href="#section-4.2-1.10.2" class="pilcrow">¶</a></p>
 </div>
 </dd>
           <dd class="break"></dd>
@@ -2131,28 +2131,27 @@ kindparams = *(";" other-param)</pre><a href="#section-4.1-2" class="pilcrow">¶
         <dd class="break"></dd>
 </dl>
 </div>
-<div id="_c0e92ddf-cf47-b627-2d67-247d309e2ecc">
+<div id="_c76f5447-562d-1627-eca0-8d8213f67465">
 <div class="lang-abnf sourcecode" id="section-4.2-2">
 <pre>participation-status = "PARTICIPATION-STATUS"
                        participation-statusparams ":"
               NEEDS-ACTION / ; No status
-                    ; has yet been set by the participant.
-
+                       ; has yet been set by the participant.
               ACCEPTED / ; The invited
-                    ; participant will participate.
+                       ; participant will participate.
               DECLINED / ; The invited
-                    ; participant will not participate.
-               TENTATIVE / ; The invited participant
-                     ; may participate.
-                DELEGATED / ; The invited participant
-                     ; has delegated their attendance to
-                     ; another participant, as specified
-                      ; in the PARTICIPATION-DELEGATED-TO property.
-                COMPLETED / ; The assigned task is
-                     ; completed.
-                IN-PROCESS / ; The assigned task is
-                     ; being worked on.
-                    iana-token ("," iana-token) CRLF
+                       ; participant will not participate.
+              TENTATIVE / ; The invited participant
+                       ; may participate.
+              DELEGATED / ; The invited participant
+                       ; has delegated their attendance to
+                       ; another participant, as specified
+                       ; in the PARTICIPATION-DELEGATED-TO property.
+              COMPLETED / ; The assigned task is
+                       ; completed.
+              IN-PROCESS / ; The assigned task is
+                       ; being worked on.
+              iana-token ("," iana-token) CRLF
 
 participation-statusparams = *(";" other-param)</pre><a href="#section-4.2-2" class="pilcrow">¶</a>
 </div>

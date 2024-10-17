@@ -81,7 +81,7 @@ Table of Contents
      4.6.  Lang  . . . . . . . . . . . . . . . . . . . . . . . . . .  12
      4.7.  Expect reply  . . . . . . . . . . . . . . . . . . . . . .  12
      4.8.  Scheduling-agent  . . . . . . . . . . . . . . . . . . . .  13
-     4.9.  Scheduling-force-send . . . . . . . . . . . . . . . . . .  14
+     4.9.  Scheduling-force-send . . . . . . . . . . . . . . . . . .  13
      4.10. Scheduling-status . . . . . . . . . . . . . . . . . . . .  15
      4.11. Scheduling-dtstamp  . . . . . . . . . . . . . . . . . . .  15
      4.12. Invited-by  . . . . . . . . . . . . . . . . . . . . . . .  16
@@ -435,11 +435,11 @@ Internet-Draft              iTip participants               October 2024
                                  Table 2
 
    Examples
-      *  PARTICIPANT-TYPE=OWNER,... equivalent to an ORGANIZER
-
-      *  PARTICIPANT-TYPE=ATTENDEE,... equivalent to the ATTENDEE
+      *  PARTICIPANT-TYPE=OWNER,... equivalent to the "ORGANIZER"
          property
 
+      *  PARTICIPANT-TYPE=ATTENDEE,... equivalent to the "ATTENDEE"
+         property
 
 
 
@@ -452,9 +452,9 @@ Internet-Draft              iTip participants               October 2024
 
 4.  New Participant Properties for iTip
 
-   The following properties are defined to be used within PARTICIPANT
-   during scheduling and take the place of ATTENDEE and ORGANIZER
-   properties and parameters.
+   The following properties are defined to be used within the
+   "PARTICIPANT" calendar component during scheduling and take the place
+   of "ATTENDEE" and "ORGANIZER" properties and parameters.
 
 4.1.  Kind
 
@@ -472,8 +472,8 @@ Internet-Draft              iTip participants               October 2024
       property indicates the kind of entity, individual, group etc.
 
       It takes the values shown below which are a redefinition of the
-      CUTYPE parameter values defined in [RFC5545] and aligned with
-      [RFC8984] .
+      "CUTYPE" property parameter values defined in [RFC5545] and
+      aligned with [RFC8984] .
 
    Format Definition  This property is defined by the following
       notation:
@@ -511,8 +511,8 @@ Internet-Draft              iTip participants               October 2024
    Description  When used in a "PARTICIPANT" calendar component this
       property indicates what status, if any, the participant has.
 
-      It takes the same values as the PARTSTAT parameter defined in
-      [RFC5545].
+      It takes the same values as the "PARTSTAT" property parameter
+      defined in [RFC5545].
 
    Format Definition  This property is defined by the following
       notation:
@@ -520,23 +520,22 @@ Internet-Draft              iTip participants               October 2024
    participation-status = "PARTICIPATION-STATUS"
                           participation-statusparams ":"
                  NEEDS-ACTION / ; No status
-                       ; has yet been set by the participant.
-
+                          ; has yet been set by the participant.
                  ACCEPTED / ; The invited
-                       ; participant will participate.
+                          ; participant will participate.
                  DECLINED / ; The invited
-                       ; participant will not participate.
-                  TENTATIVE / ; The invited participant
-                        ; may participate.
-                   DELEGATED / ; The invited participant
-                        ; has delegated their attendance to
-                        ; another participant, as specified
-                         ; in the PARTICIPATION-DELEGATED-TO property.
-                   COMPLETED / ; The assigned task is
-                        ; completed.
-                   IN-PROCESS / ; The assigned task is
-                        ; being worked on.
-                       iana-token ("," iana-token) CRLF
+                          ; participant will not participate.
+                 TENTATIVE / ; The invited participant
+                          ; may participate.
+                 DELEGATED / ; The invited participant
+                          ; has delegated their attendance to
+                          ; another participant, as specified
+                          ; in the PARTICIPATION-DELEGATED-TO property.
+                 COMPLETED / ; The assigned task is
+                          ; completed.
+                 IN-PROCESS / ; The assigned task is
+                          ; being worked on.
+                 iana-token ("," iana-token) CRLF
 
    participation-statusparams = *(";" other-param)
 
@@ -554,6 +553,7 @@ Internet-Draft              iTip participants               October 2024
    Conformance  This property MAY be specified in a "PARTICIPANT"
       calendar component 0 or more times.
 
+   Description  This property specifies a calendar user that has
 
 
 
@@ -562,7 +562,6 @@ Douglass                  Expires 19 April 2025                [Page 10]
 Internet-Draft              iTip participants               October 2024
 
 
-   Description  This property specifies a calendar user that has
       delegated their participation in a group-scheduled component to
       the calendar user specified by the component.
 
@@ -610,6 +609,7 @@ Internet-Draft              iTip participants               October 2024
    Purpose  To specify the group or list membership of the calendar user
       specified by the component.
 
+   Property Parameters  Non-standard or iana parameters can be specified
 
 
 
@@ -618,7 +618,6 @@ Douglass                  Expires 19 April 2025                [Page 11]
 Internet-Draft              iTip participants               October 2024
 
 
-   Property Parameters  Non-standard or iana parameters can be specified
       on this property.
 
    Conformance  This property MAY be specified in a "PARTICIPANT"
@@ -666,6 +665,7 @@ Internet-Draft              iTip participants               October 2024
    Property Parameters  Non-standard or iana parameters can be specified
       on this property.
 
+   Conformance  This property MAY be specified once in the "PARTICIPANT"
 
 
 
@@ -674,7 +674,6 @@ Douglass                  Expires 19 April 2025                [Page 12]
 Internet-Draft              iTip participants               October 2024
 
 
-   Conformance  This property MAY be specified once in the "PARTICIPANT"
       calendar component.
 
    Format Definition  This property is defined by the following
@@ -719,8 +718,9 @@ Internet-Draft              iTip participants               October 2024
 
    NONE  No scheduling messages are to be sent to this participant.
 
+4.9.  Scheduling-force-send
 
-
+   Property name  SCHEDULING-FORCE-SEND
 
 
 
@@ -729,10 +729,6 @@ Douglass                  Expires 19 April 2025                [Page 13]
 
 Internet-Draft              iTip participants               October 2024
 
-
-4.9.  Scheduling-force-send
-
-   Property name  SCHEDULING-FORCE-SEND
 
    Purpose  A client may set the property on a participant to true to
       request that the server send a scheduling message to the
@@ -777,6 +773,10 @@ Internet-Draft              iTip participants               October 2024
 
       Clients MUST NOT include this property in any scheduling messages
       that they themselves send.
+
+
+
+
 
 
 

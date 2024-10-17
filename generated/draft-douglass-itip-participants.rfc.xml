@@ -194,24 +194,24 @@ partvalueparam   = *(";" other-param)]]></sourcecode>
 </td><td align="left"></td></tr><tr><td align="left"><t anchor="_351540ee-2894-ef21-82dc-509cb4715aff">SPEAKER</t>
 </td><td align="left"></td></tr></tbody></table>
 
-<dl anchor="_d3030ffc-5357-cf66-477e-7cd84914626d"><dt>Examples</dt><dd><ul anchor="_7c85c4ad-1994-f340-e3e5-7b05249eab58"><li>PARTICIPANT-TYPE=OWNER,... equivalent to an ORGANIZER</li>
-<li>PARTICIPANT-TYPE=ATTENDEE,... equivalent to the ATTENDEE property</li>
+<dl anchor="_1730aef5-084f-5d01-785f-dd6751ebb981"><dt>Examples</dt><dd><ul anchor="_976da725-78c4-3479-aad0-3327c4e724b7"><li>PARTICIPANT-TYPE=OWNER,... equivalent to the "ORGANIZER" property</li>
+<li>PARTICIPANT-TYPE=ATTENDEE,... equivalent to the "ATTENDEE" property</li>
 </ul>
 </dd></dl>
 </section>
 </section>
     <section anchor="new-participant-properties-for-itip"><name>New Participant Properties for iTip</name>
 
-<t anchor="_1a3cccf6-df90-53da-6f3e-39bfea0a2e8f">The following properties are defined to be used within PARTICIPANT during scheduling and take the place of ATTENDEE and ORGANIZER properties and parameters.</t>
+<t anchor="_fcf62e16-7374-c9df-c841-72dcf3ffa115">The following properties are defined to be used within the "PARTICIPANT" calendar component during scheduling and take the place of "ATTENDEE" and "ORGANIZER" properties and parameters.</t>
 
 <section anchor="new-prop-kind"><name>Kind</name>
 
-<dl anchor="_13fc9ae3-7dd2-f9ba-e9cf-cc4127d4f9d7"><dt>Property name</dt><dd><t anchor="_965535e4-c95a-9016-6f0f-0cf3a04913e3">KIND</t>
+<dl anchor="_6ce9f2b7-cd63-9b62-0c32-8919d7200cde"><dt>Property name</dt><dd><t anchor="_965535e4-c95a-9016-6f0f-0cf3a04913e3">KIND</t>
 </dd><dt>Purpose</dt><dd><t anchor="_65094840-9e02-d3f4-7bac-b4960c910d36">This is what kind of entity this participant is, if known.</t>
 </dd><dt>Property Parameters</dt><dd><t anchor="_6239ea13-e951-58f3-39a8-e2d0e2dfd90b">Non-standard or iana parameters can be specified on this property.</t>
 </dd><dt>Conformance</dt><dd><t anchor="_4ff8faa1-0b39-4235-02a5-628d64a4fb03">This property MAY be specified in a "PARTICIPANT" calendar component.</t>
 </dd><dt>Description</dt><dd><t anchor="_c5a4b2c6-d5c6-3f1f-0936-420b6efbf407">When used in a "PARTICIPANT" calendar component this property indicates the kind of entity, individual, group etc.<br /></t>
-<t anchor="_8e1eb347-7043-c12d-ffd5-c8fc6b986916">It takes the values shown below which are a redefinition of the CUTYPE parameter values defined in <xref target="RFC5545" section="" relative=""></xref> and aligned with <xref target="RFC8984" section="" relative=""></xref> .</t>
+<t anchor="_fd44a28f-a685-14d7-da76-7ca9333171c1">It takes the values shown below which are a redefinition of the "CUTYPE" property parameter values defined in  <xref target="RFC5545" section="" relative=""></xref> and aligned with  <xref target="RFC8984" section="" relative=""></xref> .</t>
 </dd><dt>Format Definition</dt><dd><t anchor="_1a36425f-1b87-1563-3c2d-96f785d67ee1">This property is defined by the following notation:</t>
 </dd></dl>
 
@@ -228,35 +228,34 @@ kindparams = *(";" other-param)]]></sourcecode>
 
 <section anchor="new-prop-participation-status"><name>Participation-status</name>
 
-<dl anchor="_6e7c37b1-7459-45ae-b605-01150bb84dd8"><dt>Property name</dt><dd><t anchor="_d8caa91b-716b-9b35-f00b-7a643c4b496c">PARTICIPATION-STATUS</t>
+<dl anchor="_2710116c-c158-3b3c-66ca-db6e464812f2"><dt>Property name</dt><dd><t anchor="_d8caa91b-716b-9b35-f00b-7a643c4b496c">PARTICIPATION-STATUS</t>
 </dd><dt>Purpose</dt><dd><t anchor="_0f140bdf-d3ad-ea02-d59f-abd728b383d1">This property is used in the "PARTICIPANT" calendar component to indicate the participation status - if any.</t>
 </dd><dt>Property Parameters</dt><dd><t anchor="_ae0c4cbf-d95b-30cb-3a0e-7671c227c793">Non-standard or iana parameters can be specified on this property.</t>
 </dd><dt>Conformance</dt><dd><t anchor="_e0fe8430-cb2f-dd5e-821f-d4b0e1c97d9b">This property MAY be specified in a "PARTICIPANT" calendar component.</t>
 </dd><dt>Description</dt><dd><t anchor="_bc69fc1a-7153-fee1-c3f7-bdd01c2135d0">When used in a "PARTICIPANT" calendar component this property indicates what status, if any, the participant has.<br /></t>
-<t anchor="_4ee8ce3b-ff9d-cb61-c307-adb10932e64e">It takes the same values as the PARTSTAT parameter defined in <xref target="RFC5545" section="" relative=""></xref>.</t>
+<t anchor="_96c87801-50dc-418d-3740-56d27bf9132b">It takes the same values as the "PARTSTAT" property parameter defined in  <xref target="RFC5545" section="" relative=""></xref>.</t>
 </dd><dt>Format Definition</dt><dd><t anchor="_ac66f27d-5e32-23e0-861d-410e5c8b7269">This property is defined by the following notation:</t>
 </dd></dl>
 
-<sourcecode anchor="_c0e92ddf-cf47-b627-2d67-247d309e2ecc" type="abnf"><![CDATA[participation-status = "PARTICIPATION-STATUS"
+<sourcecode anchor="_c76f5447-562d-1627-eca0-8d8213f67465" type="abnf"><![CDATA[participation-status = "PARTICIPATION-STATUS"
                        participation-statusparams ":"
               NEEDS-ACTION / ; No status
-                    ; has yet been set by the participant.
-
+                       ; has yet been set by the participant.
               ACCEPTED / ; The invited
-                    ; participant will participate.
+                       ; participant will participate.
               DECLINED / ; The invited
-                    ; participant will not participate.
-               TENTATIVE / ; The invited participant
-                     ; may participate.
-                DELEGATED / ; The invited participant
-                     ; has delegated their attendance to
-                     ; another participant, as specified
-                      ; in the PARTICIPATION-DELEGATED-TO property.
-                COMPLETED / ; The assigned task is
-                     ; completed.
-                IN-PROCESS / ; The assigned task is
-                     ; being worked on.
-                    iana-token ("," iana-token) CRLF
+                       ; participant will not participate.
+              TENTATIVE / ; The invited participant
+                       ; may participate.
+              DELEGATED / ; The invited participant
+                       ; has delegated their attendance to
+                       ; another participant, as specified
+                       ; in the PARTICIPATION-DELEGATED-TO property.
+              COMPLETED / ; The assigned task is
+                       ; completed.
+              IN-PROCESS / ; The assigned task is
+                       ; being worked on.
+              iana-token ("," iana-token) CRLF
 
 participation-statusparams = *(";" other-param)]]></sourcecode>
 
