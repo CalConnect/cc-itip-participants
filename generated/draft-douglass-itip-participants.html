@@ -1,0 +1,3433 @@
+<!DOCTYPE html>
+<html lang="en" class=" Internet-Draft">
+<head>
+<meta charset="utf-8">
+<meta content="Common,Latin" name="scripts">
+<meta content="initial-scale=1.0" name="viewport">
+<title>iTip using PARTICIPANT only</title>
+<meta content="Michael Douglass" name="author">
+<meta content='
+       This specification defines updates to RFC5546 iTip which allow scheduling using the "PARTICIPANT" calendar components specified in RFC9073. 
+       New properties are also defined for use within the "PARTICIPANT" calendar component. 
+    ' name="description">
+<meta content="xml2rfc 3.23.2" name="generator">
+<meta content="draft-douglass-itip-participants-02" name="ietf.draft">
+<!-- Generator version information:
+  xml2rfc 3.23.2
+    Python 3.8.10
+    ConfigArgParse 1.7
+    google-i18n-address 3.1.1
+    intervaltree 3.1.0
+    Jinja2 3.1.4
+    lxml 5.3.0
+    platformdirs 4.3.6
+    pycountry 24.6.1
+    PyYAML 6.0.2
+    requests 2.32.3
+    setuptools 44.0.0
+    wcwidth 0.2.13
+-->
+<link href="/home/mike/IdeaProjects/csd-itip-participants/sources/draft-douglass-itip-participants.rfc.xml" rel="alternate" type="application/rfc+xml">
+<link href="#copyright" rel="license">
+<style type="text/css">/*
+
+  NOTE: Changes at the bottom of this file overrides some earlier settings.
+
+  Once the style has stabilized and has been adopted as an official RFC style,
+  this can be consolidated so that style settings occur only in one place, but
+  for now the contents of this file consists first of the initial CSS work as
+  provided to the RFC Formatter (xml2rfc) work, followed by itemized and
+  commented changes found necessary during the development of the v3
+  formatters.
+
+*/
+
+/* fonts */
+@import url('https://fonts.googleapis.com/css?family=Noto+Sans'); /* Sans-serif */
+@import url('https://fonts.googleapis.com/css?family=Noto+Serif'); /* Serif (print) */
+@import url('https://fonts.googleapis.com/css?family=Roboto+Mono'); /* Monospace */
+
+:root {
+  --font-sans: 'Noto Sans', Arial, Helvetica, sans-serif;
+  --font-serif: 'Noto Serif', 'Times', 'Times New Roman', serif;
+  --font-mono: 'Roboto Mono', Courier, 'Courier New', monospace;
+}
+
+@viewport {
+  zoom: 1.0;
+}
+@-ms-viewport {
+  width: extend-to-zoom;
+  zoom: 1.0;
+}
+/* general and mobile first */
+html {
+}
+body {
+  max-width: 90%;
+  margin: 1.5em auto;
+  color: #222;
+  background-color: #fff;
+  font-size: 14px;
+  font-family: var(--font-sans);
+  line-height: 1.6;
+  scroll-behavior: smooth;
+  overflow-wrap: break-word;
+}
+.ears {
+  display: none;
+}
+
+/* headings */
+#title, h1, h2, h3, h4, h5, h6 {
+  margin: 1em 0 0.5em;
+  font-weight: bold;
+  line-height: 1.3;
+}
+#title {
+  clear: both;
+  border-bottom: 1px solid #ddd;
+  margin: 0 0 0.5em 0;
+  padding: 1em 0 0.5em;
+}
+.author {
+  padding-bottom: 4px;
+}
+h1 {
+  font-size: 26px;
+  margin: 1em 0;
+}
+h2 {
+  font-size: 22px;
+  margin-top: -20px;  /* provide offset for in-page anchors */
+  padding-top: 33px;
+}
+h3 {
+  font-size: 18px;
+  margin-top: -36px;  /* provide offset for in-page anchors */
+  padding-top: 42px;
+}
+h4 {
+  font-size: 16px;
+  margin-top: -36px;  /* provide offset for in-page anchors */
+  padding-top: 42px;
+}
+h5, h6 {
+  font-size: 14px;
+}
+#n-copyright-notice {
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 1em;
+  margin-bottom: 1em;
+}
+/* general structure */
+p {
+  padding: 0;
+  margin: 0 0 1em 0;
+  text-align: left;
+}
+div, span {
+  position: relative;
+}
+div {
+  margin: 0;
+}
+.alignRight.art-text {
+  background-color: #f9f9f9;
+  border: 1px solid #eee;
+  border-radius: 3px;
+  padding: 1em 1em 0;
+  margin-bottom: 1.5em;
+}
+.alignRight.art-text pre {
+  padding: 0;
+}
+.alignRight {
+  margin: 1em 0;
+}
+.alignRight > *:first-child {
+  border: none;
+  margin: 0;
+  float: right;
+  clear: both;
+}
+.alignRight > *:nth-child(2) {
+  clear: both;
+  display: block;
+  border: none;
+}
+svg {
+  display: block;
+}
+svg[font-family~="serif" i], svg [font-family~="serif" i] {
+  font-family: var(--font-serif);
+}
+svg[font-family~="sans-serif" i], svg [font-family~="sans-serif" i] {
+  font-family: var(--font-sans);
+}
+svg[font-family~="monospace" i], svg [font-family~="monospace" i] {
+  font-family: var(--font-mono);
+}
+.alignCenter.art-text {
+  background-color: #f9f9f9;
+  border: 1px solid #eee;
+  border-radius: 3px;
+  padding: 1em 1em 0;
+  margin-bottom: 1.5em;
+}
+.alignCenter.art-text pre {
+  padding: 0;
+}
+.alignCenter {
+  margin: 1em 0;
+}
+.alignCenter > *:first-child {
+  display: table;
+  border: none;
+  margin: 0 auto;
+}
+
+/* lists */
+ol, ul {
+  padding: 0;
+  margin: 0 0 1em 2em;
+}
+ol ol, ul ul, ol ul, ul ol {
+  margin-left: 1em;
+}
+li {
+  margin: 0 0 0.25em 0;
+}
+.ulCompact li {
+  margin: 0;
+}
+ul.empty, .ulEmpty {
+  list-style-type: none;
+}
+ul.empty li, .ulEmpty li {
+  margin-top: 0.5em;
+}
+ul.ulBare, li.ulBare {
+  margin-left: 0em !important;
+}
+ul.compact, .ulCompact,
+ol.compact, .olCompact {
+  line-height: 100%;
+  margin: 0 0 0 2em;
+}
+
+/* definition lists */
+dl {
+}
+dl > dt {
+  float: left;
+  margin-right: 1em;
+}
+/* 
+dl.nohang > dt {
+  float: none;
+}
+*/
+dl > dd {
+  margin-bottom: .8em;
+  min-height: 1.3em;
+}
+dl.compact > dd, .dlCompact > dd {
+  margin-bottom: 0em;
+}
+dl > dd > dl {
+  margin-top: 0.5em;
+  margin-bottom: 0em;
+}
+
+/* links */
+a {
+  text-decoration: none;
+}
+a[href] {
+  color: #22e; /* Arlen: WCAG 2019 */
+}
+a[href]:hover {
+  background-color: #f2f2f2;
+}
+figcaption a[href],
+a[href].selfRef {
+  color: #222;
+}
+/* XXX probably not this:
+a.selfRef:hover {
+  background-color: transparent;
+  cursor: default;
+} */
+
+/* Figures */
+tt, code, pre {
+  background-color: #f9f9f9;
+  font-family: var(--font-mono);
+}
+pre {
+  border: 1px solid #eee;
+  margin: 0;
+  padding: 1em;
+}
+img {
+  max-width: 100%;
+}
+figure {
+  margin: 0;
+}
+figure blockquote {
+  margin: 0.8em 0.4em 0.4em;
+}
+figcaption {
+  font-style: italic;
+  margin: 0 0 1em 0;
+}
+@media screen {
+  pre {
+    overflow-x: auto;
+    max-width: 100%;
+    max-width: calc(100% - 22px);
+  }
+}
+
+/* aside, blockquote */
+aside, blockquote {
+  margin-left: 0;
+  padding: 1.2em 2em;
+}
+blockquote {
+  background-color: #f9f9f9;
+  color: #111; /* Arlen: WCAG 2019 */
+  border: 1px solid #ddd;
+  border-radius: 3px;
+  margin: 1em 0;
+}
+blockquote > *:last-child {
+  margin-bottom: 0;
+}
+cite {
+  display: block;
+  text-align: right;
+  font-style: italic;
+}
+.xref {
+  overflow-wrap: normal;
+}
+
+/* tables */
+table {
+  width: 100%;
+  margin: 0 0 1em;
+  border-collapse: collapse;
+  border: 1px solid #eee;
+}
+th, td {
+  text-align: left;
+  vertical-align: top;
+  padding: 0.5em 0.75em;
+}
+th {
+  text-align: left;
+  background-color: #e9e9e9;
+}
+tr:nth-child(2n+1) > td {
+  background-color: #f5f5f5;
+}
+table caption {
+  font-style: italic;
+  margin: 0;
+  padding: 0;
+  text-align: left;
+}
+table p {
+  /* XXX to avoid bottom margin on table row signifiers. If paragraphs should
+     be allowed within tables more generally, it would be far better to select on a class. */
+  margin: 0;
+}
+
+/* pilcrow */
+a.pilcrow {
+  color: #666; /* Arlen: AHDJ 2019 */
+  text-decoration: none;
+  visibility: hidden;
+  user-select: none;
+  -ms-user-select: none;
+  -o-user-select:none;
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+}
+@media screen {
+  aside:hover > a.pilcrow,
+  p:hover > a.pilcrow,
+  blockquote:hover > a.pilcrow,
+  div:hover > a.pilcrow,
+  li:hover > a.pilcrow,
+  pre:hover > a.pilcrow {
+    visibility: visible;
+  }
+  a.pilcrow:hover {
+    background-color: transparent;
+  }
+}
+
+/* misc */
+hr {
+  border: 0;
+  border-top: 1px solid #eee;
+}
+.bcp14 {
+  font-variant: small-caps;
+}
+
+.role {
+  font-variant: all-small-caps;
+}
+
+/* info block */
+#identifiers {
+  margin: 0;
+  font-size: 0.9em;
+}
+#identifiers dt {
+  width: 3em;
+  clear: left;
+}
+#identifiers dd {
+  float: left;
+  margin-bottom: 0;
+}
+/* Fix PDF info block run off issue */
+@media print {
+  #identifiers dd {
+    float: none;
+  }
+}
+#identifiers .authors .author {
+  display: inline-block;
+  margin-right: 1.5em;
+}
+#identifiers .authors .org {
+  font-style: italic;
+}
+
+/* The prepared/rendered info at the very bottom of the page */
+.docInfo {
+  color: #666; /* Arlen: WCAG 2019 */
+  font-size: 0.9em;
+  font-style: italic;
+  margin-top: 2em;
+}
+.docInfo .prepared {
+  float: left;
+}
+.docInfo .prepared {
+  float: right;
+}
+
+/* table of contents */
+#toc  {
+  padding: 0.75em 0 2em 0;
+  margin-bottom: 1em;
+}
+nav.toc ul {
+  margin: 0 0.5em 0 0;
+  padding: 0;
+  list-style: none;
+}
+nav.toc li {
+  line-height: 1.3em;
+  margin: 0.75em 0;
+  padding-left: 1.2em;
+  text-indent: -1.2em;
+}
+/* references */
+.references dt {
+  text-align: right;
+  font-weight: bold;
+  min-width: 7em;
+}
+.references dd {
+  margin-left: 8em;
+  overflow: auto;
+}
+
+.refInstance {
+  margin-bottom: 1.25em;
+}
+
+.refSubseries {
+  margin-bottom: 1.25em;
+}
+
+.references .ascii {
+  margin-bottom: 0.25em;
+}
+
+/* index */
+.index ul {
+  margin: 0 0 0 1em;
+  padding: 0;
+  list-style: none;
+}
+.index ul ul {
+  margin: 0;
+}
+.index li {
+  margin: 0;
+  text-indent: -2em;
+  padding-left: 2em;
+  padding-bottom: 5px;
+}
+.indexIndex {
+  margin: 0.5em 0 1em;
+}
+.index a {
+  font-weight: 700;
+}
+/* make the index two-column on all but the smallest screens */
+@media (min-width: 600px) {
+  .index ul {
+    -moz-column-count: 2;
+    -moz-column-gap: 20px;
+  }
+  .index ul ul {
+    -moz-column-count: 1;
+    -moz-column-gap: 0;
+  }
+}
+
+/* authors */
+address.vcard {
+  font-style: normal;
+  margin: 1em 0;
+}
+
+address.vcard .nameRole {
+  font-weight: 700;
+  margin-left: 0;
+}
+address.vcard .label {
+  font-family: var(--font-sans);
+  margin: 0.5em 0;
+}
+address.vcard .type {
+  display: none;
+}
+.alternative-contact {
+  margin: 1.5em 0 1em;
+}
+hr.addr {
+  border-top: 1px dashed;
+  margin: 0;
+  color: #ddd;
+  max-width: calc(100% - 16px);
+}
+
+/* temporary notes */
+.rfcEditorRemove::before {
+  position: absolute;
+  top: 0.2em;
+  right: 0.2em;
+  padding: 0.2em;
+  content: "The RFC Editor will remove this note";
+  color: #9e2a00; /* Arlen: WCAG 2019 */
+  background-color: #ffd; /* Arlen: WCAG 2019 */
+}
+.rfcEditorRemove {
+  position: relative;
+  padding-top: 1.8em;
+  background-color: #ffd; /* Arlen: WCAG 2019 */
+  border-radius: 3px;
+}
+.cref {
+  background-color: #ffd; /* Arlen: WCAG 2019 */
+  padding: 2px 4px;
+}
+.crefSource {
+  font-style: italic;
+}
+/* alternative layout for smaller screens */
+@media screen and (max-width: 1023px) {
+  body {
+    padding-top: 2em;
+  }
+  #title {
+    padding: 1em 0;
+  }
+  h1 {
+    font-size: 24px;
+  }
+  h2 {
+    font-size: 20px;
+    margin-top: -18px;  /* provide offset for in-page anchors */
+    padding-top: 38px;
+  }
+  #identifiers dd {
+    max-width: 60%;
+  }
+  #toc {
+    position: fixed;
+    z-index: 2;
+    top: 0;
+    right: 0;
+    padding: 0;
+    margin: 0;
+    background-color: inherit;
+    border-bottom: 1px solid #ccc;
+  }
+  #toc h2 {
+    margin: -1px 0 0 0;
+    padding: 4px 0 4px 6px;
+    padding-right: 1em;
+    min-width: 190px;
+    font-size: 1.1em;
+    text-align: right;
+    background-color: #444;
+    color: white;
+    cursor: pointer;
+  }
+  #toc h2::before { /* css hamburger */
+    float: right;
+    position: relative;
+    width: 1em;
+    height: 1px;
+    left: -164px;
+    margin: 6px 0 0 0;
+    background: white none repeat scroll 0 0;
+    box-shadow: 0 4px 0 0 white, 0 8px 0 0 white;
+    content: "";
+  }
+  #toc nav {
+    display: none;
+    padding: 0.5em 1em 1em;
+    overflow: auto;
+    height: calc(100vh - 48px);
+    border-left: 1px solid #ddd;
+  }
+}
+
+/* alternative layout for wide screens */
+@media screen and (min-width: 1024px) {
+  body {
+    max-width: 724px;
+    margin: 42px auto;
+    padding-left: 1.5em;
+    padding-right: 29em;
+  }
+  #toc {
+    position: fixed;
+    top: 42px;
+    right: 42px;
+    width: 25%;
+    margin: 0;
+    padding: 0 1em;
+    z-index: 1;
+  }
+  #toc h2 {
+    border-top: none;
+    border-bottom: 1px solid #ddd;
+    font-size: 1em;
+    font-weight: normal;
+    margin: 0;
+    padding: 0.25em 1em 1em 0;
+  }
+  #toc nav {
+    display: block;
+    height: calc(90vh - 84px);
+    bottom: 0;
+    padding: 0.5em 0 0;
+    overflow: auto;
+  }
+  img { /* future proofing */
+    max-width: 100%;
+    height: auto;
+  }
+}
+
+/* pagination */
+@media print {
+  body {
+    width: 100%;
+  }
+  p {
+    orphans: 3;
+    widows: 3;
+  }
+  #n-copyright-notice {
+    border-bottom: none;
+  }
+  #toc, #n-introduction {
+    page-break-before: always;
+  }
+  #toc {
+    border-top: none;
+    padding-top: 0;
+  }
+  figure, pre {
+    page-break-inside: avoid;
+  }
+  figure {
+    overflow: scroll;
+  }
+  .breakable pre {
+    break-inside: auto;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    page-break-after: avoid;
+  }
+  h2+*, h3+*, h4+*, h5+*, h6+* {
+    page-break-before: avoid;
+  }
+  pre {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    font-size: 10pt;
+  }
+  table {
+    border: 1px solid #ddd;
+  }
+  td {
+    border-top: 1px solid #ddd;
+  }
+}
+
+/* This is commented out here, as the string-set: doesn't
+   pass W3C validation currently */
+/*
+.ears thead .left {
+  string-set: ears-top-left content();
+}
+
+.ears thead .center {
+  string-set: ears-top-center content();
+}
+
+.ears thead .right {
+  string-set: ears-top-right content();
+}
+
+.ears tfoot .left {
+  string-set: ears-bottom-left content();
+}
+
+.ears tfoot .center {
+  string-set: ears-bottom-center content();
+}
+
+.ears tfoot .right {
+  string-set: ears-bottom-right content();
+}
+*/
+
+@page :first {
+  padding-top: 0;
+  @top-left {
+    content: normal;
+    border: none;
+  }
+  @top-center {
+    content: normal;
+    border: none;
+  }
+  @top-right {
+    content: normal;
+    border: none;
+  }
+}
+
+@page {
+  size: A4;
+  margin-bottom: 45mm;
+  padding-top: 20px;
+  /* The following is commented out here, but set appropriately by in code, as
+     the content depends on the document */
+  /*
+  @top-left {
+    content: 'Internet-Draft';
+    vertical-align: bottom;
+    border-bottom: solid 1px #ccc;
+  }
+  @top-left {
+    content: string(ears-top-left);
+    vertical-align: bottom;
+    border-bottom: solid 1px #ccc;
+  }
+  @top-center {
+    content: string(ears-top-center);
+    vertical-align: bottom;
+    border-bottom: solid 1px #ccc;
+  }
+  @top-right {
+    content: string(ears-top-right);
+    vertical-align: bottom;
+    border-bottom: solid 1px #ccc;
+  }
+  @bottom-left {
+    content: string(ears-bottom-left);
+    vertical-align: top;
+    border-top: solid 1px #ccc;
+  }
+  @bottom-center {
+    content: string(ears-bottom-center);
+    vertical-align: top;
+    border-top: solid 1px #ccc;
+  }
+  @bottom-right {
+      content: '[Page ' counter(page) ']';
+      vertical-align: top;
+      border-top: solid 1px #ccc;
+  }
+  */
+
+}
+
+/* Changes introduced to fix issues found during implementation */
+/* Make sure links are clickable even if overlapped by following H* */
+a {
+  z-index: 2;
+}
+/* Separate body from document info even without intervening H1 */
+section {
+  clear: both;
+}
+
+
+/* Top align author divs, to avoid names without organization dropping level with org names */
+.author {
+  vertical-align: top;
+}
+
+/* Leave room in document info to show Internet-Draft on one line */
+#identifiers dt {
+  width: 8em;
+}
+
+/* Don't waste quite as much whitespace between label and value in doc info */
+#identifiers dd {
+  margin-left: 1em;
+}
+
+/* Give floating toc a background color (needed when it's a div inside section */
+#toc {
+  background-color: white;
+}
+
+/* Make the collapsed ToC header render white on gray also when it's a link */
+@media screen and (max-width: 1023px) {
+  #toc h2 a,
+  #toc h2 a:link,
+  #toc h2 a:focus,
+  #toc h2 a:hover,
+  #toc a.toplink,
+  #toc a.toplink:hover {
+    color: white;
+    background-color: #444;
+    text-decoration: none;
+  }
+}
+
+/* Give the bottom of the ToC some whitespace */
+@media screen and (min-width: 1024px) {
+  #toc {
+    padding: 0 0 1em 1em;
+  }
+}
+
+/* Style section numbers with more space between number and title */
+.section-number {
+  padding-right: 0.5em;
+}
+
+/* prevent monospace from becoming overly large */
+tt, code, pre {
+  font-size: 95%;
+}
+
+/* Fix the height/width aspect for ascii art*/
+.sourcecode pre,
+.art-text pre {
+  line-height: 1.12;
+}
+
+
+/* Add styling for a link in the ToC that points to the top of the document */
+a.toplink {
+  float: right;
+  margin-right: 0.5em;
+}
+
+/* Fix the dl styling to match the RFC 7992 attributes */
+dl > dt,
+dl.dlParallel > dt {
+  float: left;
+  margin-right: 1em;
+}
+dl.dlNewline > dt {
+  float: none;
+}
+
+/* Provide styling for table cell text alignment */
+table td.text-left,
+table th.text-left {
+  text-align: left;
+}
+table td.text-center,
+table th.text-center {
+  text-align: center;
+}
+table td.text-right,
+table th.text-right {
+  text-align: right;
+}
+
+/* Make the alternative author contact information look less like just another
+   author, and group it closer with the primary author contact information */
+.alternative-contact {
+  margin: 0.5em 0 0.25em 0;
+}
+address .non-ascii {
+  margin: 0 0 0 2em;
+}
+
+/* With it being possible to set tables with alignment
+  left, center, and right, { width: 100%; } does not make sense */
+table {
+  width: auto;
+}
+
+/* Avoid reference text that sits in a block with very wide left margin,
+   because of a long floating dt label.*/
+.references dd {
+  overflow: visible;
+}
+
+/* Control caption placement */
+caption {
+  caption-side: bottom;
+}
+
+/* Limit the width of the author address vcard, so names in right-to-left
+   script don't end up on the other side of the page. */
+
+address.vcard {
+  max-width: 30em;
+  margin-right: auto;
+}
+
+/* For address alignment dependent on LTR or RTL scripts */
+address div.left {
+  text-align: left;
+}
+address div.right {
+  text-align: right;
+}
+
+/* Provide table alignment support.  We can't use the alignX classes above
+   since they do unwanted things with caption and other styling. */
+table.right {
+ margin-left: auto;
+ margin-right: 0;
+}
+table.center {
+ margin-left: auto;
+ margin-right: auto;
+}
+table.left {
+ margin-left: 0;
+ margin-right: auto;
+}
+
+/* Give the table caption label the same styling as the figcaption */
+caption a[href] {
+  color: #222;
+}
+
+@media print {
+  .toplink {
+    display: none;
+  }
+
+  /* avoid overwriting the top border line with the ToC header */
+  #toc {
+    padding-top: 1px;
+  }
+
+  /* Avoid page breaks inside dl and author address entries */
+  .vcard {
+    page-break-inside: avoid;
+  }
+
+}
+/* Tweak the bcp14 keyword presentation */
+.bcp14 {
+  font-variant: small-caps;
+  font-weight: bold;
+  font-size: 0.9em;
+}
+/* Tweak the invisible space above H* in order not to overlay links in text above */
+ h2 {
+  margin-top: -18px;  /* provide offset for in-page anchors */
+  padding-top: 31px;
+ }
+ h3 {
+  margin-top: -18px;  /* provide offset for in-page anchors */
+  padding-top: 24px;
+ }
+ h4 {
+  margin-top: -18px;  /* provide offset for in-page anchors */
+  padding-top: 24px;
+ }
+/* Float artwork pilcrow to the right */
+@media screen {
+  .artwork a.pilcrow {
+    display: block;
+    line-height: 0.7;
+    margin-top: 0.15em;
+  }
+}
+/* Make pilcrows on dd visible */
+@media screen {
+  dd:hover > a.pilcrow {
+    visibility: visible;
+  }
+}
+/* Make the placement of figcaption match that of a table's caption
+   by removing the figure's added bottom margin */
+.alignLeft.art-text,
+.alignCenter.art-text,
+.alignRight.art-text {
+   margin-bottom: 0;
+}
+.alignLeft,
+.alignCenter,
+.alignRight {
+  margin: 1em 0 0 0;
+}
+/* In print, the pilcrow won't show on hover, so prevent it from taking up space,
+   possibly even requiring a new line */
+@media print {
+  a.pilcrow {
+    display: none;
+  }
+}
+/* Styling for the external metadata */
+div#external-metadata {
+  background-color: #eee;
+  padding: 0.5em;
+  margin-bottom: 0.5em;
+  display: none;
+}
+div#internal-metadata {
+  padding: 0.5em;                       /* to match the external-metadata padding */
+}
+/* Styling for title RFC Number */
+h1#rfcnum {
+  clear: both;
+  margin: 0 0 -1em;
+  padding: 1em 0 0 0;
+}
+/* Make .olPercent look the same as <ol><li> */
+dl.olPercent > dd {
+  margin-bottom: 0.25em;
+  min-height: initial;
+}
+/* Give aside some styling to set it apart */
+aside {
+  border-left: 1px solid #ddd;
+  margin: 1em 0 1em 2em;
+  padding: 0.2em 2em;
+}
+aside > dl,
+aside > ol,
+aside > ul,
+aside > table,
+aside > p {
+  margin-bottom: 0.5em;
+}
+/* Additional page break settings */
+@media print {
+  figcaption, table caption {
+    page-break-before: avoid;
+  }
+}
+/* Font size adjustments for print */
+@media print {
+  body  { font-size: 10pt;      line-height: normal; max-width: 96%; }
+  h1    { font-size: 1.72em;    padding-top: 1.5em; } /* 1*1.2*1.2*1.2 */
+  h2    { font-size: 1.44em;    padding-top: 1.5em; } /* 1*1.2*1.2 */
+  h3    { font-size: 1.2em;     padding-top: 1.5em; } /* 1*1.2 */
+  h4    { font-size: 1em;       padding-top: 1.5em; }
+  h5, h6 { font-size: 1em;      margin: initial; padding: 0.5em 0 0.3em; }
+}
+/* Sourcecode margin in print, when there's no pilcrow */
+@media print {
+  .artwork,
+  .artwork > pre,
+  .sourcecode {
+    margin-bottom: 1em;
+  }
+}
+/* Avoid narrow tables forcing too narrow table captions, which may render badly */
+table {
+  min-width: 20em;
+}
+/* ol type a */
+ol.type-a { list-style-type: lower-alpha; }
+ol.type-A { list-style-type: upper-alpha; }
+ol.type-i { list-style-type: lower-roman; }
+ol.type-I { list-style-type: upper-roman; }
+/* Apply the print table and row borders in general, on request from the RPC,
+and increase the contrast between border and odd row background slightly */
+table {
+  border: 1px solid #ddd;
+}
+td {
+  border-top: 1px solid #ddd;
+}
+tr {
+  break-inside: avoid;
+}
+tr:nth-child(2n+1) > td {
+  background-color: #f8f8f8;
+}
+/* Use style rules to govern display of the TOC. */
+@media screen and (max-width: 1023px) {
+  #toc nav { display: none; }
+  #toc.active nav { display: block; }
+}
+/* Add support for keepWithNext */
+.keepWithNext {
+  break-after: avoid-page;
+  break-after: avoid-page;
+}
+/* Add support for keepWithPrevious */
+.keepWithPrevious {
+  break-before: avoid-page;
+}
+/* Change the approach to avoiding breaks inside artwork etc. */
+figure, pre, table, .artwork, .sourcecode  {
+  break-before: auto;
+  break-after: auto;
+}
+/* Avoid breaks between <dt> and <dd> */
+dl {
+  break-before: auto;
+  break-inside: auto;
+}
+dt {
+  break-before: auto;
+  break-after: avoid-page;
+}
+dd {
+  break-before: avoid-page;
+  break-after: auto;
+  orphans: 3;
+  widows: 3
+}
+span.break, dd.break {
+  margin-bottom: 0;
+  min-height: 0;
+  break-before: auto;
+  break-inside: auto;
+  break-after: auto;
+}
+/* Undo break-before ToC */
+@media print {
+  #toc {
+    break-before: auto;
+  }
+}
+/* Text in compact lists should not get extra bottom margin space,
+   since that would makes the list not compact */
+ul.compact p, .ulCompact p,
+ol.compact p, .olCompact p {
+ margin: 0;
+}
+/* But the list as a whole needs the extra space at the end */
+section ul.compact,
+section .ulCompact,
+section ol.compact,
+section .olCompact {
+  margin-bottom: 1em;                    /* same as p not within ul.compact etc. */
+}
+/* The tt and code background above interferes with for instance table cell
+   backgrounds.  Changed to something a bit more selective. */
+tt, code {
+  background-color: transparent;
+}
+p tt, p code, li tt, li code, dt tt, dt code {
+  background-color: #f8f8f8;
+}
+/* Tweak the pre margin -- 0px doesn't come out well */
+pre {
+   margin-top: 0.5px;
+}
+/* Tweak the compact list text */
+ul.compact, .ulCompact,
+ol.compact, .olCompact,
+dl.compact, .dlCompact {
+  line-height: normal;
+}
+/* Don't add top margin for nested lists */
+li > ul, li > ol, li > dl,
+dd > ul, dd > ol, dd > dl,
+dl > dd > dl {
+  margin-top: initial;
+}
+/* Elements that should not be rendered on the same line as a <dt> */
+/* This should match the element list in writer.text.TextWriter.render_dl() */
+dd > div.artwork:first-child,
+dd > aside:first-child,
+dd > figure:first-child,
+dd > ol:first-child,
+dd > div.sourcecode:first-child,
+dd > table:first-child,
+dd > ul:first-child {
+  clear: left;
+}
+/* fix for weird browser behaviour when <dd/> is empty */
+dt+dd:empty::before{
+  content: "\00a0";
+}
+/* Make paragraph spacing inside <li> smaller than in body text, to fit better within the list */
+li > p {
+  margin-bottom: 0.5em
+}
+/* Don't let p margin spill out from inside list items */
+li > p:last-of-type:only-child {
+  margin-bottom: 0;
+}
+</style>
+<link href="rfc-local.css" rel="stylesheet" type="text/css">
+<script type="application/javascript">async function addMetadata(){try{const e=document.styleSheets[0].cssRules;for(let t=0;t<e.length;t++)if(/#identifiers/.exec(e[t].selectorText)){const a=e[t].cssText.replace("#identifiers","#external-updates");document.styleSheets[0].insertRule(a,document.styleSheets[0].cssRules.length)}}catch(e){console.log(e)}const e=document.getElementById("external-metadata");if(e)try{var t,a="",o=function(e){const t=document.getElementsByTagName("meta");for(let a=0;a<t.length;a++)if(t[a].getAttribute("name")===e)return t[a].getAttribute("content");return""}("rfc.number");if(o){t="https://www.rfc-editor.org/rfc/rfc"+o+".json";try{const e=await fetch(t);a=await e.json()}catch(e){t=document.URL.indexOf("html")>=0?document.URL.replace(/html$/,"json"):document.URL+".json";const o=await fetch(t);a=await o.json()}}if(!a)return;e.style.display="block";const s="",d="https://datatracker.ietf.org/doc",n="https://datatracker.ietf.org/ipr/search",c="https://www.rfc-editor.org/info",l=a.doc_id.toLowerCase(),i=a.doc_id.slice(0,3).toLowerCase(),f=a.doc_id.slice(3).replace(/^0+/,""),u={status:"Status",obsoletes:"Obsoletes",obsoleted_by:"Obsoleted By",updates:"Updates",updated_by:"Updated By",see_also:"See Also",errata_url:"Errata"};let h="<dl style='overflow:hidden' id='external-updates'>";["status","obsoletes","obsoleted_by","updates","updated_by","see_also","errata_url"].forEach(e=>{if("status"==e){a[e]=a[e].toLowerCase();var t=a[e].split(" "),o=t.length,w="",p=1;for(let e=0;e<o;e++)p<o?w=w+r(t[e])+" ":w+=r(t[e]),p++;a[e]=w}else if("obsoletes"==e||"obsoleted_by"==e||"updates"==e||"updated_by"==e){var g,m="",b=1;g=a[e].length;for(let t=0;t<g;t++)a[e][t]&&(a[e][t]=String(a[e][t]).toLowerCase(),m=b<g?m+"<a href='"+s+"/rfc/".concat(a[e][t])+"'>"+a[e][t].slice(3)+"</a>, ":m+"<a href='"+s+"/rfc/".concat(a[e][t])+"'>"+a[e][t].slice(3)+"</a>",b++);a[e]=m}else if("see_also"==e){var y,L="",C=1;y=a[e].length;for(let t=0;t<y;t++)if(a[e][t]){a[e][t]=String(a[e][t]);var _=a[e][t].slice(0,3),v=a[e][t].slice(3).replace(/^0+/,"");L=C<y?"RFC"!=_?L+"<a href='"+s+"/info/"+_.toLowerCase().concat(v.toLowerCase())+"'>"+_+" "+v+"</a>, ":L+"<a href='"+s+"/info/"+_.toLowerCase().concat(v.toLowerCase())+"'>"+v+"</a>, ":"RFC"!=_?L+"<a href='"+s+"/info/"+_.toLowerCase().concat(v.toLowerCase())+"'>"+_+" "+v+"</a>":L+"<a href='"+s+"/info/"+_.toLowerCase().concat(v.toLowerCase())+"'>"+v+"</a>",C++}a[e]=L}else if("errata_url"==e){var R="";R=a[e]?R+"<a href='"+a[e]+"'>Errata exist</a> | <a href='"+d+"/"+l+"'>Datatracker</a>| <a href='"+n+"/?"+i+"="+f+"&submit="+i+"'>IPR</a> | <a href='"+c+"/"+l+"'>Info page</a>":"<a href='"+d+"/"+l+"'>Datatracker</a> | <a href='"+n+"/?"+i+"="+f+"&submit="+i+"'>IPR</a> | <a href='"+c+"/"+l+"'>Info page</a>",a[e]=R}""!=a[e]?"Errata"==u[e]?h+=`<dt>More info:</dt><dd>${a[e]}</dd>`:h+=`<dt>${u[e]}:</dt><dd>${a[e]}</dd>`:"Errata"==u[e]&&(h+=`<dt>More info:</dt><dd>${a[e]}</dd>`)}),h+="</dl>",e.innerHTML=h}catch(e){console.log(e)}else console.log("Could not locate metadata <div> element");function r(e){return e.charAt(0).toUpperCase()+e.slice(1)}}window.removeEventListener("load",addMetadata),window.addEventListener("load",addMetadata);</script>
+</head>
+<body class="xml2rfc">
+<script src="metadata.min.js"></script>
+<table class="ears">
+<thead><tr>
+<td class="left">Internet-Draft</td>
+<td class="center">iTip participants</td>
+<td class="right">October 2024</td>
+</tr></thead>
+<tfoot><tr>
+<td class="left">Douglass</td>
+<td class="center">Expires 19 April 2025</td>
+<td class="right">[Page]</td>
+</tr></tfoot>
+</table>
+<div id="external-metadata" class="document-information"></div>
+<div id="internal-metadata" class="document-information">
+<dl id="identifiers">
+<dt class="label-workgroup">Workgroup:</dt>
+<dd class="workgroup">Network Working Group</dd>
+<dt class="label-internet-draft">Internet-Draft:</dt>
+<dd class="internet-draft">draft-douglass-itip-participants-02</dd>
+<dt class="label-">:</dt>
+<dd></dd>
+<dt class="label-published">Published:</dt>
+<dd class="published">
+<time datetime="2024-10-16" class="published">16 October 2024</time>
+    </dd>
+<dt class="label-intended-status">Intended Status:</dt>
+<dd class="intended-status">Standards Track</dd>
+<dt class="label-expires">Expires:</dt>
+<dd class="expires"><time datetime="2025-04-19">19 April 2025</time></dd>
+<dt class="label-authors">Author:</dt>
+<dd class="authors">
+<div class="author">
+      <div class="author-name">M. Douglass</div>
+</div>
+</dd>
+</dl>
+</div>
+<h1 id="title">iTip using PARTICIPANT only</h1>
+<div id="_bc34bddd-d475-d803-442a-ed04e02c105f">
+<section id="section-abstract">
+      <h2 id="abstract"><a href="#abstract" class="selfRef">Abstract</a></h2>
+<div id="_bbfff530-985f-18ac-bb98-b4c1e411a246">
+<p id="section-abstract-1">This specification defines updates to RFC5546 iTip which allow scheduling using the "PARTICIPANT" calendar components specified in RFC9073.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
+</div>
+<div id="_8078e3b6-48c2-e92e-1c3f-2412514472ac">
+<p id="section-abstract-2">New properties are also defined for use within the "PARTICIPANT" calendar component.<a href="#section-abstract-2" class="pilcrow">¶</a></p>
+</div>
+</section>
+</div>
+<div id="status-of-memo">
+<section id="section-boilerplate.1">
+        <h2 id="name-status-of-this-memo">
+<a href="#name-status-of-this-memo" class="section-name selfRef">Status of This Memo</a>
+        </h2>
+<p id="section-boilerplate.1-1">
+        This Internet-Draft is submitted in full conformance with the
+        provisions of BCP 78 and BCP 79.<a href="#section-boilerplate.1-1" class="pilcrow">¶</a></p>
+<p id="section-boilerplate.1-2">
+        Internet-Drafts are working documents of the Internet Engineering Task
+        Force (IETF). Note that other groups may also distribute working
+        documents as Internet-Drafts. The list of current Internet-Drafts is
+        at <span><a href="https://datatracker.ietf.org/drafts/current/">https://datatracker.ietf.org/drafts/current/</a></span>.<a href="#section-boilerplate.1-2" class="pilcrow">¶</a></p>
+<p id="section-boilerplate.1-3">
+        Internet-Drafts are draft documents valid for a maximum of six months
+        and may be updated, replaced, or obsoleted by other documents at any
+        time. It is inappropriate to use Internet-Drafts as reference
+        material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
+<p id="section-boilerplate.1-4">
+        This Internet-Draft will expire on 19 April 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="copyright">
+<section id="section-boilerplate.2">
+        <h2 id="name-copyright-notice">
+<a href="#name-copyright-notice" class="section-name selfRef">Copyright Notice</a>
+        </h2>
+<p id="section-boilerplate.2-1">
+            Copyright (c) 2024 IETF Trust and the persons identified as the
+            document authors. All rights reserved.<a href="#section-boilerplate.2-1" class="pilcrow">¶</a></p>
+<p id="section-boilerplate.2-2">
+            This document is subject to BCP 78 and the IETF Trust's Legal
+            Provisions Relating to IETF Documents
+            (<span><a href="https://trustee.ietf.org/license-info">https://trustee.ietf.org/license-info</a></span>) in effect on the date of
+            publication of this document. Please review these documents
+            carefully, as they describe your rights and restrictions with
+            respect to this document. Code Components extracted from this
+            document must include Revised BSD License text as described in
+            Section 4.e of the Trust Legal Provisions and are provided without
+            warranty as described in the Revised BSD License.<a href="#section-boilerplate.2-2" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="toc">
+<section id="section-toc.1">
+        <a href="#" onclick="scroll(0,0)" class="toplink">▲</a><h2 id="name-table-of-contents">
+<a href="#name-table-of-contents" class="section-name selfRef">Table of Contents</a>
+        </h2>
+<nav class="toc"><ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.1">
+            <p id="section-toc.1-1.1.1" class="keepWithNext"><a href="#section-1" class="auto internal xref">1</a>.  <a href="#name-introduction" class="internal xref">Introduction</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2">
+            <p id="section-toc.1-1.2.1"><a href="#section-2" class="auto internal xref">2</a>.  <a href="#name-terms-and-definitions" class="internal xref">Terms and definitions</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.1">
+                <p id="section-toc.1-1.2.2.1.1" class="keepWithNext"><a href="#section-2.1" class="auto internal xref">2.1</a>.  <a href="#name-participant" class="internal xref">participant</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.2">
+                <p id="section-toc.1-1.2.2.2.1" class="keepWithNext"><a href="#section-2.2" class="auto internal xref">2.2</a>.  <a href="#name-publishable" class="internal xref">publishable</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.3">
+                <p id="section-toc.1-1.2.2.3.1"><a href="#section-2.3" class="auto internal xref">2.3</a>.  <a href="#name-schedulable" class="internal xref">schedulable</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.4">
+                <p id="section-toc.1-1.2.2.4.1"><a href="#section-2.4" class="auto internal xref">2.4</a>.  <a href="#name-owner" class="internal xref">owner</a></p>
+</li>
+            </ul>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3">
+            <p id="section-toc.1-1.3.1"><a href="#section-3" class="auto internal xref">3</a>.  <a href="#name-icalendar-extensions" class="internal xref">iCalendar Extensions</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.1">
+                <p id="section-toc.1-1.3.2.1.1"><a href="#section-3.1" class="auto internal xref">3.1</a>.  <a href="#name-new-property-parameters" class="internal xref">New Property Parameters</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.1.2.1">
+                    <p id="section-toc.1-1.3.2.1.2.1.1"><a href="#section-3.1.1" class="auto internal xref">3.1.1</a>.  <a href="#name-required" class="internal xref">Required</a></p>
+</li>
+                </ul>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.2">
+                <p id="section-toc.1-1.3.2.2.1"><a href="#section-3.2" class="auto internal xref">3.2</a>.  <a href="#name-new-properties" class="internal xref">New Properties</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.2.2.1">
+                    <p id="section-toc.1-1.3.2.2.2.1.1"><a href="#section-3.2.1" class="auto internal xref">3.2.1</a>.  <a href="#name-reply-url" class="internal xref">Reply-URL</a></p>
+</li>
+                </ul>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.3">
+                <p id="section-toc.1-1.3.2.3.1"><a href="#section-3.3" class="auto internal xref">3.3</a>.  <a href="#name-redefined-participation-typ" class="internal xref">Redefined participation type</a></p>
+</li>
+            </ul>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4">
+            <p id="section-toc.1-1.4.1"><a href="#section-4" class="auto internal xref">4</a>.  <a href="#name-new-participant-properties-" class="internal xref">New Participant Properties for iTip</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.1">
+                <p id="section-toc.1-1.4.2.1.1"><a href="#section-4.1" class="auto internal xref">4.1</a>.  <a href="#name-kind" class="internal xref">Kind</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.2">
+                <p id="section-toc.1-1.4.2.2.1"><a href="#section-4.2" class="auto internal xref">4.2</a>.  <a href="#name-participation-status" class="internal xref">Participation-status</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.3">
+                <p id="section-toc.1-1.4.2.3.1"><a href="#section-4.3" class="auto internal xref">4.3</a>.  <a href="#name-participation-delegated-fro" class="internal xref">Participation delegated from</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.4">
+                <p id="section-toc.1-1.4.2.4.1"><a href="#section-4.4" class="auto internal xref">4.4</a>.  <a href="#name-participation-delegated-to" class="internal xref">Participation delegated to</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.5">
+                <p id="section-toc.1-1.4.2.5.1"><a href="#section-4.5" class="auto internal xref">4.5</a>.  <a href="#name-member-of" class="internal xref">Member of</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.6">
+                <p id="section-toc.1-1.4.2.6.1"><a href="#section-4.6" class="auto internal xref">4.6</a>.  <a href="#name-lang" class="internal xref">Lang</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.7">
+                <p id="section-toc.1-1.4.2.7.1"><a href="#section-4.7" class="auto internal xref">4.7</a>.  <a href="#name-expect-reply" class="internal xref">Expect reply</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.8">
+                <p id="section-toc.1-1.4.2.8.1"><a href="#section-4.8" class="auto internal xref">4.8</a>.  <a href="#name-scheduling-agent" class="internal xref">Scheduling-agent</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.9">
+                <p id="section-toc.1-1.4.2.9.1"><a href="#section-4.9" class="auto internal xref">4.9</a>.  <a href="#name-scheduling-force-send" class="internal xref">Scheduling-force-send</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.10">
+                <p id="section-toc.1-1.4.2.10.1"><a href="#section-4.10" class="auto internal xref">4.10</a>. <a href="#name-scheduling-status" class="internal xref">Scheduling-status</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.11">
+                <p id="section-toc.1-1.4.2.11.1"><a href="#section-4.11" class="auto internal xref">4.11</a>. <a href="#name-scheduling-dtstamp" class="internal xref">Scheduling-dtstamp</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.12">
+                <p id="section-toc.1-1.4.2.12.1"><a href="#section-4.12" class="auto internal xref">4.12</a>. <a href="#name-invited-by" class="internal xref">Invited-by</a></p>
+</li>
+            </ul>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5">
+            <p id="section-toc.1-1.5.1"><a href="#section-5" class="auto internal xref">5</a>.  <a href="#name-attendee-parameters-mapping" class="internal xref">Attendee parameters mapping</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6">
+            <p id="section-toc.1-1.6.1"><a href="#section-6" class="auto internal xref">6</a>.  <a href="#name-security-considerations" class="internal xref">Security Considerations</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7">
+            <p id="section-toc.1-1.7.1"><a href="#section-7" class="auto internal xref">7</a>.  <a href="#name-iana-considerations" class="internal xref">IANA Considerations</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.1">
+                <p id="section-toc.1-1.7.2.1.1"><a href="#section-7.1" class="auto internal xref">7.1</a>.  <a href="#name-parameter-registrations" class="internal xref">Parameter Registrations</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.2">
+                <p id="section-toc.1-1.7.2.2.1"><a href="#section-7.2" class="auto internal xref">7.2</a>.  <a href="#name-property-registrations" class="internal xref">Property Registrations</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.3">
+                <p id="section-toc.1-1.7.2.3.1"><a href="#section-7.3" class="auto internal xref">7.3</a>.  <a href="#name-updated-participant-type-re" class="internal xref">Updated Participant Type Registrations</a></p>
+</li>
+            </ul>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8">
+            <p id="section-toc.1-1.8.1"><a href="#section-8" class="auto internal xref">8</a>.  <a href="#name-acknowledgements" class="internal xref">Acknowledgements</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.9">
+            <p id="section-toc.1-1.9.1"><a href="#section-9" class="auto internal xref">9</a>.  <a href="#name-normative-references" class="internal xref">Normative References</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.10">
+            <p id="section-toc.1-1.10.1"><a href="#appendix-A" class="auto internal xref"></a><a href="#name-authors-address" class="internal xref">Author's Address</a></p>
+</li>
+        </ul>
+</nav>
+</section>
+</div>
+<div id="introduction">
+<section id="section-1">
+      <h2 id="name-introduction">
+<a href="#section-1" class="section-number selfRef">1. </a><a href="#name-introduction" class="section-name selfRef">Introduction</a>
+      </h2>
+<div id="_bd72b991-527e-522c-78c3-a8c43f4fb2bf">
+<p id="section-1-1">This specification details how the "PARTICIPANT" calendar component introduced in <span>[<a href="#RFC9073" class="cite xref">RFC9073</a>]</span> may be used for scheduling in place of <span>[<a href="#RFC5545" class="cite xref">RFC5545</a>]</span> "ATTENDEE" and "ORGANIZER" properties. Additionally, some properties are defined in this specification to be used within the "PARTICIPANT" calendar component.<a href="#section-1-1" class="pilcrow">¶</a></p>
+</div>
+<div id="_e979444c-4e1b-72a8-6fcc-8215e8367be4">
+<p id="section-1-2">For "VEVENT", "VTODO", "VFREEBUSY", and "VAVAILABILITY" calendar components; the "ORGANIZER" and "ATTENDEE" properties MUST be supplied as specified in <span>[<a href="#RFC5546" class="cite xref">RFC5546</a>]</span>. For new components such as the "VPOLL" calendar component, defined elsewhere, only "PARTICIPANT" calendar components MUST be used. A participant object that takes part in group scheduling MUST have the following characteristics:<a href="#section-1-2" class="pilcrow">¶</a></p>
+</div>
+<ul class="normal">
+<li class="normal" id="section-1-3.1">It MUST have a calendar address as defined in <span><a class="relref">Section 6.4</a> of [<a href="#RFC9073" class="cite xref">RFC9073</a>]</span>.<a href="#section-1-3.1" class="pilcrow">¶</a>
+</li>
+        <li class="normal" id="section-1-3.2">It must have one or more scheduling roles defined in PARTICIPANT-TYPE<a href="#section-1-3.2" class="pilcrow">¶</a>
+</li>
+        <li class="normal" id="section-1-3.3">Exactly 1 PARTICIPANT MUST have the OWNER role<a href="#section-1-3.3" class="pilcrow">¶</a>
+</li>
+      </ul>
+<div id="_a7640fe8-8f6b-1a38-8ec7-7fd13031df99">
+<p id="section-1-4">Scheduling with "PARTICIPANT" calendar components behaves exactly as with "ATTENDEE" and "ORGANIZER" properties. When iTip specifies the setting of "ATTENDEE" or "ORGANIZER" property parameters then the appropriate properties will be set within the "PARTICIPANT" calendar component.<a href="#section-1-4" class="pilcrow">¶</a></p>
+</div>
+</section>
+</div>
+<div id="terms">
+<section id="section-2">
+      <h2 id="name-terms-and-definitions">
+<a href="#section-2" class="section-number selfRef">2. </a><a href="#name-terms-and-definitions" class="section-name selfRef">Terms and definitions</a>
+      </h2>
+<div id="_84c4bc62-94bc-32d1-745a-69ddcd36a344">
+<p id="section-2-1">The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and  "OPTIONAL" in this document are to be interpreted as described in <span>[<a href="#RFC2119" class="cite xref">RFC2119</a>]</span>.<a href="#section-2-1" class="pilcrow">¶</a></p>
+</div>
+<div id="_f92ff8d0-1ecb-6b34-f6a9-4fd990fa9927">
+<p id="section-2-2">The notation used in this memo to (re-)define iCalendar elements is the ABNF notation of  <span>[<a href="#RFC5234" class="cite xref">RFC5234</a>]</span> as used by <span>[<a href="#RFC5545" class="cite xref">RFC5545</a>]</span>.  Any syntax elements shown below that are not explicitly defined in this specification come from iCalendar  <span>[<a href="#RFC5545" class="cite xref">RFC5545</a>]</span>.<a href="#section-2-2" class="pilcrow">¶</a></p>
+</div>
+<div id="_472b2f1f-828a-5eb4-df6e-dd3d8128fe31">
+<p id="section-2-3">Additionally, the following terms are used:<a href="#section-2-3" class="pilcrow">¶</a></p>
+</div>
+<div id="term-participant">
+<section id="section-2.1">
+        <h3 id="name-participant">
+<a href="#section-2.1" class="section-number selfRef">2.1. </a><a href="#name-participant" class="section-name selfRef">participant</a>
+        </h3>
+<div id="_91f6a74f-87b6-ff0f-b8de-f3d8e367a0b8">
+<p id="section-2.1-1">Represents an agent that takes part in scheduling or publishing. A participant may be a human, for example an attendee, or a resource, for example a conference room.<a href="#section-2.1-1" class="pilcrow">¶</a></p>
+</div>
+</section>
+</div>
+<div id="term-publishable">
+<section id="section-2.2">
+        <h3 id="name-publishable">
+<a href="#section-2.2" class="section-number selfRef">2.2. </a><a href="#name-publishable" class="section-name selfRef">publishable</a>
+        </h3>
+<div id="_a90dba46-eba1-4a7e-8718-f3cd8326204e">
+<p id="section-2.2-1">A component which takes part in <span>[<a href="#RFC5546" class="cite xref">RFC5546</a>]</span> publishing operations.<a href="#section-2.2-1" class="pilcrow">¶</a></p>
+</div>
+</section>
+</div>
+<div id="term-schedulable">
+<section id="section-2.3">
+        <h3 id="name-schedulable">
+<a href="#section-2.3" class="section-number selfRef">2.3. </a><a href="#name-schedulable" class="section-name selfRef">schedulable</a>
+        </h3>
+<div id="_c26d3450-5ecf-b52d-8b45-ee11dc1b73e3">
+<p id="section-2.3-1">A component which takes part in <span>[<a href="#RFC5546" class="cite xref">RFC5546</a>]</span> scheduling operations.<a href="#section-2.3-1" class="pilcrow">¶</a></p>
+</div>
+</section>
+</div>
+<div id="term-owner">
+<section id="section-2.4">
+        <h3 id="name-owner">
+<a href="#section-2.4" class="section-number selfRef">2.4. </a><a href="#name-owner" class="section-name selfRef">owner</a>
+        </h3>
+<div id="_e1b0fd9f-8169-48bd-47ca-654e1893a72d">
+<p id="section-2.4-1">The "Owner" of a "Schedulable" component is equivalent to the "Organizer" in <span>[<a href="#RFC5546" class="cite xref">RFC5546</a>]</span>. As such, there may be only one "Owner" though future specifications may relax or extend that constraint. The "Owner" is indicated by a role of "OWNER".<a href="#section-2.4-1" class="pilcrow">¶</a></p>
+</div>
+</section>
+</div>
+</section>
+</div>
+<div id="icalendar-extensions">
+<section id="section-3">
+      <h2 id="name-icalendar-extensions">
+<a href="#section-3" class="section-number selfRef">3. </a><a href="#name-icalendar-extensions" class="section-name selfRef">iCalendar Extensions</a>
+      </h2>
+<div id="_new_property_parameters">
+<section id="section-3.1">
+        <h3 id="name-new-property-parameters">
+<a href="#section-3.1" class="section-number selfRef">3.1. </a><a href="#name-new-property-parameters" class="section-name selfRef">New Property Parameters</a>
+        </h3>
+<div id="new-prop-para-required">
+<section id="section-3.1.1">
+          <h4 id="name-required">
+<a href="#section-3.1.1" class="section-number selfRef">3.1.1. </a><a href="#name-required" class="section-name selfRef">Required</a>
+          </h4>
+<span class="break"></span><div id="_b902bc3c-0692-55a9-96bd-71e3b57ea3ad">
+<dl class="dlParallel" id="section-3.1.1-1">
+            <dt id="section-3.1.1-1.1">Parameter name</dt>
+            <dd style="margin-left: 1.5em" id="section-3.1.1-1.2">
+              <div id="_61a3ac36-f4e3-435a-9e0d-cb3f4af42c51">
+<p id="section-3.1.1-1.2.1">REQUIRED<a href="#section-3.1.1-1.2.1" class="pilcrow">¶</a></p>
+</div>
+</dd>
+            <dd class="break"></dd>
+<dt id="section-3.1.1-1.3">Purpose</dt>
+            <dd style="margin-left: 1.5em" id="section-3.1.1-1.4">
+              <div id="_8a0675f8-a4d1-c40e-8040-e5f619be3304">
+<p id="section-3.1.1-1.4.1">To specify whether the associated property is required in the current context.<a href="#section-3.1.1-1.4.1" class="pilcrow">¶</a></p>
+</div>
+</dd>
+            <dd class="break"></dd>
+<dt id="section-3.1.1-1.5">Format Definition</dt>
+            <dd style="margin-left: 1.5em" id="section-3.1.1-1.6">
+              <div id="_1e280a22-aa43-12fb-b2b7-f787acb03d85">
+<p id="section-3.1.1-1.6.1">This parameter is defined by the following notation:<a href="#section-3.1.1-1.6.1" class="pilcrow">¶</a></p>
+</div>
+</dd>
+          <dd class="break"></dd>
+</dl>
+</div>
+<div id="_d0877c1e-0f6a-4891-6059-e1d78bf70674">
+<div class="lang-abnf sourcecode" id="section-3.1.1-2">
+<pre>requirededparam = "REQUIRED"  "=" ("TRUE" / "FALSE")
+  ; Default is FALSE</pre><a href="#section-3.1.1-2" class="pilcrow">¶</a>
+</div>
+</div>
+<span class="break"></span><div id="_6e163094-7b4b-2b8b-08dd-4e14fdb1b655">
+<dl class="dlParallel" id="section-3.1.1-3">
+            <dt id="section-3.1.1-3.1">Description</dt>
+            <dd style="margin-left: 1.5em" id="section-3.1.1-3.2">
+              <div id="_2e7463fa-6d8c-eb8f-7aae-2d272ceffcc4">
+<p id="section-3.1.1-3.2.1">This parameter MAY be specified on "REPLY-URL" property and, if the value is TRUE, indicates the "Owner" requires all replies to be made via the specified service rather than iTip replies.<a href="#section-3.1.1-3.2.1" class="pilcrow">¶</a></p>
+</div>
+</dd>
+          <dd class="break"></dd>
+</dl>
+</div>
+</section>
+</div>
+</section>
+</div>
+<div id="_new_properties">
+<section id="section-3.2">
+        <h3 id="name-new-properties">
+<a href="#section-3.2" class="section-number selfRef">3.2. </a><a href="#name-new-properties" class="section-name selfRef">New Properties</a>
+        </h3>
+<div id="new-prop-reply-url">
+<section id="section-3.2.1">
+          <h4 id="name-reply-url">
+<a href="#section-3.2.1" class="section-number selfRef">3.2.1. </a><a href="#name-reply-url" class="section-name selfRef">Reply-URL</a>
+          </h4>
+<span class="break"></span><div id="_9528c276-d5bd-f16f-c0a9-aa7c9baa4a11">
+<dl class="dlParallel" id="section-3.2.1-1">
+            <dt id="section-3.2.1-1.1">Property name</dt>
+            <dd style="margin-left: 1.5em" id="section-3.2.1-1.2">
+              <div id="_886ecfe5-fd0d-492e-ff7b-a08658a4577b">
+<p id="section-3.2.1-1.2.1">REPLY-URL<a href="#section-3.2.1-1.2.1" class="pilcrow">¶</a></p>
+</div>
+</dd>
+            <dd class="break"></dd>
+<dt id="section-3.2.1-1.3">Purpose</dt>
+            <dd style="margin-left: 1.5em" id="section-3.2.1-1.4">
+              <div id="_73dc5e8d-8bc9-94d2-1649-43f5acf48083">
+<p id="section-3.2.1-1.4.1">This property may be used in scheduling messages to indicate additional reply methods, for example a web-service.<a href="#section-3.2.1-1.4.1" class="pilcrow">¶</a></p>
+</div>
+</dd>
+            <dd class="break"></dd>
+<dt id="section-3.2.1-1.5">Value type</dt>
+            <dd style="margin-left: 1.5em" id="section-3.2.1-1.6">
+              <div id="_6d185990-0cd3-ab18-aa9c-c25f815ef9aa">
+<p id="section-3.2.1-1.6.1">URI<a href="#section-3.2.1-1.6.1" class="pilcrow">¶</a></p>
+</div>
+</dd>
+            <dd class="break"></dd>
+<dt id="section-3.2.1-1.7">Property Parameters</dt>
+            <dd style="margin-left: 1.5em" id="section-3.2.1-1.8">
+              <div id="_8974fe85-0f12-584e-6ba4-5b6bd5d043e9">
+<p id="section-3.2.1-1.8.1">Non-standard, required or iana parameters can be specified on this property.<a href="#section-3.2.1-1.8.1" class="pilcrow">¶</a></p>
+</div>
+</dd>
+            <dd class="break"></dd>
+<dt id="section-3.2.1-1.9">Conformance</dt>
+            <dd style="margin-left: 1.5em" id="section-3.2.1-1.10">
+              <div id="_e74ecc94-4ed0-6bb8-8ef5-0bec34e3887d">
+<p id="section-3.2.1-1.10.1">This property MAY be specified once in any schedulable component.<a href="#section-3.2.1-1.10.1" class="pilcrow">¶</a></p>
+</div>
+</dd>
+            <dd class="break"></dd>
+<dt id="section-3.2.1-1.11">Description</dt>
+            <dd style="margin-left: 1.5em" id="section-3.2.1-1.12">
+              <div id="_e35a5a36-eec3-9126-aff7-32a615bf8855">
+<p id="section-3.2.1-1.12.1">When used in a scheduling message this property indicates an additional or required service that can be used to reply. Typically, this would be a web service of some form.<a href="#section-3.2.1-1.12.1" class="pilcrow">¶</a></p>
+</div>
+<div id="_d2f85a2c-6a3c-251e-b2ae-18e6e5f827bb">
+<p id="section-3.2.1-1.12.2">When the "REQUIRED" property parameter is absent then this property provides an alternative to standard iTip based scheduling.<a href="#section-3.2.1-1.12.2" class="pilcrow">¶</a></p>
+</div>
+<div id="_b0c883c6-e418-fc0a-cdd5-23120e2c4711">
+<p id="section-3.2.1-1.12.3">When the "REQUIRED" property parameter is present then this property provides the only mechanism by which participants can reply. This allows the implementation of a web-based service without the ability to accept incoming mail for example.<a href="#section-3.2.1-1.12.3" class="pilcrow">¶</a></p>
+</div>
+</dd>
+            <dd class="break"></dd>
+<dt id="section-3.2.1-1.13">Format Definition</dt>
+            <dd style="margin-left: 1.5em" id="section-3.2.1-1.14">
+              <div id="_ef3b9afe-1013-0c1c-63ac-a7141c7edc73">
+<p id="section-3.2.1-1.14.1">This property is defined by the following notation:<a href="#section-3.2.1-1.14.1" class="pilcrow">¶</a></p>
+</div>
+</dd>
+          <dd class="break"></dd>
+</dl>
+</div>
+<div id="_33efaaa4-4894-09e5-a230-32dcb696b8ae">
+<div class="lang-abnf sourcecode" id="section-3.2.1-2">
+<pre>reply-url = "REPLY-URL" reply-urlparams ":" uri CRLF
+
+reply-urlparams = *(
+                  (";" requiredparam) /
+                  (";" other-param)
+                  )</pre><a href="#section-3.2.1-2" class="pilcrow">¶</a>
+</div>
+</div>
+</section>
+</div>
+</section>
+</div>
+<div id="redefined-participation-type">
+<section id="section-3.3">
+        <h3 id="name-redefined-participation-typ">
+<a href="#section-3.3" class="section-number selfRef">3.3. </a><a href="#name-redefined-participation-typ" class="section-name selfRef">Redefined participation type</a>
+        </h3>
+<div id="_654253dd-0ae8-805e-759f-920841d830ea">
+<p id="section-3.3-1">This specification redefines the "PARTICIPANT-TYPE" property allowing it to take multiple values and extending those values to align with  <span>[<a href="#RFC8984" class="cite xref">RFC8984</a>]</span> roles. There are also changes to the description to clarify its use defining the roles that participant takes.<a href="#section-3.3-1" class="pilcrow">¶</a></p>
+</div>
+<span class="break"></span><div id="_b35503ce-4f95-6aa5-a5c0-3155ac675da0">
+<dl class="dlParallel" id="section-3.3-2">
+          <dt id="section-3.3-2.1">Property name</dt>
+          <dd style="margin-left: 1.5em" id="section-3.3-2.2">
+            <div id="_ce317d95-a57a-e984-7312-edd8a325605b">
+<p id="section-3.3-2.2.1">PARTICIPANT-TYPE<a href="#section-3.3-2.2.1" class="pilcrow">¶</a></p>
+</div>
+</dd>
+          <dd class="break"></dd>
+<dt id="section-3.3-2.3">Purpose</dt>
+          <dd style="margin-left: 1.5em" id="section-3.3-2.4">
+            <div id="_37b4ad3c-b31c-f634-e57c-ec96b4d0ae2e">
+<p id="section-3.3-2.4.1">This property is equivalent to the <span>[<a href="#RFC5545" class="cite xref">RFC5545</a>]</span> "ROLE" property parameter but includes more values to align with  <span>[<a href="#RFC8984" class="cite xref">RFC8984</a>]</span>.<a href="#section-3.3-2.4.1" class="pilcrow">¶</a></p>
+</div>
+</dd>
+          <dd class="break"></dd>
+<dt id="section-3.3-2.5">Value Type</dt>
+          <dd style="margin-left: 1.5em" id="section-3.3-2.6">
+            <div id="_a1b44c27-9a59-b766-73b9-2e763669ef42">
+<p id="section-3.3-2.6.1">The value type for this property is TEXT. The allowable values are defined below.<a href="#section-3.3-2.6.1" class="pilcrow">¶</a></p>
+</div>
+</dd>
+          <dd class="break"></dd>
+<dt id="section-3.3-2.7">Property Parameters</dt>
+          <dd style="margin-left: 1.5em" id="section-3.3-2.8">
+            <div id="_e6b95721-1dde-26f0-e8c8-51cd2079965d">
+<p id="section-3.3-2.8.1">Non-standard or iana parameters can be specified on this property.<a href="#section-3.3-2.8.1" class="pilcrow">¶</a></p>
+</div>
+</dd>
+          <dd class="break"></dd>
+<dt id="section-3.3-2.9">Conformance</dt>
+          <dd style="margin-left: 1.5em" id="section-3.3-2.10">
+            <div id="_a69b3171-1f6f-a98a-345d-efb0ba039469">
+<p id="section-3.3-2.10.1">This property MUST be specified once within a "PARTICIPANT" calendar component.<a href="#section-3.3-2.10.1" class="pilcrow">¶</a></p>
+</div>
+</dd>
+          <dd class="break"></dd>
+<dt id="section-3.3-2.11">Description</dt>
+          <dd style="margin-left: 1.5em" id="section-3.3-2.12">
+            <div id="_ea07cb07-6be9-7a17-99d5-22de825a56e6">
+<p id="section-3.3-2.12.1">This property defines the type of participation, that is the roles the participant takes.<br><a href="#section-3.3-2.12.1" class="pilcrow">¶</a></p>
+</div>
+<div id="_326911ea-0286-fe5c-d587-07a1a33bbf99">
+<p id="section-3.3-2.12.2">It includes the values defined in <span>[<a href="#RFC8984" class="cite xref">RFC8984</a>]</span>.<a href="#section-3.3-2.12.2" class="pilcrow">¶</a></p>
+</div>
+<div id="_02dee329-62a8-229a-afa6-f3d5d153c283">
+<p id="section-3.3-2.12.3">Note that the kind of participant, for example individual or group, is defined in the "KIND" property specified here.<a href="#section-3.3-2.12.3" class="pilcrow">¶</a></p>
+</div>
+<div id="_72ecaa64-9427-084f-b6d1-652ee5b25562">
+<p id="section-3.3-2.12.4">Some of the roles are required for the participant to be a "schedulable" object. These are the roles that are shown below.<a href="#section-3.3-2.12.4" class="pilcrow">¶</a></p>
+</div>
+</dd>
+          <dd class="break"></dd>
+<dt id="section-3.3-2.13">Format Definition</dt>
+          <dd style="margin-left: 1.5em" id="section-3.3-2.14">
+            <div id="_5bf1f088-5b6e-12f2-d8f5-3b613238d7bc">
+<p id="section-3.3-2.14.1">This property is defined by the following notation:<a href="#section-3.3-2.14.1" class="pilcrow">¶</a></p>
+</div>
+</dd>
+        <dd class="break"></dd>
+</dl>
+</div>
+<div id="_071ba4c6-3985-1e24-c77a-e45657e2ede5">
+<div class="lang-abnf sourcecode" id="section-3.3-3">
+<pre>participanttype   = "PARTICIPANT-TYPE" partvalueparam ":"
+                     partvalue
+                     *("," partvalue) CRLF
+
+partvalue    = ("OWNER"
+               / "ATTENDEE"
+               / "OPTIONAL"
+               / "INFORMATIONAL"
+               / "CHAIR"
+               / "ACTIVE"
+               / "INACTIVE"
+               / "SPONSOR"
+               / "CONTACT"
+               / "BOOKING-CONTACT"
+               / "EMERGENCY-CONTACT"
+               / "PUBLICITY-CONTACT"
+               / "PLANNER-CONTACT"
+               / "PERFORMER"
+               / "SPEAKER"
+               / iana-token)     ; Other IANA-registered
+                                 ; values
+
+partvalueparam   = *(";" other-param)</pre><a href="#section-3.3-3" class="pilcrow">¶</a>
+</div>
+</div>
+<div id="_f9296222-0bbc-5e1d-7ca8-62a578fcf65d">
+<p id="section-3.3-4">The values have the same meaning as defined in <span>[<a href="#RFC8984" class="cite xref">RFC8984</a>]</span> and <span>[<a href="#RFC9073" class="cite xref">RFC9073</a>]</span>.<a href="#section-3.3-4" class="pilcrow">¶</a></p>
+</div>
+<div id="_ee5f042c-3031-fd11-da81-0d8c01d4ffc2">
+<p id="section-3.3-5">Other roles defined here have no direct equivalent in <span>[<a href="#RFC5545" class="cite xref">RFC5545</a>]</span><a href="#section-3.3-5" class="pilcrow">¶</a></p>
+</div>
+<div id="_16fa5d99-17ab-f07d-7da0-ac1b36298b3b">
+<p id="section-3.3-6">To map <span>[<a href="#RFC5545" class="cite xref">RFC5545</a>]</span> "ROLE" property parameter values to "PARTICIPANT-TYPE" property values use the following.<a href="#section-3.3-6" class="pilcrow">¶</a></p>
+</div>
+<div id="_0bbbfa7a-0c13-d440-fe81-9ca194412805">
+<table class="center" id="table-1">
+          <caption><a href="#table-1" class="selfRef">Table 1</a></caption>
+<thead>
+            <tr>
+              <th class="text-left" rowspan="1" colspan="1">RFC5545 ROLE</th>
+              <th class="text-left" rowspan="1" colspan="1">PARTICIPANT-TYPE</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">
+                <div id="_36bc5503-e941-2c15-5ce4-66588647bc16">
+<p id="section-3.3-7.2.1.1.1">CHAIR<a href="#section-3.3-7.2.1.1.1" class="pilcrow">¶</a></p>
+</div>
+</td>
+              <td class="text-left" rowspan="1" colspan="1">
+                <div id="_f730b61f-f3d0-0ae9-01ae-3e95456b9220">
+<p id="section-3.3-7.2.1.2.1">CHAIR<a href="#section-3.3-7.2.1.2.1" class="pilcrow">¶</a></p>
+</div>
+</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">
+                <div id="_b3f33c37-9e62-d064-dd4f-92c96fe657d8">
+<p id="section-3.3-7.2.2.1.1">REQ-PARTICIPANT<a href="#section-3.3-7.2.2.1.1" class="pilcrow">¶</a></p>
+</div>
+</td>
+              <td class="text-left" rowspan="1" colspan="1">
+                <div id="_4251987e-102c-17f5-4ee9-8d8a7b471ff5">
+<p id="section-3.3-7.2.2.2.1">ATTENDEE<a href="#section-3.3-7.2.2.2.1" class="pilcrow">¶</a></p>
+</div>
+</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">
+                <div id="_923990c2-5dd3-b9a7-a9ea-1b374dee19cd">
+<p id="section-3.3-7.2.3.1.1">OPT-PARTICIPANT<a href="#section-3.3-7.2.3.1.1" class="pilcrow">¶</a></p>
+</div>
+</td>
+              <td class="text-left" rowspan="1" colspan="1">
+                <div id="_2fffd6d2-2954-312e-448d-993b37be646e">
+<p id="section-3.3-7.2.3.2.1">OPTIONAL<a href="#section-3.3-7.2.3.2.1" class="pilcrow">¶</a></p>
+</div>
+</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">
+                <div id="_837011f8-7e1e-18b8-c9fe-5c8334aeafee">
+<p id="section-3.3-7.2.4.1.1">NON-PARTICIPANT<a href="#section-3.3-7.2.4.1.1" class="pilcrow">¶</a></p>
+</div>
+</td>
+              <td class="text-left" rowspan="1" colspan="1">
+                <div id="_35eebf0e-fd70-acaf-1cbb-662cc49c2c48">
+<p id="section-3.3-7.2.4.2.1">INFORMATIONAL<a href="#section-3.3-7.2.4.2.1" class="pilcrow">¶</a></p>
+</div>
+</td>
+            </tr>
+          </tbody>
+        </table>
+</div>
+<div id="_003caca9-f298-a8e0-3423-4fd437e1182a">
+<p id="section-3.3-8">The following table shows those roles that MUST appear in the "PARTICIPANT-TYPE" property for group-scheduling. Additionally, the mapping for "PARTICIPANT-TYPE" property values to  <span>[<a href="#RFC5545" class="cite xref">RFC5545</a>]</span> values are shown.<a href="#section-3.3-8" class="pilcrow">¶</a></p>
+</div>
+<div id="_f861da41-36bf-a223-a95e-28caad09fd91">
+<table class="center" id="table-2">
+          <caption><a href="#table-2" class="selfRef">Table 2</a></caption>
+<thead>
+            <tr>
+              <th class="text-left" rowspan="1" colspan="1">PARTICIPANT-TYPE</th>
+              <th class="text-left" rowspan="1" colspan="1">RFC5545 ROLE</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">
+                <div id="_bb601269-b809-e6fa-0864-46987ddf5b6a">
+<p id="section-3.3-9.2.1.1.1">OWNER<a href="#section-3.3-9.2.1.1.1" class="pilcrow">¶</a></p>
+</div>
+</td>
+              <td class="text-left" rowspan="1" colspan="1">
+                <div id="_9896dbce-31ec-8d0b-87a3-16bae6c4c5bf">
+<p id="section-3.3-9.2.1.2.1">Create ORGANIZER<a href="#section-3.3-9.2.1.2.1" class="pilcrow">¶</a></p>
+</div>
+</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">
+                <div id="_faf8d50c-7d72-ba81-a63b-94e1f066eff7">
+<p id="section-3.3-9.2.2.1.1">ATTENDEE<a href="#section-3.3-9.2.2.1.1" class="pilcrow">¶</a></p>
+</div>
+</td>
+              <td class="text-left" rowspan="1" colspan="1">
+                <div id="_7dd9d806-0046-a6de-28c3-f0f1902eca2e">
+<p id="section-3.3-9.2.2.2.1">REQ-PARTICIPANT<a href="#section-3.3-9.2.2.2.1" class="pilcrow">¶</a></p>
+</div>
+</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">
+                <div id="_95124d0e-8b81-2c2d-885e-8b05a4058fed">
+<p id="section-3.3-9.2.3.1.1">OPTIONAL<a href="#section-3.3-9.2.3.1.1" class="pilcrow">¶</a></p>
+</div>
+</td>
+              <td class="text-left" rowspan="1" colspan="1">
+                <div id="_6cf90c65-53de-9008-2cb2-b6f3bfcd130d">
+<p id="section-3.3-9.2.3.2.1">OPT-PARTICIPANT<a href="#section-3.3-9.2.3.2.1" class="pilcrow">¶</a></p>
+</div>
+</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">
+                <div id="_b1a653a2-81c3-e638-c352-e48286640aee">
+<p id="section-3.3-9.2.4.1.1">INFORMATIONAL<a href="#section-3.3-9.2.4.1.1" class="pilcrow">¶</a></p>
+</div>
+</td>
+              <td class="text-left" rowspan="1" colspan="1">
+                <div id="_dcd65358-a9d7-0631-8b96-7f279c1d6edb">
+<p id="section-3.3-9.2.4.2.1">NON-PARTICIPANT<a href="#section-3.3-9.2.4.2.1" class="pilcrow">¶</a></p>
+</div>
+</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">
+                <div id="_7dbd462d-d1d3-eedf-c920-0222fbe3bc16">
+<p id="section-3.3-9.2.5.1.1">CHAIR<a href="#section-3.3-9.2.5.1.1" class="pilcrow">¶</a></p>
+</div>
+</td>
+              <td class="text-left" rowspan="1" colspan="1">
+                <div id="_98fe8c31-4d05-c11f-7769-7ddd725c84d3">
+<p id="section-3.3-9.2.5.2.1">CHAIR<a href="#section-3.3-9.2.5.2.1" class="pilcrow">¶</a></p>
+</div>
+</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="2">
+                <div id="_61a95942-7c96-f593-6001-12682a0fd41d">
+<p id="section-3.3-9.2.6.1.1">Subsequent values have no <span>[<a href="#RFC5545" class="cite xref">RFC5545</a>]</span> equivalent<a href="#section-3.3-9.2.6.1.1" class="pilcrow">¶</a></p>
+</div>
+</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">
+                <div id="_56206ca2-c710-c1c7-a51b-9f0b478bbea0">
+<p id="section-3.3-9.2.7.1.1">CONTACT<a href="#section-3.3-9.2.7.1.1" class="pilcrow">¶</a></p>
+</div>
+</td>
+              <td class="text-left" rowspan="1" colspan="1"></td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">
+                <div id="_6e31aa18-976d-1c66-fd56-4c0dd5b18cdd">
+<p id="section-3.3-9.2.8.1.1">VOTER<a href="#section-3.3-9.2.8.1.1" class="pilcrow">¶</a></p>
+</div>
+</td>
+              <td class="text-left" rowspan="1" colspan="1"></td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">
+                <div id="_911e7c9d-0b64-c6c5-e5d8-b3203f2c0c86">
+<p id="section-3.3-9.2.9.1.1">ACTIVE<a href="#section-3.3-9.2.9.1.1" class="pilcrow">¶</a></p>
+</div>
+</td>
+              <td class="text-left" rowspan="1" colspan="1"></td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">
+                <div id="_c15c1beb-a6b5-1c27-f27d-2fb44a8f8957">
+<p id="section-3.3-9.2.10.1.1">INACTIVE<a href="#section-3.3-9.2.10.1.1" class="pilcrow">¶</a></p>
+</div>
+</td>
+              <td class="text-left" rowspan="1" colspan="1"></td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">
+                <div id="_cc73bbe3-4fb3-470c-1fa3-b592b98154cc">
+<p id="section-3.3-9.2.11.1.1">SPONSOR<a href="#section-3.3-9.2.11.1.1" class="pilcrow">¶</a></p>
+</div>
+</td>
+              <td class="text-left" rowspan="1" colspan="1"></td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">
+                <div id="_7a58a02e-ac41-7116-129e-d68577eaf8cb">
+<p id="section-3.3-9.2.12.1.1">BOOKING-CONTACT<a href="#section-3.3-9.2.12.1.1" class="pilcrow">¶</a></p>
+</div>
+</td>
+              <td class="text-left" rowspan="1" colspan="1"></td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">
+                <div id="_fb2099d9-8808-cdf3-f527-2d51735ae025">
+<p id="section-3.3-9.2.13.1.1">EMERGENCY-CONTACT<a href="#section-3.3-9.2.13.1.1" class="pilcrow">¶</a></p>
+</div>
+</td>
+              <td class="text-left" rowspan="1" colspan="1"></td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">
+                <div id="_d4935b8d-70d9-01ab-26a6-7d92d1f389bc">
+<p id="section-3.3-9.2.14.1.1">PUBLICITY-CONTACT<a href="#section-3.3-9.2.14.1.1" class="pilcrow">¶</a></p>
+</div>
+</td>
+              <td class="text-left" rowspan="1" colspan="1"></td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">
+                <div id="_8c3c6d1f-d9db-f4e7-c4bb-76a765d3438b">
+<p id="section-3.3-9.2.15.1.1">PLANNER-CONTACT<a href="#section-3.3-9.2.15.1.1" class="pilcrow">¶</a></p>
+</div>
+</td>
+              <td class="text-left" rowspan="1" colspan="1"></td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">
+                <div id="_e3d7a2e5-a04b-5be2-f5b1-b68e6c02a04e">
+<p id="section-3.3-9.2.16.1.1">PERFORMER<a href="#section-3.3-9.2.16.1.1" class="pilcrow">¶</a></p>
+</div>
+</td>
+              <td class="text-left" rowspan="1" colspan="1"></td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">
+                <div id="_351540ee-2894-ef21-82dc-509cb4715aff">
+<p id="section-3.3-9.2.17.1.1">SPEAKER<a href="#section-3.3-9.2.17.1.1" class="pilcrow">¶</a></p>
+</div>
+</td>
+              <td class="text-left" rowspan="1" colspan="1"></td>
+            </tr>
+          </tbody>
+        </table>
+</div>
+<span class="break"></span><div id="_d3030ffc-5357-cf66-477e-7cd84914626d">
+<dl class="dlParallel" id="section-3.3-10">
+          <dt id="section-3.3-10.1">Examples</dt>
+          <dd style="margin-left: 1.5em" id="section-3.3-10.2">
+            <ul class="normal">
+<li class="normal" id="section-3.3-10.2.1.1">PARTICIPANT-TYPE=OWNER,... equivalent to an ORGANIZER<a href="#section-3.3-10.2.1.1" class="pilcrow">¶</a>
+</li>
+              <li class="normal" id="section-3.3-10.2.1.2">PARTICIPANT-TYPE=ATTENDEE,... equivalent to the ATTENDEE property<a href="#section-3.3-10.2.1.2" class="pilcrow">¶</a>
+</li>
+            </ul>
+</dd>
+        <dd class="break"></dd>
+</dl>
+</div>
+</section>
+</div>
+</section>
+</div>
+<div id="new-participant-properties-for-itip">
+<section id="section-4">
+      <h2 id="name-new-participant-properties-">
+<a href="#section-4" class="section-number selfRef">4. </a><a href="#name-new-participant-properties-" class="section-name selfRef">New Participant Properties for iTip</a>
+      </h2>
+<div id="_1a3cccf6-df90-53da-6f3e-39bfea0a2e8f">
+<p id="section-4-1">The following properties are defined to be used within PARTICIPANT during scheduling and take the place of ATTENDEE and ORGANIZER properties and parameters.<a href="#section-4-1" class="pilcrow">¶</a></p>
+</div>
+<div id="new-prop-kind">
+<section id="section-4.1">
+        <h3 id="name-kind">
+<a href="#section-4.1" class="section-number selfRef">4.1. </a><a href="#name-kind" class="section-name selfRef">Kind</a>
+        </h3>
+<span class="break"></span><div id="_13fc9ae3-7dd2-f9ba-e9cf-cc4127d4f9d7">
+<dl class="dlParallel" id="section-4.1-1">
+          <dt id="section-4.1-1.1">Property name</dt>
+          <dd style="margin-left: 1.5em" id="section-4.1-1.2">
+            <div id="_965535e4-c95a-9016-6f0f-0cf3a04913e3">
+<p id="section-4.1-1.2.1">KIND<a href="#section-4.1-1.2.1" class="pilcrow">¶</a></p>
+</div>
+</dd>
+          <dd class="break"></dd>
+<dt id="section-4.1-1.3">Purpose</dt>
+          <dd style="margin-left: 1.5em" id="section-4.1-1.4">
+            <div id="_65094840-9e02-d3f4-7bac-b4960c910d36">
+<p id="section-4.1-1.4.1">This is what kind of entity this participant is, if known.<a href="#section-4.1-1.4.1" class="pilcrow">¶</a></p>
+</div>
+</dd>
+          <dd class="break"></dd>
+<dt id="section-4.1-1.5">Property Parameters</dt>
+          <dd style="margin-left: 1.5em" id="section-4.1-1.6">
+            <div id="_6239ea13-e951-58f3-39a8-e2d0e2dfd90b">
+<p id="section-4.1-1.6.1">Non-standard or iana parameters can be specified on this property.<a href="#section-4.1-1.6.1" class="pilcrow">¶</a></p>
+</div>
+</dd>
+          <dd class="break"></dd>
+<dt id="section-4.1-1.7">Conformance</dt>
+          <dd style="margin-left: 1.5em" id="section-4.1-1.8">
+            <div id="_4ff8faa1-0b39-4235-02a5-628d64a4fb03">
+<p id="section-4.1-1.8.1">This property MAY be specified in a "PARTICIPANT" calendar component.<a href="#section-4.1-1.8.1" class="pilcrow">¶</a></p>
+</div>
+</dd>
+          <dd class="break"></dd>
+<dt id="section-4.1-1.9">Description</dt>
+          <dd style="margin-left: 1.5em" id="section-4.1-1.10">
+            <div id="_c5a4b2c6-d5c6-3f1f-0936-420b6efbf407">
+<p id="section-4.1-1.10.1">When used in a "PARTICIPANT" calendar component this property indicates the kind of entity, individual, group etc.<br><a href="#section-4.1-1.10.1" class="pilcrow">¶</a></p>
+</div>
+<div id="_8e1eb347-7043-c12d-ffd5-c8fc6b986916">
+<p id="section-4.1-1.10.2">It takes the values shown below which are a redefinition of the CUTYPE parameter values defined in <span>[<a href="#RFC5545" class="cite xref">RFC5545</a>]</span> and aligned with <span>[<a href="#RFC8984" class="cite xref">RFC8984</a>]</span> .<a href="#section-4.1-1.10.2" class="pilcrow">¶</a></p>
+</div>
+</dd>
+          <dd class="break"></dd>
+<dt id="section-4.1-1.11">Format Definition</dt>
+          <dd style="margin-left: 1.5em" id="section-4.1-1.12">
+            <div id="_1a36425f-1b87-1563-3c2d-96f785d67ee1">
+<p id="section-4.1-1.12.1">This property is defined by the following notation:<a href="#section-4.1-1.12.1" class="pilcrow">¶</a></p>
+</div>
+</dd>
+        <dd class="break"></dd>
+</dl>
+</div>
+<div id="_e5368d92-99cd-586d-1d7a-b19a5a990bef">
+<div class="lang-abnf sourcecode" id="section-4.1-2">
+<pre>kind = "KIND" kindparams ":"
+                "INDIVIDUAL"   ; An individual
+              / "GROUP"        ; A group of individuals
+              / "RESOURCE"     ; A physical resource
+              / "LOCATION"     ; A location resource e.g a room
+              / iana-token CRLF
+
+kindparams = *(";" other-param)</pre><a href="#section-4.1-2" class="pilcrow">¶</a>
+</div>
+</div>
+</section>
+</div>
+<div id="new-prop-participation-status">
+<section id="section-4.2">
+        <h3 id="name-participation-status">
+<a href="#section-4.2" class="section-number selfRef">4.2. </a><a href="#name-participation-status" class="section-name selfRef">Participation-status</a>
+        </h3>
+<span class="break"></span><div id="_6e7c37b1-7459-45ae-b605-01150bb84dd8">
+<dl class="dlParallel" id="section-4.2-1">
+          <dt id="section-4.2-1.1">Property name</dt>
+          <dd style="margin-left: 1.5em" id="section-4.2-1.2">
+            <div id="_d8caa91b-716b-9b35-f00b-7a643c4b496c">
+<p id="section-4.2-1.2.1">PARTICIPATION-STATUS<a href="#section-4.2-1.2.1" class="pilcrow">¶</a></p>
+</div>
+</dd>
+          <dd class="break"></dd>
+<dt id="section-4.2-1.3">Purpose</dt>
+          <dd style="margin-left: 1.5em" id="section-4.2-1.4">
+            <div id="_0f140bdf-d3ad-ea02-d59f-abd728b383d1">
+<p id="section-4.2-1.4.1">This property is used in the "PARTICIPANT" calendar component to indicate the participation status - if any.<a href="#section-4.2-1.4.1" class="pilcrow">¶</a></p>
+</div>
+</dd>
+          <dd class="break"></dd>
+<dt id="section-4.2-1.5">Property Parameters</dt>
+          <dd style="margin-left: 1.5em" id="section-4.2-1.6">
+            <div id="_ae0c4cbf-d95b-30cb-3a0e-7671c227c793">
+<p id="section-4.2-1.6.1">Non-standard or iana parameters can be specified on this property.<a href="#section-4.2-1.6.1" class="pilcrow">¶</a></p>
+</div>
+</dd>
+          <dd class="break"></dd>
+<dt id="section-4.2-1.7">Conformance</dt>
+          <dd style="margin-left: 1.5em" id="section-4.2-1.8">
+            <div id="_e0fe8430-cb2f-dd5e-821f-d4b0e1c97d9b">
+<p id="section-4.2-1.8.1">This property MAY be specified in a "PARTICIPANT" calendar component.<a href="#section-4.2-1.8.1" class="pilcrow">¶</a></p>
+</div>
+</dd>
+          <dd class="break"></dd>
+<dt id="section-4.2-1.9">Description</dt>
+          <dd style="margin-left: 1.5em" id="section-4.2-1.10">
+            <div id="_bc69fc1a-7153-fee1-c3f7-bdd01c2135d0">
+<p id="section-4.2-1.10.1">When used in a "PARTICIPANT" calendar component this property indicates what status, if any, the participant has.<br><a href="#section-4.2-1.10.1" class="pilcrow">¶</a></p>
+</div>
+<div id="_4ee8ce3b-ff9d-cb61-c307-adb10932e64e">
+<p id="section-4.2-1.10.2">It takes the same values as the PARTSTAT parameter defined in <span>[<a href="#RFC5545" class="cite xref">RFC5545</a>]</span>.<a href="#section-4.2-1.10.2" class="pilcrow">¶</a></p>
+</div>
+</dd>
+          <dd class="break"></dd>
+<dt id="section-4.2-1.11">Format Definition</dt>
+          <dd style="margin-left: 1.5em" id="section-4.2-1.12">
+            <div id="_ac66f27d-5e32-23e0-861d-410e5c8b7269">
+<p id="section-4.2-1.12.1">This property is defined by the following notation:<a href="#section-4.2-1.12.1" class="pilcrow">¶</a></p>
+</div>
+</dd>
+        <dd class="break"></dd>
+</dl>
+</div>
+<div id="_c0e92ddf-cf47-b627-2d67-247d309e2ecc">
+<div class="lang-abnf sourcecode" id="section-4.2-2">
+<pre>participation-status = "PARTICIPATION-STATUS"
+                       participation-statusparams ":"
+              NEEDS-ACTION / ; No status
+                    ; has yet been set by the participant.
+
+              ACCEPTED / ; The invited
+                    ; participant will participate.
+              DECLINED / ; The invited
+                    ; participant will not participate.
+               TENTATIVE / ; The invited participant
+                     ; may participate.
+                DELEGATED / ; The invited participant
+                     ; has delegated their attendance to
+                     ; another participant, as specified
+                      ; in the PARTICIPATION-DELEGATED-TO property.
+                COMPLETED / ; The assigned task is
+                     ; completed.
+                IN-PROCESS / ; The assigned task is
+                     ; being worked on.
+                    iana-token ("," iana-token) CRLF
+
+participation-statusparams = *(";" other-param)</pre><a href="#section-4.2-2" class="pilcrow">¶</a>
+</div>
+</div>
+</section>
+</div>
+<div id="new-prop-participation-delegated-from">
+<section id="section-4.3">
+        <h3 id="name-participation-delegated-fro">
+<a href="#section-4.3" class="section-number selfRef">4.3. </a><a href="#name-participation-delegated-fro" class="section-name selfRef">Participation delegated from</a>
+        </h3>
+<span class="break"></span><div id="_aba198b5-1bb6-c376-2101-fc547bce47d4">
+<dl class="dlParallel" id="section-4.3-1">
+          <dt id="section-4.3-1.1">Property name</dt>
+          <dd style="margin-left: 1.5em" id="section-4.3-1.2">
+            <div id="_ca418ce3-4848-927e-e27b-f368fd8a5a45">
+<p id="section-4.3-1.2.1">PARTICIPATION-DELEGATED-FROM<a href="#section-4.3-1.2.1" class="pilcrow">¶</a></p>
+</div>
+</dd>
+          <dd class="break"></dd>
+<dt id="section-4.3-1.3">Purpose</dt>
+          <dd style="margin-left: 1.5em" id="section-4.3-1.4">
+            <div id="_2353fee3-5a41-f230-7431-873ff783098d">
+<p id="section-4.3-1.4.1">This property is used in the "PARTICIPANT" calendar component to indicate who has delegated their participation to this participant.<a href="#section-4.3-1.4.1" class="pilcrow">¶</a></p>
+</div>
+</dd>
+          <dd class="break"></dd>
+<dt id="section-4.3-1.5">Property Parameters</dt>
+          <dd style="margin-left: 1.5em" id="section-4.3-1.6">
+            <div id="_d157efc2-93d1-0005-326d-9e64433e8f30">
+<p id="section-4.3-1.6.1">Non-standard or iana parameters can be specified on this property.<a href="#section-4.3-1.6.1" class="pilcrow">¶</a></p>
+</div>
+</dd>
+          <dd class="break"></dd>
+<dt id="section-4.3-1.7">Conformance</dt>
+          <dd style="margin-left: 1.5em" id="section-4.3-1.8">
+            <div id="_ad0667f5-dee2-5207-bc59-a2ae06cf22cf">
+<p id="section-4.3-1.8.1">This property MAY be specified in a "PARTICIPANT" calendar component 0 or more times.<a href="#section-4.3-1.8.1" class="pilcrow">¶</a></p>
+</div>
+</dd>
+          <dd class="break"></dd>
+<dt id="section-4.3-1.9">Description</dt>
+          <dd style="margin-left: 1.5em" id="section-4.3-1.10">
+            <div id="_697496f1-0b90-3eab-bc1c-4672a824abd2">
+<p id="section-4.3-1.10.1">This property specifies a calendar user that has delegated their participation in a group-scheduled component to the calendar user specified by the component.<a href="#section-4.3-1.10.1" class="pilcrow">¶</a></p>
+</div>
+</dd>
+          <dd class="break"></dd>
+<dt id="section-4.3-1.11">Format Definition</dt>
+          <dd style="margin-left: 1.5em" id="section-4.3-1.12">
+            <div id="_e7428dc1-9ce4-0768-85e5-82eba73c2bf1">
+<p id="section-4.3-1.12.1">This property is defined by the following notation:<a href="#section-4.3-1.12.1" class="pilcrow">¶</a></p>
+</div>
+</dd>
+        <dd class="break"></dd>
+</dl>
+</div>
+<div id="_8ddca498-3f33-c3aa-d70e-b1b16bb4c31f">
+<div class="lang-abnf sourcecode" id="section-4.3-2">
+<pre>participation-delfrom = "PARTICIPATION-DELEGATED-FROM"
+                        participation-delfromparams ":"
+              CAL-ADDRESS
+              iana-token ("," iana-token) CRLF
+
+participation-delfromparams = *(";" other-param)</pre><a href="#section-4.3-2" class="pilcrow">¶</a>
+</div>
+</div>
+</section>
+</div>
+<div id="new-prop-participation-delegated-to">
+<section id="section-4.4">
+        <h3 id="name-participation-delegated-to">
+<a href="#section-4.4" class="section-number selfRef">4.4. </a><a href="#name-participation-delegated-to" class="section-name selfRef">Participation delegated to</a>
+        </h3>
+<span class="break"></span><div id="_b8f424f5-fc1b-082b-ed06-073b56ce4f68">
+<dl class="dlParallel" id="section-4.4-1">
+          <dt id="section-4.4-1.1">Property name</dt>
+          <dd style="margin-left: 1.5em" id="section-4.4-1.2">
+            <div id="_229f0722-7344-9d07-d989-8fcde3b7d13a">
+<p id="section-4.4-1.2.1">PARTICIPATION-DELEGATED-TO<a href="#section-4.4-1.2.1" class="pilcrow">¶</a></p>
+</div>
+</dd>
+          <dd class="break"></dd>
+<dt id="section-4.4-1.3">Purpose</dt>
+          <dd style="margin-left: 1.5em" id="section-4.4-1.4">
+            <div id="_adf695a6-de4d-1014-345a-047e4ebaff05">
+<p id="section-4.4-1.4.1">To specify the calendar user to whom the calendar user specified by the component has delegated participation.<a href="#section-4.4-1.4.1" class="pilcrow">¶</a></p>
+</div>
+</dd>
+          <dd class="break"></dd>
+<dt id="section-4.4-1.5">Property Parameters</dt>
+          <dd style="margin-left: 1.5em" id="section-4.4-1.6">
+            <div id="_24f932f2-c098-0afa-c0b6-a259a2ed1b85">
+<p id="section-4.4-1.6.1">Non-standard or iana parameters can be specified on this property.<a href="#section-4.4-1.6.1" class="pilcrow">¶</a></p>
+</div>
+</dd>
+          <dd class="break"></dd>
+<dt id="section-4.4-1.7">Conformance</dt>
+          <dd style="margin-left: 1.5em" id="section-4.4-1.8">
+            <div id="_9115a1fc-7510-2b19-e277-a324e4b371ed">
+<p id="section-4.4-1.8.1">This property MAY be specified in a "PARTICIPANT" calendar component 0 or more times.<a href="#section-4.4-1.8.1" class="pilcrow">¶</a></p>
+</div>
+</dd>
+          <dd class="break"></dd>
+<dt id="section-4.4-1.9">Description</dt>
+          <dd style="margin-left: 1.5em" id="section-4.4-1.10">
+            <div id="_b2fa443a-ff44-8315-07c9-1e55fab54897">
+<p id="section-4.4-1.10.1">This property specifies the calendar user that has been delegated participation in a group-scheduled component by the calendar user specified by the component.<a href="#section-4.4-1.10.1" class="pilcrow">¶</a></p>
+</div>
+</dd>
+          <dd class="break"></dd>
+<dt id="section-4.4-1.11">Format Definition</dt>
+          <dd style="margin-left: 1.5em" id="section-4.4-1.12">
+            <div id="_b89d9eff-6af9-d1d0-5d1c-287f989cc8da">
+<p id="section-4.4-1.12.1">This property is defined by the following notation:<a href="#section-4.4-1.12.1" class="pilcrow">¶</a></p>
+</div>
+</dd>
+        <dd class="break"></dd>
+</dl>
+</div>
+<div id="_d3fa194e-df89-24ff-934c-db91d105e5f2">
+<div class="lang-abnf sourcecode" id="section-4.4-2">
+<pre>participation-delto = "PARTICIPATION-DELEGATED-TO"
+                      participation-deltoparams ":"
+              CAL-ADDRESS
+              iana-token ("," iana-token) CRLF
+
+participation-deltoparams = *(";" other-param)</pre><a href="#section-4.4-2" class="pilcrow">¶</a>
+</div>
+</div>
+</section>
+</div>
+<div id="new-prop-member-of">
+<section id="section-4.5">
+        <h3 id="name-member-of">
+<a href="#section-4.5" class="section-number selfRef">4.5. </a><a href="#name-member-of" class="section-name selfRef">Member of</a>
+        </h3>
+<span class="break"></span><div id="_8733a04c-59ce-4057-9dae-ac173857be80">
+<dl class="dlParallel" id="section-4.5-1">
+          <dt id="section-4.5-1.1">Property name</dt>
+          <dd style="margin-left: 1.5em" id="section-4.5-1.2">
+            <div id="_dccd2120-fb5c-ed5f-87bd-428fdd8096ba">
+<p id="section-4.5-1.2.1">MEMBER-OF<a href="#section-4.5-1.2.1" class="pilcrow">¶</a></p>
+</div>
+</dd>
+          <dd class="break"></dd>
+<dt id="section-4.5-1.3">Purpose</dt>
+          <dd style="margin-left: 1.5em" id="section-4.5-1.4">
+            <div id="_e402047f-e5ef-f04b-6217-1fcc01626906">
+<p id="section-4.5-1.4.1">To specify the group or list membership of the calendar user specified by the component.<a href="#section-4.5-1.4.1" class="pilcrow">¶</a></p>
+</div>
+</dd>
+          <dd class="break"></dd>
+<dt id="section-4.5-1.5">Property Parameters</dt>
+          <dd style="margin-left: 1.5em" id="section-4.5-1.6">
+            <div id="_56a4d505-f5a2-8a46-af62-a4c5d1f049b4">
+<p id="section-4.5-1.6.1">Non-standard or iana parameters can be specified on this property.<a href="#section-4.5-1.6.1" class="pilcrow">¶</a></p>
+</div>
+</dd>
+          <dd class="break"></dd>
+<dt id="section-4.5-1.7">Conformance</dt>
+          <dd style="margin-left: 1.5em" id="section-4.5-1.8">
+            <div id="_bc32fafd-fd23-23e8-22bf-2367ab649f6e">
+<p id="section-4.5-1.8.1">This property MAY be specified in a "PARTICIPANT" calendar component 0 or more times.<a href="#section-4.5-1.8.1" class="pilcrow">¶</a></p>
+</div>
+</dd>
+          <dd class="break"></dd>
+<dt id="section-4.5-1.9">Description</dt>
+          <dd style="margin-left: 1.5em" id="section-4.5-1.10">
+            <div id="_66e4e049-299f-e36e-61a7-d0823f2e61bd">
+<p id="section-4.5-1.10.1">This property identifies the group or list membership for the calendar user specified by the component.<a href="#section-4.5-1.10.1" class="pilcrow">¶</a></p>
+</div>
+</dd>
+          <dd class="break"></dd>
+<dt id="section-4.5-1.11">Format Definition</dt>
+          <dd style="margin-left: 1.5em" id="section-4.5-1.12">
+            <div id="_a2e0c986-abde-5085-93e6-03bae52c9299">
+<p id="section-4.5-1.12.1">This property is defined by the following notation:<a href="#section-4.5-1.12.1" class="pilcrow">¶</a></p>
+</div>
+</dd>
+        <dd class="break"></dd>
+</dl>
+</div>
+<div id="_99b11b66-8350-3fee-bce8-48d34bf53c65">
+<div class="lang-abnf sourcecode" id="section-4.5-2">
+<pre>member-of = "MEMBER-OF" member-ogparams ":"
+              CAL-ADDRESS
+              iana-token ("," iana-token) CRLF
+
+memberofparams = *(";" other-param)</pre><a href="#section-4.5-2" class="pilcrow">¶</a>
+</div>
+</div>
+</section>
+</div>
+<div id="new-prop-lang">
+<section id="section-4.6">
+        <h3 id="name-lang">
+<a href="#section-4.6" class="section-number selfRef">4.6. </a><a href="#name-lang" class="section-name selfRef">Lang</a>
+        </h3>
+<span class="break"></span><div id="_3cb29fd8-91f5-f5c5-f885-ca35080c51f1">
+<dl class="dlParallel" id="section-4.6-1">
+          <dt id="section-4.6-1.1">Property name</dt>
+          <dd style="margin-left: 1.5em" id="section-4.6-1.2">
+            <div id="_20aa2fb0-5d22-7f8f-8ec7-b7e887e3fe5e">
+<p id="section-4.6-1.2.1">LANG<a href="#section-4.6-1.2.1" class="pilcrow">¶</a></p>
+</div>
+</dd>
+          <dd class="break"></dd>
+<dt id="section-4.6-1.3">Purpose</dt>
+          <dd style="margin-left: 1.5em" id="section-4.6-1.4">
+            <div id="_61df9544-a446-5b15-f236-4b34588d7e9f">
+<p id="section-4.6-1.4.1">This is the language tag, as defined in <span>[<a href="#RFC5646" class="cite xref">RFC5646</a>]</span>, that best describes the participant's preferred language, if known.<a href="#section-4.6-1.4.1" class="pilcrow">¶</a></p>
+</div>
+</dd>
+          <dd class="break"></dd>
+<dt id="section-4.6-1.5">Property Parameters</dt>
+          <dd style="margin-left: 1.5em" id="section-4.6-1.6">
+            <div id="_e655b9ab-176c-863a-6079-db9ac6bd91f2">
+<p id="section-4.6-1.6.1">Non-standard or iana parameters can be specified on this property.<a href="#section-4.6-1.6.1" class="pilcrow">¶</a></p>
+</div>
+</dd>
+          <dd class="break"></dd>
+<dt id="section-4.6-1.7">Conformance</dt>
+          <dd style="margin-left: 1.5em" id="section-4.6-1.8">
+            <div id="_1b6a5efc-ebb6-80bb-a371-f377effb4012">
+<p id="section-4.6-1.8.1">This property MAY be specified in any appropriate component.<a href="#section-4.6-1.8.1" class="pilcrow">¶</a></p>
+</div>
+</dd>
+          <dd class="break"></dd>
+<dt id="section-4.6-1.9">Format Definition</dt>
+          <dd style="margin-left: 1.5em" id="section-4.6-1.10">
+            <div id="_9bf9695e-b079-73b7-e5b8-3fb8c908d7cd">
+<p id="section-4.6-1.10.1">This property is defined by the following notation:<a href="#section-4.6-1.10.1" class="pilcrow">¶</a></p>
+</div>
+</dd>
+        <dd class="break"></dd>
+</dl>
+</div>
+<div id="_1bc8885b-92ae-d35a-9179-80d412df3cd0">
+<div class="lang-abnf sourcecode" id="section-4.6-2">
+<pre>lang = "LANG" langparams ":" TEXT CRLF
+
+langparams = *(";" other-param)</pre><a href="#section-4.6-2" class="pilcrow">¶</a>
+</div>
+</div>
+</section>
+</div>
+<div id="new-prop-expect-reply">
+<section id="section-4.7">
+        <h3 id="name-expect-reply">
+<a href="#section-4.7" class="section-number selfRef">4.7. </a><a href="#name-expect-reply" class="section-name selfRef">Expect reply</a>
+        </h3>
+<span class="break"></span><div id="_6be839a8-0ad9-1347-f6f9-9f5d4f57a285">
+<dl class="dlParallel" id="section-4.7-1">
+          <dt id="section-4.7-1.1">Property name</dt>
+          <dd style="margin-left: 1.5em" id="section-4.7-1.2">
+            <div id="_897c5be9-b638-40fe-124a-92fda8d4b535">
+<p id="section-4.7-1.2.1">EXPECT-REPLY<a href="#section-4.7-1.2.1" class="pilcrow">¶</a></p>
+</div>
+</dd>
+          <dd class="break"></dd>
+<dt id="section-4.7-1.3">Purpose</dt>
+          <dd style="margin-left: 1.5em" id="section-4.7-1.4">
+            <div id="_44a4cc03-6f12-bcbb-f546-b6772f6ba4d7">
+<p id="section-4.7-1.4.1">If true, the organizer is expecting the participant to notify them of their participation status.<a href="#section-4.7-1.4.1" class="pilcrow">¶</a></p>
+</div>
+</dd>
+          <dd class="break"></dd>
+<dt id="section-4.7-1.5">Property Parameters</dt>
+          <dd style="margin-left: 1.5em" id="section-4.7-1.6">
+            <div id="_05cc3775-6761-f00f-b783-fe8e83cab773">
+<p id="section-4.7-1.6.1">Non-standard or iana parameters can be specified on this property.<a href="#section-4.7-1.6.1" class="pilcrow">¶</a></p>
+</div>
+</dd>
+          <dd class="break"></dd>
+<dt id="section-4.7-1.7">Conformance</dt>
+          <dd style="margin-left: 1.5em" id="section-4.7-1.8">
+            <div id="_0a626ede-9875-135a-3bef-7a4bb4b83284">
+<p id="section-4.7-1.8.1">This property MAY be specified once in the "PARTICIPANT" calendar component.<a href="#section-4.7-1.8.1" class="pilcrow">¶</a></p>
+</div>
+</dd>
+          <dd class="break"></dd>
+<dt id="section-4.7-1.9">Format Definition</dt>
+          <dd style="margin-left: 1.5em" id="section-4.7-1.10">
+            <div id="_63f078ca-dd54-60d9-1f91-1f752e3ebbbc">
+<p id="section-4.7-1.10.1">This property is defined by the following notation:<a href="#section-4.7-1.10.1" class="pilcrow">¶</a></p>
+</div>
+</dd>
+        <dd class="break"></dd>
+</dl>
+</div>
+<div id="_1b1ef27d-05e6-1444-218d-e6b05542bd0d">
+<div class="lang-abnf sourcecode" id="section-4.7-2">
+<pre>expect-reply = "EXPECT-REPLY"
+              expect-replyparams ":"
+              ( "TRUE" / "FALSE") CRLF
+
+expect-replyparams = *(";" other-param)</pre><a href="#section-4.7-2" class="pilcrow">¶</a>
+</div>
+</div>
+</section>
+</div>
+<div id="new-prop-scheduling-agent">
+<section id="section-4.8">
+        <h3 id="name-scheduling-agent">
+<a href="#section-4.8" class="section-number selfRef">4.8. </a><a href="#name-scheduling-agent" class="section-name selfRef">Scheduling-agent</a>
+        </h3>
+<span class="break"></span><div id="_4df40a19-067f-0f79-2fc1-fe78e3996292">
+<dl class="dlParallel" id="section-4.8-1">
+          <dt id="section-4.8-1.1">Property name</dt>
+          <dd style="margin-left: 1.5em" id="section-4.8-1.2">
+            <div id="_cf11b8ad-918b-ff08-7976-660a54977a61">
+<p id="section-4.8-1.2.1">SCHEDULING-AGENT<a href="#section-4.8-1.2.1" class="pilcrow">¶</a></p>
+</div>
+</dd>
+          <dd class="break"></dd>
+<dt id="section-4.8-1.3">Purpose</dt>
+          <dd style="margin-left: 1.5em" id="section-4.8-1.4">
+            <div id="_01abd95f-ee30-9506-aac2-9022525aa736">
+<p id="section-4.8-1.4.1">This is who is responsible for sending scheduling messages with this calendar object to the participant.<a href="#section-4.8-1.4.1" class="pilcrow">¶</a></p>
+</div>
+</dd>
+          <dd class="break"></dd>
+<dt id="section-4.8-1.5">Property Parameters</dt>
+          <dd style="margin-left: 1.5em" id="section-4.8-1.6">
+            <div id="_6f51f4a5-b68b-09d0-c4ca-f7fa4edeb97e">
+<p id="section-4.8-1.6.1">Non-standard or iana parameters can be specified on this property.<a href="#section-4.8-1.6.1" class="pilcrow">¶</a></p>
+</div>
+</dd>
+          <dd class="break"></dd>
+<dt id="section-4.8-1.7">Conformance</dt>
+          <dd style="margin-left: 1.5em" id="section-4.8-1.8">
+            <div id="_34469f40-ac65-e74e-5801-877bcdca10d7">
+<p id="section-4.8-1.8.1">This property MAY be specified once in the "PARTICIPANT" calendar component.<a href="#section-4.8-1.8.1" class="pilcrow">¶</a></p>
+</div>
+</dd>
+          <dd class="break"></dd>
+<dt id="section-4.8-1.9">Format Definition</dt>
+          <dd style="margin-left: 1.5em" id="section-4.8-1.10">
+            <div id="_f9cf4c33-edfb-f828-e494-f99f82bfa908">
+<p id="section-4.8-1.10.1">This property is defined by the following notation:<a href="#section-4.8-1.10.1" class="pilcrow">¶</a></p>
+</div>
+</dd>
+        <dd class="break"></dd>
+</dl>
+</div>
+<div id="_fb1321b5-0c97-8e96-d1ea-e65538ba8057">
+<div class="lang-abnf sourcecode" id="section-4.8-2">
+<pre>scheduling-agent = "SCHEDULING-AGENT"
+              scheduling-agentparams ":"
+              ( "SERVER" /
+                "CLIENT" /
+                "NONE") CRLF
+
+scheduling-agentparams = *(";" other-param)</pre><a href="#section-4.8-2" class="pilcrow">¶</a>
+</div>
+</div>
+<div id="_d9614e12-01a9-cc12-498c-8e8f2567ae6d">
+<p id="section-4.8-3">The value MUST be one of the following values from the registry defined in <span><a class="relref">Section 12.4.1</a> of [<a href="#RFC6638" class="cite xref">RFC6638</a>]</span>, or a vendor-specific value.<a href="#section-4.8-3" class="pilcrow">¶</a></p>
+</div>
+<span class="break"></span><div id="_61168668-68b2-b6a9-59b1-a202b6c6a7ae">
+<dl class="dlParallel" id="section-4.8-4">
+          <dt id="section-4.8-4.1">SERVER</dt>
+          <dd style="margin-left: 1.5em" id="section-4.8-4.2">
+            <div id="_5629b824-efdf-17c0-7eb2-76f3f5cab6de">
+<p id="section-4.8-4.2.1">The calendar server will send the scheduling messages.<a href="#section-4.8-4.2.1" class="pilcrow">¶</a></p>
+</div>
+</dd>
+          <dd class="break"></dd>
+<dt id="section-4.8-4.3">CLIENT</dt>
+          <dd style="margin-left: 1.5em" id="section-4.8-4.4">
+            <div id="_2728a6ab-0a5d-705a-65d3-10fd89e3ec07">
+<p id="section-4.8-4.4.1">The calendar client will send the scheduling messages.<a href="#section-4.8-4.4.1" class="pilcrow">¶</a></p>
+</div>
+</dd>
+          <dd class="break"></dd>
+<dt id="section-4.8-4.5">NONE</dt>
+          <dd style="margin-left: 1.5em" id="section-4.8-4.6">
+            <div id="_8c8b54ac-130e-a9d0-4ae9-d8bc3529159a">
+<p id="section-4.8-4.6.1">No scheduling messages are to be sent to this participant.<a href="#section-4.8-4.6.1" class="pilcrow">¶</a></p>
+</div>
+</dd>
+        <dd class="break"></dd>
+</dl>
+</div>
+</section>
+</div>
+<div id="new-prop-scheduling-force-send">
+<section id="section-4.9">
+        <h3 id="name-scheduling-force-send">
+<a href="#section-4.9" class="section-number selfRef">4.9. </a><a href="#name-scheduling-force-send" class="section-name selfRef">Scheduling-force-send</a>
+        </h3>
+<span class="break"></span><div id="_511df9e1-e924-9be7-7055-9f403cf28b39">
+<dl class="dlParallel" id="section-4.9-1">
+          <dt id="section-4.9-1.1">Property name</dt>
+          <dd style="margin-left: 1.5em" id="section-4.9-1.2">
+            <div id="_534b5414-2cf1-5057-d9d6-83a0595e8429">
+<p id="section-4.9-1.2.1">SCHEDULING-FORCE-SEND<a href="#section-4.9-1.2.1" class="pilcrow">¶</a></p>
+</div>
+</dd>
+          <dd class="break"></dd>
+<dt id="section-4.9-1.3">Purpose</dt>
+          <dd style="margin-left: 1.5em" id="section-4.9-1.4">
+            <div id="_c8f94507-7651-b9a1-94f2-78a9538ae975">
+<p id="section-4.9-1.4.1">A client may set the property on a participant to true to request that the server send a scheduling message to the participant when it would not normally do so (e.g., if no significant change is made the object or the scheduleAgent is set to client). The property MUST NOT be stored in the object on the server or appear in a scheduling message.<a href="#section-4.9-1.4.1" class="pilcrow">¶</a></p>
+</div>
+</dd>
+          <dd class="break"></dd>
+<dt id="section-4.9-1.5">Property Parameters</dt>
+          <dd style="margin-left: 1.5em" id="section-4.9-1.6">
+            <div id="_5e37e0ab-f23b-bd8b-864f-08580dc824f7">
+<p id="section-4.9-1.6.1">Non-standard or iana parameters can be specified on this property.<a href="#section-4.9-1.6.1" class="pilcrow">¶</a></p>
+</div>
+</dd>
+          <dd class="break"></dd>
+<dt id="section-4.9-1.7">Conformance</dt>
+          <dd style="margin-left: 1.5em" id="section-4.9-1.8">
+            <div id="_ad71ec03-e64e-85bb-aabe-6c02bddf2d2b">
+<p id="section-4.9-1.8.1">This property MAY be specified once in the "PARTICIPANT" calendar component.<a href="#section-4.9-1.8.1" class="pilcrow">¶</a></p>
+</div>
+</dd>
+          <dd class="break"></dd>
+<dt id="section-4.9-1.9">Format Definition</dt>
+          <dd style="margin-left: 1.5em" id="section-4.9-1.10">
+            <div id="_ed3e2aa4-ae31-c028-8f33-af9e44c2b749">
+<p id="section-4.9-1.10.1">This property is defined by the following notation:<a href="#section-4.9-1.10.1" class="pilcrow">¶</a></p>
+</div>
+</dd>
+        <dd class="break"></dd>
+</dl>
+</div>
+<div id="_724c9bab-28a7-3934-d55a-9d77c31eab9f">
+<div class="lang-abnf sourcecode" id="section-4.9-2">
+<pre>scheduling-force-send = "SCHEDULING-FORCE-SEND"
+              scheduling-force-sendparams ":"
+              ( "TRUE" / "FALSE") CRLF
+
+scheduling-force-sendparams = *(";" other-param)</pre><a href="#section-4.9-2" class="pilcrow">¶</a>
+</div>
+</div>
+<span class="break"></span><div id="_618ae489-10f2-7798-6540-07f3e5bb08a4">
+<dl class="dlParallel" id="section-4.9-3">
+          <dt id="section-4.9-3.1">Description</dt>
+          <dd style="margin-left: 1.5em" id="section-4.9-3.2">
+            <div id="_a0338c63-cfca-4f35-af0a-fa7df94b1adc">
+<p id="section-4.9-3.2.1">This property MAY be specified in "PARTICIPANT" calendar components for which the "SCHEDULE-AGENT" property is set to the value "SERVER" or is absent. This property is used to force a server to send a scheduling message to a specific calendar user in situations where the server would not send a scheduling message otherwise (e.g., when no change that warrants the delivery of a new scheduling message was performed on the scheduling object resource). An "Owner" MAY specify this property for a PARTICIPANT with the value "REQUEST" to force a "REQUEST" scheduling message to be sent to the user.<a href="#section-4.9-3.2.1" class="pilcrow">¶</a></p>
+</div>
+<div id="_9ac74338-e73f-cf99-336c-a384d57a21a0">
+<p id="section-4.9-3.2.2">Participants who are not the "Owner" MAY specify this property in the "Owner" PARTICIPANT with the value "REPLY" to force a "REPLY" scheduling message to be sent to the "Owner".<a href="#section-4.9-3.2.2" class="pilcrow">¶</a></p>
+</div>
+<div id="_6436b97c-5e3f-37a0-78c4-e1e978c72f85">
+<p id="section-4.9-3.2.3">Servers MUST NOT preserve this property in scheduling object resources, nor include it in any scheduling messages sent as the result of a scheduling operation.<a href="#section-4.9-3.2.3" class="pilcrow">¶</a></p>
+</div>
+<div id="_5d8c97db-099c-a50a-63cb-263fdc675fc1">
+<p id="section-4.9-3.2.4">Clients MUST NOT include this property in any scheduling messages  that they themselves send.<a href="#section-4.9-3.2.4" class="pilcrow">¶</a></p>
+</div>
+<div id="_c338b490-6490-2635-d61b-fcae20c441ca">
+<p id="section-4.9-3.2.5">Servers MUST set the "SCHEDULING-STATUS" property of the participant to 2.5 (i.e., "Success; unknown, non-standard property value ignored."; see  <span><a class="relref">Section 3.6.6</a> of [<a href="#RFC5546" class="cite xref">RFC5546</a>]</span>) when the "SCHEDULE-FORCE-SEND" property is set to an iana-token value they do not recognize.<a href="#section-4.9-3.2.5" class="pilcrow">¶</a></p>
+</div>
+</dd>
+        <dd class="break"></dd>
+</dl>
+</div>
+</section>
+</div>
+<div id="new-prop-scheduling-status">
+<section id="section-4.10">
+        <h3 id="name-scheduling-status">
+<a href="#section-4.10" class="section-number selfRef">4.10. </a><a href="#name-scheduling-status" class="section-name selfRef">Scheduling-status</a>
+        </h3>
+<span class="break"></span><div id="_4677e466-a7cb-b50e-f5ae-7fda6c2fc14b">
+<dl class="dlParallel" id="section-4.10-1">
+          <dt id="section-4.10-1.1">Property name</dt>
+          <dd style="margin-left: 1.5em" id="section-4.10-1.2">
+            <div id="_9c3aeb75-a593-9da0-0735-9de5cf412d0e">
+<p id="section-4.10-1.2.1">SCHEDULING-STATUS<a href="#section-4.10-1.2.1" class="pilcrow">¶</a></p>
+</div>
+</dd>
+          <dd class="break"></dd>
+<dt id="section-4.10-1.3">Purpose</dt>
+          <dd style="margin-left: 1.5em" id="section-4.10-1.4">
+            <div id="_3a097db0-dfa2-035a-88de-c2fee664d9d9">
+<p id="section-4.10-1.4.1">This is a list of status codes, returned from the processing of the most recent scheduling message sent to this participant. The status codes MUST be valid statcode values as defined in the ABNF in Section 3.8.8.3 of [RFC5545].<a href="#section-4.10-1.4.1" class="pilcrow">¶</a></p>
+</div>
+<div id="_5a986b68-8398-eccd-d4da-aa681e2a85f4">
+<p id="section-4.10-1.4.2">Servers MUST only add or change this property when they send a scheduling message to the participant. Clients SHOULD NOT change or remove this property if it was provided by the server. Clients MAY add, change, or remove the property for participants where the client is handling the scheduling.This property MUST NOT be included in scheduling messages.<a href="#section-4.10-1.4.2" class="pilcrow">¶</a></p>
+</div>
+</dd>
+          <dd class="break"></dd>
+<dt id="section-4.10-1.5">Property Parameters</dt>
+          <dd style="margin-left: 1.5em" id="section-4.10-1.6">
+            <div id="_5f3b4380-501d-8f09-9714-38448bd38da4">
+<p id="section-4.10-1.6.1">Non-standard or iana parameters can be specified on this property.<a href="#section-4.10-1.6.1" class="pilcrow">¶</a></p>
+</div>
+</dd>
+          <dd class="break"></dd>
+<dt id="section-4.10-1.7">Conformance</dt>
+          <dd style="margin-left: 1.5em" id="section-4.10-1.8">
+            <div id="_8a725729-fddd-6297-fe97-e7bd663c1048">
+<p id="section-4.10-1.8.1">This property MAY be specified in any appropriate component.<a href="#section-4.10-1.8.1" class="pilcrow">¶</a></p>
+</div>
+</dd>
+          <dd class="break"></dd>
+<dt id="section-4.10-1.9">Format Definition</dt>
+          <dd style="margin-left: 1.5em" id="section-4.10-1.10">
+            <div id="_bc7f69fa-d20d-29f6-df9e-2883b18db1ec">
+<p id="section-4.10-1.10.1">This property is defined by the following notation:<a href="#section-4.10-1.10.1" class="pilcrow">¶</a></p>
+</div>
+</dd>
+        <dd class="break"></dd>
+</dl>
+</div>
+<div id="_faea8395-2160-7f27-7ba3-e0ce92ee7b4f">
+<div class="lang-abnf sourcecode" id="section-4.10-2">
+<pre>scheduling-status = "SCHEDULING-STATUS"
+            scheduling-statusparams ":" TEXT CRLF
+
+scheduling-statusparams = *(";" other-param)</pre><a href="#section-4.10-2" class="pilcrow">¶</a>
+</div>
+</div>
+</section>
+</div>
+<div id="new-prop-scheduling-dtstamp">
+<section id="section-4.11">
+        <h3 id="name-scheduling-dtstamp">
+<a href="#section-4.11" class="section-number selfRef">4.11. </a><a href="#name-scheduling-dtstamp" class="section-name selfRef">Scheduling-dtstamp</a>
+        </h3>
+<span class="break"></span><div id="_2b1564e7-c1df-f970-dd2a-ab84eed63b19">
+<dl class="dlParallel" id="section-4.11-1">
+          <dt id="section-4.11-1.1">Property name</dt>
+          <dd style="margin-left: 1.5em" id="section-4.11-1.2">
+            <div id="_c6e5d27a-bed8-db24-1929-49df1a476ce5">
+<p id="section-4.11-1.2.1">SCHEDULING-DTSTAMP<a href="#section-4.11-1.2.1" class="pilcrow">¶</a></p>
+</div>
+</dd>
+          <dd class="break"></dd>
+<dt id="section-4.11-1.3">Purpose</dt>
+          <dd style="margin-left: 1.5em" id="section-4.11-1.4">
+            <div id="_53994b49-355b-638a-93f4-46fdc5c1c4d5">
+<p id="section-4.11-1.4.1">This is the timestamp for the most recent response from this participant.<a href="#section-4.11-1.4.1" class="pilcrow">¶</a></p>
+</div>
+<div id="_f685e4bb-7a46-d90b-74d8-98db7f3398f9">
+<p id="section-4.11-1.4.2">This is the updated property of the last response when using iTIP. It can be compared to the updated property in future responses to detect and discard older responses delivered out of order.<a href="#section-4.11-1.4.2" class="pilcrow">¶</a></p>
+</div>
+</dd>
+          <dd class="break"></dd>
+<dt id="section-4.11-1.5">Property Parameters</dt>
+          <dd style="margin-left: 1.5em" id="section-4.11-1.6">
+            <div id="_9778ddcb-91b0-f079-9cfe-e2e2402eefa7">
+<p id="section-4.11-1.6.1">Non-standard or iana parameters can be specified on this property.<a href="#section-4.11-1.6.1" class="pilcrow">¶</a></p>
+</div>
+</dd>
+          <dd class="break"></dd>
+<dt id="section-4.11-1.7">Conformance</dt>
+          <dd style="margin-left: 1.5em" id="section-4.11-1.8">
+            <div id="_2721bac3-9a72-f88c-c76d-f65776e2f051">
+<p id="section-4.11-1.8.1">This property MAY be specified in any appropriate component.<a href="#section-4.11-1.8.1" class="pilcrow">¶</a></p>
+</div>
+</dd>
+          <dd class="break"></dd>
+<dt id="section-4.11-1.9">Format Definition</dt>
+          <dd style="margin-left: 1.5em" id="section-4.11-1.10">
+            <div id="_e74bafa7-6b60-0b45-8bd9-59cbc2dc4782">
+<p id="section-4.11-1.10.1">This property is defined by the following notation:<a href="#section-4.11-1.10.1" class="pilcrow">¶</a></p>
+</div>
+</dd>
+        <dd class="break"></dd>
+</dl>
+</div>
+<div id="_e6d67814-5a88-65aa-9148-0947d57bc88e">
+<div class="lang-abnf sourcecode" id="section-4.11-2">
+<pre>scheduling-dtstamp = "SCHEDULING-DTSTAMP"
+            scheduling-dtstampparams ":" DATE-TIME CRLF
+
+scheduling-dtstampparams = *(";" other-param)</pre><a href="#section-4.11-2" class="pilcrow">¶</a>
+</div>
+</div>
+</section>
+</div>
+<div id="new-prop-invited-by">
+<section id="section-4.12">
+        <h3 id="name-invited-by">
+<a href="#section-4.12" class="section-number selfRef">4.12. </a><a href="#name-invited-by" class="section-name selfRef">Invited-by</a>
+        </h3>
+<span class="break"></span><div id="_ef3882d9-53d8-b55d-a84a-d5ea7208d8f3">
+<dl class="dlParallel" id="section-4.12-1">
+          <dt id="section-4.12-1.1">Property name</dt>
+          <dd style="margin-left: 1.5em" id="section-4.12-1.2">
+            <div id="_203c0398-f71e-0d4e-0603-a464871594bd">
+<p id="section-4.12-1.2.1">INVITED-BY<a href="#section-4.12-1.2.1" class="pilcrow">¶</a></p>
+</div>
+</dd>
+          <dd class="break"></dd>
+<dt id="section-4.12-1.3">Purpose</dt>
+          <dd style="margin-left: 1.5em" id="section-4.12-1.4">
+            <div id="_bcfc7269-b31d-7034-9ef8-1ecf6a8a8528">
+<p id="section-4.12-1.4.1">This is the calendar address of the participant who added this participant to the entity, if known.<a href="#section-4.12-1.4.1" class="pilcrow">¶</a></p>
+</div>
+</dd>
+          <dd class="break"></dd>
+<dt id="section-4.12-1.5">Property Parameters</dt>
+          <dd style="margin-left: 1.5em" id="section-4.12-1.6">
+            <div id="_c44cf3f5-1f06-4e10-3461-17e4219e577c">
+<p id="section-4.12-1.6.1">Non-standard or iana parameters can be specified on this property.<a href="#section-4.12-1.6.1" class="pilcrow">¶</a></p>
+</div>
+</dd>
+          <dd class="break"></dd>
+<dt id="section-4.12-1.7">Conformance</dt>
+          <dd style="margin-left: 1.5em" id="section-4.12-1.8">
+            <div id="_8ea3f49f-1789-3252-c9c0-3b51eae0c672">
+<p id="section-4.12-1.8.1">This property MAY be specified in any appropriate component.<a href="#section-4.12-1.8.1" class="pilcrow">¶</a></p>
+</div>
+</dd>
+          <dd class="break"></dd>
+<dt id="section-4.12-1.9">Format Definition</dt>
+          <dd style="margin-left: 1.5em" id="section-4.12-1.10">
+            <div id="_c246d1f6-1379-7a3b-1831-03f5327cdfec">
+<p id="section-4.12-1.10.1">This property is defined by the following notation:<a href="#section-4.12-1.10.1" class="pilcrow">¶</a></p>
+</div>
+</dd>
+        <dd class="break"></dd>
+</dl>
+</div>
+<div id="_12b649ee-8889-3eb8-b043-6941f9c02197">
+<div class="lang-abnf sourcecode" id="section-4.12-2">
+<pre>invited-by = "INVITED-BY"
+            invited-byparams ":" CAL-ADDRESS CRLF
+
+invited-byparams = *(";" other-param)</pre><a href="#section-4.12-2" class="pilcrow">¶</a>
+</div>
+</div>
+</section>
+</div>
+</section>
+</div>
+<div id="attendee-params">
+<section id="section-5">
+      <h2 id="name-attendee-parameters-mapping">
+<a href="#section-5" class="section-number selfRef">5. </a><a href="#name-attendee-parameters-mapping" class="section-name selfRef">Attendee parameters mapping</a>
+      </h2>
+<div id="_3c58d974-fa45-721b-dab7-ca26d60d7ba0">
+<table class="center" id="table-3">
+        <caption><a href="#table-3" class="selfRef">Table 3</a></caption>
+<thead>
+          <tr>
+            <th class="text-left" rowspan="1" colspan="1">Parameter</th>
+            <th class="text-left" rowspan="1" colspan="1">iCalendar PARTICIPANT</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="text-left" rowspan="1" colspan="1">
+              <div id="_e5e5caed-034b-f1d1-2067-317fd1f27f5a">
+<p id="section-5-1.2.1.1.1">CN<a href="#section-5-1.2.1.1.1" class="pilcrow">¶</a></p>
+</div>
+</td>
+            <td class="text-left" rowspan="1" colspan="1">
+              <div id="_65e5a537-d78c-edea-1524-4e2b5c1e3a3c">
+<p id="section-5-1.2.1.2.1">NAME (defined in <span>[<a href="#RFC7986" class="cite xref">RFC7986</a>]</span><a href="#section-5-1.2.1.2.1" class="pilcrow">¶</a></p>
+</div>
+</td>
+          </tr>
+          <tr>
+            <td class="text-left" rowspan="1" colspan="1">
+              <div id="_f73b57ad-64c3-4425-12ee-464ff525d0bf">
+<p id="section-5-1.2.2.1.1">CUTYPE<a href="#section-5-1.2.2.1.1" class="pilcrow">¶</a></p>
+</div>
+</td>
+            <td class="text-left" rowspan="1" colspan="1">
+              <div id="_7c4d7f99-d289-d5c1-19eb-3729c85b45fc">
+<p id="section-5-1.2.2.2.1">KIND (defined here)<a href="#section-5-1.2.2.2.1" class="pilcrow">¶</a></p>
+</div>
+</td>
+          </tr>
+          <tr>
+            <td class="text-left" rowspan="1" colspan="1">
+              <div id="_1c28df6c-b4fb-226f-ba92-79d7deea84d2">
+<p id="section-5-1.2.3.1.1">DELEGATED-FROM<a href="#section-5-1.2.3.1.1" class="pilcrow">¶</a></p>
+</div>
+</td>
+            <td class="text-left" rowspan="1" colspan="1">
+              <div id="_17f4a1b8-7bb0-34d8-2917-8576e69c8259">
+<p id="section-5-1.2.3.2.1">PARTICIPATION-DELEGATED-FROM <a href="#new-prop-participation-delegated-from" class="auto internal xref">Section 4.3</a><a href="#section-5-1.2.3.2.1" class="pilcrow">¶</a></p>
+</div>
+</td>
+          </tr>
+          <tr>
+            <td class="text-left" rowspan="1" colspan="1">
+              <div id="_76dce3c9-9ed6-91f7-73e8-b9d86afdb5ea">
+<p id="section-5-1.2.4.1.1">DELEGATED-TO<a href="#section-5-1.2.4.1.1" class="pilcrow">¶</a></p>
+</div>
+</td>
+            <td class="text-left" rowspan="1" colspan="1">
+              <div id="_5d859952-2264-9075-65ff-d1218d81e59e">
+<p id="section-5-1.2.4.2.1">PARTICIPATION-DELEGATED-TO (Defined here)<a href="#section-5-1.2.4.2.1" class="pilcrow">¶</a></p>
+</div>
+</td>
+          </tr>
+          <tr>
+            <td class="text-left" rowspan="1" colspan="1">
+              <div id="_eed1e294-7321-d78e-5c4d-37141c4b244f">
+<p id="section-5-1.2.5.1.1">DIR<a href="#section-5-1.2.5.1.1" class="pilcrow">¶</a></p>
+</div>
+</td>
+            <td class="text-left" rowspan="1" colspan="1">
+              <div id="_1be38b3f-0869-67df-77ae-47e33c75625e">
+<p id="section-5-1.2.5.2.1">LINK <span>[<a href="#RFC9253" class="cite xref">RFC9253</a>]</span><a href="#section-5-1.2.5.2.1" class="pilcrow">¶</a></p>
+</div>
+</td>
+          </tr>
+          <tr>
+            <td class="text-left" rowspan="1" colspan="1">
+              <div id="_7f46f231-dd6e-f5c9-34d0-8ee6513a09ca">
+<p id="section-5-1.2.6.1.1">LANGUAGE<a href="#section-5-1.2.6.1.1" class="pilcrow">¶</a></p>
+</div>
+</td>
+            <td class="text-left" rowspan="1" colspan="1">
+              <div id="_d5a90eee-4572-9d0c-f4cd-fd4e62134d94">
+<p id="section-5-1.2.6.2.1">LANG (defined here)<a href="#section-5-1.2.6.2.1" class="pilcrow">¶</a></p>
+</div>
+</td>
+          </tr>
+          <tr>
+            <td class="text-left" rowspan="1" colspan="1">
+              <div id="_2d9d4e28-ff65-1d95-d1a7-3c8bf31be229">
+<p id="section-5-1.2.7.1.1">MEMBER<a href="#section-5-1.2.7.1.1" class="pilcrow">¶</a></p>
+</div>
+</td>
+            <td class="text-left" rowspan="1" colspan="1">
+              <div id="_a0e1424a-58d8-2638-f5f3-e28479775cf7">
+<p id="section-5-1.2.7.2.1">MEMBER-OF (defined here)<a href="#section-5-1.2.7.2.1" class="pilcrow">¶</a></p>
+</div>
+</td>
+          </tr>
+          <tr>
+            <td class="text-left" rowspan="1" colspan="1">
+              <div id="_30585e3d-a30e-6875-ae8c-f9c005981c0d">
+<p id="section-5-1.2.8.1.1">PARTSTAT<a href="#section-5-1.2.8.1.1" class="pilcrow">¶</a></p>
+</div>
+</td>
+            <td class="text-left" rowspan="1" colspan="1">
+              <div id="_22907370-6625-4dbd-8af7-325ec171958f">
+<p id="section-5-1.2.8.2.1">PARTICIPATION-STATUS (defined here)<a href="#section-5-1.2.8.2.1" class="pilcrow">¶</a></p>
+</div>
+</td>
+          </tr>
+          <tr>
+            <td class="text-left" rowspan="1" colspan="1">
+              <div id="_8575b1e2-0a67-008b-2118-c1299a5bb6d5">
+<p id="section-5-1.2.9.1.1">ROLE<a href="#section-5-1.2.9.1.1" class="pilcrow">¶</a></p>
+</div>
+</td>
+            <td class="text-left" rowspan="1" colspan="1">
+              <div id="_df3496fb-1ab6-5737-bc49-71e12929930c">
+<p id="section-5-1.2.9.2.1">PARTICIPATION-TYPE (Updated here)<a href="#section-5-1.2.9.2.1" class="pilcrow">¶</a></p>
+</div>
+</td>
+          </tr>
+          <tr>
+            <td class="text-left" rowspan="1" colspan="1">
+              <div id="_0a072f89-1f64-a0be-6ab7-abef89b232df">
+<p id="section-5-1.2.10.1.1">RSVP<a href="#section-5-1.2.10.1.1" class="pilcrow">¶</a></p>
+</div>
+</td>
+            <td class="text-left" rowspan="1" colspan="1">
+              <div id="_442a6d02-7202-74dd-db31-c1d74e3a33bd">
+<p id="section-5-1.2.10.2.1">EXPECT-REPLY (Defined here)<a href="#section-5-1.2.10.2.1" class="pilcrow">¶</a></p>
+</div>
+</td>
+          </tr>
+          <tr>
+            <td class="text-left" rowspan="1" colspan="1">
+              <div id="_132307e3-7b33-8236-d7b9-2c2659f5c36a">
+<p id="section-5-1.2.11.1.1">SENT-BY<a href="#section-5-1.2.11.1.1" class="pilcrow">¶</a></p>
+</div>
+</td>
+            <td class="text-left" rowspan="1" colspan="1"></td>
+          </tr>
+        </tbody>
+      </table>
+</div>
+</section>
+</div>
+<div id="security">
+<section id="section-6">
+      <h2 id="name-security-considerations">
+<a href="#section-6" class="section-number selfRef">6. </a><a href="#name-security-considerations" class="section-name selfRef">Security Considerations</a>
+      </h2>
+<div id="_629a6d99-4acd-9e90-dede-90adc5a83d67">
+<p id="section-6-1">There should be no new security risks additional to those noted in  <span>[<a href="#RFC5546" class="cite xref">RFC5546</a>]</span>.<a href="#section-6-1" class="pilcrow">¶</a></p>
+</div>
+</section>
+</div>
+<div id="iana">
+<section id="section-7">
+      <h2 id="name-iana-considerations">
+<a href="#section-7" class="section-number selfRef">7. </a><a href="#name-iana-considerations" class="section-name selfRef">IANA Considerations</a>
+      </h2>
+<div id="_parameter_registrations">
+<section id="section-7.1">
+        <h3 id="name-parameter-registrations">
+<a href="#section-7.1" class="section-number selfRef">7.1. </a><a href="#name-parameter-registrations" class="section-name selfRef">Parameter Registrations</a>
+        </h3>
+<div id="_57da327f-bfcd-c1a2-75fe-03fbc34ce80d">
+<p id="section-7.1-1">This document defines the following new iCalendar property parameters to be added to the registry defined in  <span><a class="relref">Section 8.2.4</a> of [<a href="#RFC5545" class="cite xref">RFC5545</a>]</span>:<a href="#section-7.1-1" class="pilcrow">¶</a></p>
+</div>
+<div id="_9b543981-7ec5-072e-3859-9e92f3c87a2b">
+<table class="center" id="table-4">
+          <caption><a href="#table-4" class="selfRef">Table 4</a></caption>
+<thead>
+            <tr>
+              <th class="text-left" rowspan="1" colspan="1">Property Parameter</th>
+              <th class="text-left" rowspan="1" colspan="1">Status</th>
+              <th class="text-left" rowspan="1" colspan="1">Reference</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">
+                <div id="_18bf8000-dbcd-2815-56fe-131f0581df3e">
+<p id="section-7.1-2.2.1.1.1">REQUIRED<a href="#section-7.1-2.2.1.1.1" class="pilcrow">¶</a></p>
+</div>
+</td>
+              <td class="text-left" rowspan="1" colspan="1">
+                <div id="_05be6a14-be0a-7560-2e85-f0d042e3acd4">
+<p id="section-7.1-2.2.1.2.1">Current<a href="#section-7.1-2.2.1.2.1" class="pilcrow">¶</a></p>
+</div>
+</td>
+              <td class="text-left" rowspan="1" colspan="1">
+                <div id="_724aae30-171d-5ca8-0ffa-7fd2f13cc17d">
+<p id="section-7.1-2.2.1.3.1"><a href="#new-prop-para-required" class="auto internal xref">Section 3.1.1</a><a href="#section-7.1-2.2.1.3.1" class="pilcrow">¶</a></p>
+</div>
+</td>
+            </tr>
+          </tbody>
+        </table>
+</div>
+</section>
+</div>
+<div id="_property_registrations">
+<section id="section-7.2">
+        <h3 id="name-property-registrations">
+<a href="#section-7.2" class="section-number selfRef">7.2. </a><a href="#name-property-registrations" class="section-name selfRef">Property Registrations</a>
+        </h3>
+<div id="_b2a8e200-fc3f-472f-0967-339f5c66aa24">
+<p id="section-7.2-1">This document defines the following new iCalendar properties to be added to the registry defined in  <span><a class="relref">Section 8.2.3</a> of [<a href="#RFC5545" class="cite xref">RFC5545</a>]</span>:<a href="#section-7.2-1" class="pilcrow">¶</a></p>
+</div>
+<div id="_084d4efd-f888-276f-79c7-a12144891f12">
+<table class="center" id="table-5">
+          <caption><a href="#table-5" class="selfRef">Table 5</a></caption>
+<thead>
+            <tr>
+              <th class="text-left" rowspan="1" colspan="1">Property</th>
+              <th class="text-left" rowspan="1" colspan="1">Status</th>
+              <th class="text-left" rowspan="1" colspan="1">Reference</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">
+                <div id="_d45ce7a2-06e6-db2d-607a-124c8c84c104">
+<p id="section-7.2-2.2.1.1.1">EXPECT-REPLY<a href="#section-7.2-2.2.1.1.1" class="pilcrow">¶</a></p>
+</div>
+</td>
+              <td class="text-left" rowspan="1" colspan="1">
+                <div id="_67c6b53a-2dbc-6fe2-7871-2a7ab8088849">
+<p id="section-7.2-2.2.1.2.1">Current<a href="#section-7.2-2.2.1.2.1" class="pilcrow">¶</a></p>
+</div>
+</td>
+              <td class="text-left" rowspan="1" colspan="1">
+                <div id="_5147ff1e-7803-a742-65d7-c97cb8fead0e">
+<p id="section-7.2-2.2.1.3.1"><a href="#new-prop-expect-reply" class="auto internal xref">Section 4.7</a><a href="#section-7.2-2.2.1.3.1" class="pilcrow">¶</a></p>
+</div>
+</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">
+                <div id="_4c74b995-b120-5984-2e5b-282c9bf48df7">
+<p id="section-7.2-2.2.2.1.1">INVITED-BY<a href="#section-7.2-2.2.2.1.1" class="pilcrow">¶</a></p>
+</div>
+</td>
+              <td class="text-left" rowspan="1" colspan="1">
+                <div id="_21006180-1b2a-91df-1f8f-5859d97a36e3">
+<p id="section-7.2-2.2.2.2.1">Current<a href="#section-7.2-2.2.2.2.1" class="pilcrow">¶</a></p>
+</div>
+</td>
+              <td class="text-left" rowspan="1" colspan="1">
+                <div id="_9bf1718a-9e2f-d0e9-71b9-0626f957956b">
+<p id="section-7.2-2.2.2.3.1"><a href="#new-prop-invited-by" class="auto internal xref">Section 4.12</a><a href="#section-7.2-2.2.2.3.1" class="pilcrow">¶</a></p>
+</div>
+</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">
+                <div id="_ba1909db-df56-2970-7f9f-72da030f7110">
+<p id="section-7.2-2.2.3.1.1">KIND<a href="#section-7.2-2.2.3.1.1" class="pilcrow">¶</a></p>
+</div>
+</td>
+              <td class="text-left" rowspan="1" colspan="1">
+                <div id="_36a002a0-6eff-e14c-9e81-8db9660d87a8">
+<p id="section-7.2-2.2.3.2.1">Current<a href="#section-7.2-2.2.3.2.1" class="pilcrow">¶</a></p>
+</div>
+</td>
+              <td class="text-left" rowspan="1" colspan="1">
+                <div id="_aad5d32c-db09-518f-22c7-ec9a4d8dd540">
+<p id="section-7.2-2.2.3.3.1"><a href="#new-prop-kind" class="auto internal xref">Section 4.1</a><a href="#section-7.2-2.2.3.3.1" class="pilcrow">¶</a></p>
+</div>
+</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">
+                <div id="_3621b7cb-4e7b-aad0-3cb5-42babdd43e49">
+<p id="section-7.2-2.2.4.1.1">LANG<a href="#section-7.2-2.2.4.1.1" class="pilcrow">¶</a></p>
+</div>
+</td>
+              <td class="text-left" rowspan="1" colspan="1">
+                <div id="_7477cd65-addb-35ac-e6e0-b7fadddc6f83">
+<p id="section-7.2-2.2.4.2.1">Current<a href="#section-7.2-2.2.4.2.1" class="pilcrow">¶</a></p>
+</div>
+</td>
+              <td class="text-left" rowspan="1" colspan="1">
+                <div id="_2365e7a9-7510-0c0a-212a-d699ce367613">
+<p id="section-7.2-2.2.4.3.1"><a href="#new-prop-lang" class="auto internal xref">Section 4.6</a><a href="#section-7.2-2.2.4.3.1" class="pilcrow">¶</a></p>
+</div>
+</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">
+                <div id="_6f613267-2ab8-e88f-c882-cd63ce16108b">
+<p id="section-7.2-2.2.5.1.1">MEMBER-OF<a href="#section-7.2-2.2.5.1.1" class="pilcrow">¶</a></p>
+</div>
+</td>
+              <td class="text-left" rowspan="1" colspan="1">
+                <div id="_19939dcb-4bf8-2059-6d5e-5065c36d55c1">
+<p id="section-7.2-2.2.5.2.1">Current<a href="#section-7.2-2.2.5.2.1" class="pilcrow">¶</a></p>
+</div>
+</td>
+              <td class="text-left" rowspan="1" colspan="1">
+                <div id="_bfc6b48a-a87a-c916-65dc-f4c3f26813f3">
+<p id="section-7.2-2.2.5.3.1"><a href="#new-prop-member-of" class="auto internal xref">Section 4.5</a><a href="#section-7.2-2.2.5.3.1" class="pilcrow">¶</a></p>
+</div>
+</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">
+                <div id="_4dcb9ff7-f992-a6c8-fb10-f55db2eaa478">
+<p id="section-7.2-2.2.6.1.1">PARTICIPATION-DELEGATED-FROM<a href="#section-7.2-2.2.6.1.1" class="pilcrow">¶</a></p>
+</div>
+</td>
+              <td class="text-left" rowspan="1" colspan="1">
+                <div id="_1c80a543-8492-458e-6814-96d82f39f7cc">
+<p id="section-7.2-2.2.6.2.1">Current<a href="#section-7.2-2.2.6.2.1" class="pilcrow">¶</a></p>
+</div>
+</td>
+              <td class="text-left" rowspan="1" colspan="1">
+                <div id="_3cd55316-f7b0-3393-8751-d4241169b948">
+<p id="section-7.2-2.2.6.3.1"><a href="#new-prop-participation-delegated-from" class="auto internal xref">Section 4.3</a><a href="#section-7.2-2.2.6.3.1" class="pilcrow">¶</a></p>
+</div>
+</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">
+                <div id="_999ab9a0-0906-a54f-01c4-e09d43730f6e">
+<p id="section-7.2-2.2.7.1.1">PARTICIPATION-DELEGATED-TO<a href="#section-7.2-2.2.7.1.1" class="pilcrow">¶</a></p>
+</div>
+</td>
+              <td class="text-left" rowspan="1" colspan="1">
+                <div id="_d85d2ea3-539b-72a4-f018-f33dadc20f61">
+<p id="section-7.2-2.2.7.2.1">Current<a href="#section-7.2-2.2.7.2.1" class="pilcrow">¶</a></p>
+</div>
+</td>
+              <td class="text-left" rowspan="1" colspan="1">
+                <div id="_4be51f81-3c2f-96b1-974f-78e11488402b">
+<p id="section-7.2-2.2.7.3.1"><a href="#new-prop-participation-delegated-to" class="auto internal xref">Section 4.4</a><a href="#section-7.2-2.2.7.3.1" class="pilcrow">¶</a></p>
+</div>
+</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">
+                <div id="_1e8b933e-34b5-5216-de61-519dc9701172">
+<p id="section-7.2-2.2.8.1.1">PARTICIPATION-STATUS<a href="#section-7.2-2.2.8.1.1" class="pilcrow">¶</a></p>
+</div>
+</td>
+              <td class="text-left" rowspan="1" colspan="1">
+                <div id="_21dc3cd2-102c-df93-4542-184f23a18107">
+<p id="section-7.2-2.2.8.2.1">Current<a href="#section-7.2-2.2.8.2.1" class="pilcrow">¶</a></p>
+</div>
+</td>
+              <td class="text-left" rowspan="1" colspan="1">
+                <div id="_071c9701-311d-d520-b2bc-1ea19255da92">
+<p id="section-7.2-2.2.8.3.1"><a href="#new-prop-participation-status" class="auto internal xref">Section 4.2</a><a href="#section-7.2-2.2.8.3.1" class="pilcrow">¶</a></p>
+</div>
+</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">
+                <div id="_aa5e11f9-0b4b-db24-304b-bb978911e4e5">
+<p id="section-7.2-2.2.9.1.1">REPLY-URL<a href="#section-7.2-2.2.9.1.1" class="pilcrow">¶</a></p>
+</div>
+</td>
+              <td class="text-left" rowspan="1" colspan="1">
+                <div id="_2dec68d9-d4c7-8cb4-cbec-622cfe7b8e70">
+<p id="section-7.2-2.2.9.2.1">Current<a href="#section-7.2-2.2.9.2.1" class="pilcrow">¶</a></p>
+</div>
+</td>
+              <td class="text-left" rowspan="1" colspan="1">
+                <div id="_37451b37-c227-5a7e-149f-fef5497a3722">
+<p id="section-7.2-2.2.9.3.1"><a href="#new-prop-reply-url" class="auto internal xref">Section 3.2.1</a><a href="#section-7.2-2.2.9.3.1" class="pilcrow">¶</a></p>
+</div>
+</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">
+                <div id="_85556fcf-4b7c-17b1-b415-f5383a97beda">
+<p id="section-7.2-2.2.10.1.1">SCHEDULING-AGENT<a href="#section-7.2-2.2.10.1.1" class="pilcrow">¶</a></p>
+</div>
+</td>
+              <td class="text-left" rowspan="1" colspan="1">
+                <div id="_f025916f-ab2f-8096-d21a-3abee0ca5ae9">
+<p id="section-7.2-2.2.10.2.1">Current<a href="#section-7.2-2.2.10.2.1" class="pilcrow">¶</a></p>
+</div>
+</td>
+              <td class="text-left" rowspan="1" colspan="1">
+                <div id="_00eb373f-bfad-0c1c-10d6-3b9ac37a5d9e">
+<p id="section-7.2-2.2.10.3.1"><a href="#new-prop-scheduling-agent" class="auto internal xref">Section 4.8</a><a href="#section-7.2-2.2.10.3.1" class="pilcrow">¶</a></p>
+</div>
+</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">
+                <div id="_222bf2bb-9625-fe06-a538-ddd964d1a66a">
+<p id="section-7.2-2.2.11.1.1">SCHEDULING-DTSTAMP<a href="#section-7.2-2.2.11.1.1" class="pilcrow">¶</a></p>
+</div>
+</td>
+              <td class="text-left" rowspan="1" colspan="1">
+                <div id="_dc138870-8a0b-dccd-194a-9f93c596fbdd">
+<p id="section-7.2-2.2.11.2.1">Current<a href="#section-7.2-2.2.11.2.1" class="pilcrow">¶</a></p>
+</div>
+</td>
+              <td class="text-left" rowspan="1" colspan="1">
+                <div id="_a33b7b18-59ab-ddfe-ad94-151b9d0289c8">
+<p id="section-7.2-2.2.11.3.1"><a href="#new-prop-scheduling-dtstamp" class="auto internal xref">Section 4.11</a><a href="#section-7.2-2.2.11.3.1" class="pilcrow">¶</a></p>
+</div>
+</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">
+                <div id="_a144cf3b-fbc9-812f-76f8-9238c0ef6ca7">
+<p id="section-7.2-2.2.12.1.1">SCHEDULING-FORCE-SEND<a href="#section-7.2-2.2.12.1.1" class="pilcrow">¶</a></p>
+</div>
+</td>
+              <td class="text-left" rowspan="1" colspan="1">
+                <div id="_b88dd4db-4079-64ac-bd49-0b84d38d36df">
+<p id="section-7.2-2.2.12.2.1">Current<a href="#section-7.2-2.2.12.2.1" class="pilcrow">¶</a></p>
+</div>
+</td>
+              <td class="text-left" rowspan="1" colspan="1">
+                <div id="_ff378e00-6e1d-1fd7-dfa8-9aad60786c05">
+<p id="section-7.2-2.2.12.3.1"><a href="#new-prop-scheduling-force-send" class="auto internal xref">Section 4.9</a><a href="#section-7.2-2.2.12.3.1" class="pilcrow">¶</a></p>
+</div>
+</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">
+                <div id="_df3a6136-68b3-8cbd-f2d8-3fd4d4cd2d89">
+<p id="section-7.2-2.2.13.1.1">SCHEDULING-STATUS<a href="#section-7.2-2.2.13.1.1" class="pilcrow">¶</a></p>
+</div>
+</td>
+              <td class="text-left" rowspan="1" colspan="1">
+                <div id="_f6793074-ea97-2199-3c28-47c3d89b6d02">
+<p id="section-7.2-2.2.13.2.1">Current<a href="#section-7.2-2.2.13.2.1" class="pilcrow">¶</a></p>
+</div>
+</td>
+              <td class="text-left" rowspan="1" colspan="1">
+                <div id="_c27e31ee-2730-ae5b-95cf-176fb1f5b763">
+<p id="section-7.2-2.2.13.3.1"><a href="#new-prop-scheduling-status" class="auto internal xref">Section 4.10</a><a href="#section-7.2-2.2.13.3.1" class="pilcrow">¶</a></p>
+</div>
+</td>
+            </tr>
+          </tbody>
+        </table>
+</div>
+</section>
+</div>
+<div id="_updated_participant_type_registrations">
+<section id="section-7.3">
+        <h3 id="name-updated-participant-type-re">
+<a href="#section-7.3" class="section-number selfRef">7.3. </a><a href="#name-updated-participant-type-re" class="section-name selfRef">Updated Participant Type Registrations</a>
+        </h3>
+<div id="_216b4bdc-ec7c-220f-f98c-45a5b3bfa84a">
+<p id="section-7.3-1">This updates the participant types registry defined in <span><a class="relref">Section 11.2.1</a> of [<a href="#RFC9073" class="cite xref">RFC9073</a>]</span><a href="#section-7.3-1" class="pilcrow">¶</a></p>
+</div>
+<div id="_126d307d-f767-5ae5-3645-cb28b8222f03">
+<table class="center" id="table-6">
+          <caption><a href="#table-6" class="selfRef">Table 6</a></caption>
+<thead>
+            <tr>
+              <th class="text-left" rowspan="1" colspan="1">Participant Type</th>
+              <th class="text-left" rowspan="1" colspan="1">Status</th>
+              <th class="text-left" rowspan="1" colspan="1">Reference</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">
+                <div id="_6f0047cb-2b2d-299a-637b-71302924bce8">
+<p id="section-7.3-2.2.1.1.1">OWNER<a href="#section-7.3-2.2.1.1.1" class="pilcrow">¶</a></p>
+</div>
+</td>
+              <td class="text-left" rowspan="1" colspan="1">
+                <div id="_f54b8091-cc41-baa2-aecb-0e0d37e9d8f6">
+<p id="section-7.3-2.2.1.2.1">Current<a href="#section-7.3-2.2.1.2.1" class="pilcrow">¶</a></p>
+</div>
+</td>
+              <td class="text-left" rowspan="1" colspan="1">
+                <div id="_48f24ae0-a71c-efaa-60cd-d1b66b3e3b00">
+<p id="section-7.3-2.2.1.3.1">RFC8984 <span><a class="relref">Section 4.4.6</a> of [<a href="#RFC8984" class="cite xref">RFC8984</a>]</span><a href="#section-7.3-2.2.1.3.1" class="pilcrow">¶</a></p>
+</div>
+</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">
+                <div id="_d082c43e-2c95-0e76-5a58-38ba9a234811">
+<p id="section-7.3-2.2.2.1.1">ATTENDEE<a href="#section-7.3-2.2.2.1.1" class="pilcrow">¶</a></p>
+</div>
+</td>
+              <td class="text-left" rowspan="1" colspan="1">
+                <div id="_3715adee-da08-b34c-4ff1-cce014e1795d">
+<p id="section-7.3-2.2.2.2.1">Current<a href="#section-7.3-2.2.2.2.1" class="pilcrow">¶</a></p>
+</div>
+</td>
+              <td class="text-left" rowspan="1" colspan="1">
+                <div id="_a3fa32c5-f1de-7729-b895-5084f095a6a9">
+<p id="section-7.3-2.2.2.3.1">RFC8984 <span><a class="relref">Section 4.4.6</a> of [<a href="#RFC8984" class="cite xref">RFC8984</a>]</span><a href="#section-7.3-2.2.2.3.1" class="pilcrow">¶</a></p>
+</div>
+</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">
+                <div id="_1a8980d0-5bfb-7c15-13fd-3adf229fbce2">
+<p id="section-7.3-2.2.3.1.1">OPTIONAL<a href="#section-7.3-2.2.3.1.1" class="pilcrow">¶</a></p>
+</div>
+</td>
+              <td class="text-left" rowspan="1" colspan="1">
+                <div id="_7b8e3c44-13d6-8733-b76b-5b1048a773bc">
+<p id="section-7.3-2.2.3.2.1">Current<a href="#section-7.3-2.2.3.2.1" class="pilcrow">¶</a></p>
+</div>
+</td>
+              <td class="text-left" rowspan="1" colspan="1">
+                <div id="_696d6840-d61a-60de-c869-7e72db188452">
+<p id="section-7.3-2.2.3.3.1">RFC8984 <span><a class="relref">Section 4.4.6</a> of [<a href="#RFC8984" class="cite xref">RFC8984</a>]</span><a href="#section-7.3-2.2.3.3.1" class="pilcrow">¶</a></p>
+</div>
+</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">
+                <div id="_43f87dac-4698-00d2-7828-0a98c0396c1a">
+<p id="section-7.3-2.2.4.1.1">INFORMATIONAL<a href="#section-7.3-2.2.4.1.1" class="pilcrow">¶</a></p>
+</div>
+</td>
+              <td class="text-left" rowspan="1" colspan="1">
+                <div id="_16a5b54a-a9c5-f959-1360-9ff5f7bc3566">
+<p id="section-7.3-2.2.4.2.1">Current<a href="#section-7.3-2.2.4.2.1" class="pilcrow">¶</a></p>
+</div>
+</td>
+              <td class="text-left" rowspan="1" colspan="1">
+                <div id="_d298be11-077c-4220-6b43-6a63aa1ba5c6">
+<p id="section-7.3-2.2.4.3.1">RFC8984 <span><a class="relref">Section 4.4.6</a> of [<a href="#RFC8984" class="cite xref">RFC8984</a>]</span><a href="#section-7.3-2.2.4.3.1" class="pilcrow">¶</a></p>
+</div>
+</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">
+                <div id="_a940853c-9f85-b43b-b662-b27808ac4b35">
+<p id="section-7.3-2.2.5.1.1">CHAIR<a href="#section-7.3-2.2.5.1.1" class="pilcrow">¶</a></p>
+</div>
+</td>
+              <td class="text-left" rowspan="1" colspan="1">
+                <div id="_7fa34973-f271-1fe9-e277-819e2f97afb9">
+<p id="section-7.3-2.2.5.2.1">Current<a href="#section-7.3-2.2.5.2.1" class="pilcrow">¶</a></p>
+</div>
+</td>
+              <td class="text-left" rowspan="1" colspan="1">
+                <div id="_eecf5836-a928-9c2a-478f-d0ea6e0735a8">
+<p id="section-7.3-2.2.5.3.1">RFC8984 <span><a class="relref">Section 4.4.6</a> of [<a href="#RFC8984" class="cite xref">RFC8984</a>]</span><a href="#section-7.3-2.2.5.3.1" class="pilcrow">¶</a></p>
+</div>
+</td>
+            </tr>
+          </tbody>
+        </table>
+</div>
+</section>
+</div>
+</section>
+</div>
+<div id="acknowledgements">
+<section id="section-8">
+      <h2 id="name-acknowledgements">
+<a href="#section-8" class="section-number selfRef">8. </a><a href="#name-acknowledgements" class="section-name selfRef">Acknowledgements</a>
+      </h2>
+<div id="_cceedf47-b653-3d9e-923d-be609ae35071">
+<p id="section-8-1">The authors would like to thank the members of the Calendaring and Scheduling Consortium (CalConnect) for contributing their ideas and support.<a href="#section-8-1" class="pilcrow">¶</a></p>
+</div>
+</section>
+</div>
+<div id="_normative_references">
+<section id="section-9">
+      <h2 id="name-normative-references">
+<a href="#section-9" class="section-number selfRef">9. </a><a href="#name-normative-references" class="section-name selfRef">Normative References</a>
+      </h2>
+<dl class="references">
+<dt id="RFC2119">[RFC2119]</dt>
+      <dd>
+<span class="refAuthor">Bradner, S.</span>, <span class="refTitle">"Key words for use in RFCs to Indicate Requirement Levels"</span>, <span class="stream">IETF</span>, <span class="seriesInfo">DOI 10.17487/RFC2119</span>, <span class="seriesInfo">BCP 14</span>, <span class="seriesInfo">RFC 2119</span>, <time datetime="1997-03" class="refDate">March 1997</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc2119">https://www.rfc-editor.org/info/rfc2119</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC5234">[RFC5234]</dt>
+      <dd>
+<span class="refAuthor">Overell, P.</span> and <span class="refAuthor">D. Crocker</span>, <span class="refTitle">"Augmented BNF for Syntax Specifications: ABNF"</span>, <span class="stream">IETF</span>, <span class="seriesInfo">STD 68</span>, <span class="seriesInfo">DOI 10.17487/RFC5234</span>, <span class="seriesInfo">BCP 68</span>, <span class="seriesInfo">RFC 5234</span>, <time datetime="2008-01" class="refDate">January 2008</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc5234">https://www.rfc-editor.org/info/rfc5234</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC5545">[RFC5545]</dt>
+      <dd>
+<span class="refAuthor">Desruisseaux, B.</span>, <span class="refTitle">"Internet Calendaring and Scheduling Core Object Specification (iCalendar)"</span>, <span class="stream">IETF</span>, <span class="seriesInfo">DOI 10.17487/RFC5545</span>, <span class="seriesInfo">RFC 5545</span>, <time datetime="2009-09" class="refDate">September 2009</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc5545">https://www.rfc-editor.org/info/rfc5545</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC5546">[RFC5546]</dt>
+      <dd>
+<span class="refAuthor">Daboo, C.</span>, <span class="refTitle">"iCalendar Transport-Independent Interoperability Protocol (iTIP)"</span>, <span class="stream">IETF</span>, <span class="seriesInfo">DOI 10.17487/RFC5546</span>, <span class="seriesInfo">RFC 5546</span>, <time datetime="2009-12" class="refDate">December 2009</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc5546">https://www.rfc-editor.org/info/rfc5546</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC5646">[RFC5646]</dt>
+      <dd>
+<span class="refAuthor">Phillips, A.</span> and <span class="refAuthor">M. Davis</span>, <span class="refTitle">"Tags for Identifying Languages"</span>, <span class="stream">IETF</span>, <span class="seriesInfo">DOI 10.17487/RFC5646</span>, <span class="seriesInfo">BCP 47</span>, <span class="seriesInfo">RFC 5646</span>, <time datetime="2009-09" class="refDate">September 2009</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc5646">https://www.rfc-editor.org/info/rfc5646</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC6638">[RFC6638]</dt>
+      <dd>
+<span class="refAuthor">Daboo, C.</span> and <span class="refAuthor">B. Desruisseaux</span>, <span class="refTitle">"Scheduling Extensions to CalDAV"</span>, <span class="stream">IETF</span>, <span class="seriesInfo">DOI 10.17487/RFC6638</span>, <span class="seriesInfo">RFC 6638</span>, <time datetime="2012-06" class="refDate">June 2012</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc6638">https://www.rfc-editor.org/info/rfc6638</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC7986">[RFC7986]</dt>
+      <dd>
+<span class="refAuthor">Daboo, C.</span>, <span class="refTitle">"New Properties for iCalendar"</span>, <span class="stream">IETF</span>, <span class="seriesInfo">DOI 10.17487/RFC7986</span>, <span class="seriesInfo">RFC 7986</span>, <time datetime="2016-10" class="refDate">October 2016</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc7986">https://www.rfc-editor.org/info/rfc7986</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC8984">[RFC8984]</dt>
+      <dd>
+<span class="refAuthor">Jenkins, N.</span> and <span class="refAuthor">R. Stepanek</span>, <span class="refTitle">"JSCalendar: A JSON Representation of Calendar Data"</span>, <span class="stream">IETF</span>, <span class="seriesInfo">DOI 10.17487/RFC8984</span>, <span class="seriesInfo">RFC 8984</span>, <time datetime="2021-07" class="refDate">July 2021</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc8984">https://www.rfc-editor.org/info/rfc8984</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC9073">[RFC9073]</dt>
+      <dd>
+<span class="refAuthor">Douglass, M.</span>, <span class="refTitle">"Event Publishing Extensions to iCalendar"</span>, <span class="stream">IETF</span>, <span class="seriesInfo">DOI 10.17487/RFC9073</span>, <span class="seriesInfo">RFC 9073</span>, <time datetime="2021-08" class="refDate">August 2021</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc9073">https://www.rfc-editor.org/info/rfc9073</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC9253">[RFC9253]</dt>
+    <dd>
+<span class="refAuthor">Douglass, M.</span>, <span class="refTitle">"Support for iCalendar Relationships"</span>, <span class="stream">IETF</span>, <span class="seriesInfo">DOI 10.17487/RFC9253</span>, <span class="seriesInfo">RFC 9253</span>, <time datetime="2022-08" class="refDate">August 2022</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc9253">https://www.rfc-editor.org/info/rfc9253</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+</dl>
+</section>
+</div>
+<div id="authors-addresses">
+<section id="appendix-A">
+      <h2 id="name-authors-address">
+<a href="#name-authors-address" class="section-name selfRef">Author's Address</a>
+      </h2>
+<address class="vcard">
+        <div dir="auto" class="left"><span class="fn nameRole">Michael Douglass</span></div>
+<div class="email">
+<span>Email:</span>
+<a href="mailto:mdouglass@bedework.com" class="email">mdouglass@bedework.com</a>
+</div>
+</address>
+</section>
+</div>
+<script>const toc = document.getElementById("toc");
+toc.querySelector("h2").addEventListener("click", e => {
+  toc.classList.toggle("active");
+});
+toc.querySelector("nav").addEventListener("click", e => {
+  toc.classList.remove("active");
+});
+</script>
+</body>
+</html>

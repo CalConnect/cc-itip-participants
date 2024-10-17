@@ -1,0 +1,1120 @@
+
+
+
+
+Network Working Group                                        M. Douglass
+Internet-Draft                                           16 October 2024
+Intended status: Standards Track                                        
+Expires: 19 April 2025
+
+
+                      iTip using PARTICIPANT only
+                  draft-douglass-itip-participants-02
+
+Abstract
+
+   This specification defines updates to RFC5546 iTip which allow
+   scheduling using the "PARTICIPANT" calendar components specified in
+   RFC9073.
+
+   New properties are also defined for use within the "PARTICIPANT"
+   calendar component.
+
+Status of This Memo
+
+   This Internet-Draft is submitted in full conformance with the
+   provisions of BCP 78 and BCP 79.
+
+   Internet-Drafts are working documents of the Internet Engineering
+   Task Force (IETF).  Note that other groups may also distribute
+   working documents as Internet-Drafts.  The list of current Internet-
+   Drafts is at https://datatracker.ietf.org/drafts/current/.
+
+   Internet-Drafts are draft documents valid for a maximum of six months
+   and may be updated, replaced, or obsoleted by other documents at any
+   time.  It is inappropriate to use Internet-Drafts as reference
+   material or to cite them other than as "work in progress."
+
+   This Internet-Draft will expire on 19 April 2025.
+
+Copyright Notice
+
+   Copyright (c) 2024 IETF Trust and the persons identified as the
+   document authors.  All rights reserved.
+
+   This document is subject to BCP 78 and the IETF Trust's Legal
+   Provisions Relating to IETF Documents (https://trustee.ietf.org/
+   license-info) in effect on the date of publication of this document.
+   Please review these documents carefully, as they describe your rights
+   and restrictions with respect to this document.  Code Components
+   extracted from this document must include Revised BSD License text as
+   described in Section 4.e of the Trust Legal Provisions and are
+   provided without warranty as described in the Revised BSD License.
+
+
+
+Douglass                  Expires 19 April 2025                 [Page 1]
+
+Internet-Draft              iTip participants               October 2024
+
+
+Table of Contents
+
+   1.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . .   2
+   2.  Terms and definitions . . . . . . . . . . . . . . . . . . . .   3
+     2.1.  participant . . . . . . . . . . . . . . . . . . . . . . .   3
+     2.2.  publishable . . . . . . . . . . . . . . . . . . . . . . .   3
+     2.3.  schedulable . . . . . . . . . . . . . . . . . . . . . . .   3
+     2.4.  owner . . . . . . . . . . . . . . . . . . . . . . . . . .   4
+   3.  iCalendar Extensions  . . . . . . . . . . . . . . . . . . . .   4
+     3.1.  New Property Parameters . . . . . . . . . . . . . . . . .   4
+       3.1.1.  Required  . . . . . . . . . . . . . . . . . . . . . .   4
+     3.2.  New Properties  . . . . . . . . . . . . . . . . . . . . .   4
+       3.2.1.  Reply-URL . . . . . . . . . . . . . . . . . . . . . .   4
+     3.3.  Redefined participation type  . . . . . . . . . . . . . .   5
+   4.  New Participant Properties for iTip . . . . . . . . . . . . .   9
+     4.1.  Kind  . . . . . . . . . . . . . . . . . . . . . . . . . .   9
+     4.2.  Participation-status  . . . . . . . . . . . . . . . . . .   9
+     4.3.  Participation delegated from  . . . . . . . . . . . . . .  10
+     4.4.  Participation delegated to  . . . . . . . . . . . . . . .  11
+     4.5.  Member of . . . . . . . . . . . . . . . . . . . . . . . .  11
+     4.6.  Lang  . . . . . . . . . . . . . . . . . . . . . . . . . .  12
+     4.7.  Expect reply  . . . . . . . . . . . . . . . . . . . . . .  12
+     4.8.  Scheduling-agent  . . . . . . . . . . . . . . . . . . . .  13
+     4.9.  Scheduling-force-send . . . . . . . . . . . . . . . . . .  14
+     4.10. Scheduling-status . . . . . . . . . . . . . . . . . . . .  15
+     4.11. Scheduling-dtstamp  . . . . . . . . . . . . . . . . . . .  15
+     4.12. Invited-by  . . . . . . . . . . . . . . . . . . . . . . .  16
+   5.  Attendee parameters mapping . . . . . . . . . . . . . . . . .  16
+   6.  Security Considerations . . . . . . . . . . . . . . . . . . .  17
+   7.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  17
+     7.1.  Parameter Registrations . . . . . . . . . . . . . . . . .  17
+     7.2.  Property Registrations  . . . . . . . . . . . . . . . . .  17
+     7.3.  Updated Participant Type Registrations  . . . . . . . . .  18
+   8.  Acknowledgements  . . . . . . . . . . . . . . . . . . . . . .  19
+   9.  Normative References  . . . . . . . . . . . . . . . . . . . .  19
+   Author's Address  . . . . . . . . . . . . . . . . . . . . . . . .  20
+
+1.  Introduction
+
+   This specification details how the "PARTICIPANT" calendar component
+   introduced in [RFC9073] may be used for scheduling in place of
+   [RFC5545] "ATTENDEE" and "ORGANIZER" properties.  Additionally, some
+   properties are defined in this specification to be used within the
+   "PARTICIPANT" calendar component.
+
+   For "VEVENT", "VTODO", "VFREEBUSY", and "VAVAILABILITY" calendar
+   components; the "ORGANIZER" and "ATTENDEE" properties MUST be
+   supplied as specified in [RFC5546].  For new components such as the
+
+
+
+Douglass                  Expires 19 April 2025                 [Page 2]
+
+Internet-Draft              iTip participants               October 2024
+
+
+   "VPOLL" calendar component, defined elsewhere, only "PARTICIPANT"
+   calendar components MUST be used.  A participant object that takes
+   part in group scheduling MUST have the following characteristics:
+
+   *  It MUST have a calendar address as defined in Section 6.4 of
+      [RFC9073].
+
+   *  It must have one or more scheduling roles defined in PARTICIPANT-
+      TYPE
+
+   *  Exactly 1 PARTICIPANT MUST have the OWNER role
+
+   Scheduling with "PARTICIPANT" calendar components behaves exactly as
+   with "ATTENDEE" and "ORGANIZER" properties.  When iTip specifies the
+   setting of "ATTENDEE" or "ORGANIZER" property parameters then the
+   appropriate properties will be set within the "PARTICIPANT" calendar
+   component.
+
+2.  Terms and definitions
+
+   The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+   "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and
+   "OPTIONAL" in this document are to be interpreted as described in
+   [RFC2119].
+
+   The notation used in this memo to (re-)define iCalendar elements is
+   the ABNF notation of [RFC5234] as used by [RFC5545].  Any syntax
+   elements shown below that are not explicitly defined in this
+   specification come from iCalendar [RFC5545].
+
+   Additionally, the following terms are used:
+
+2.1.  participant
+
+   Represents an agent that takes part in scheduling or publishing.  A
+   participant may be a human, for example an attendee, or a resource,
+   for example a conference room.
+
+2.2.  publishable
+
+   A component which takes part in [RFC5546] publishing operations.
+
+2.3.  schedulable
+
+   A component which takes part in [RFC5546] scheduling operations.
+
+
+
+
+
+
+Douglass                  Expires 19 April 2025                 [Page 3]
+
+Internet-Draft              iTip participants               October 2024
+
+
+2.4.  owner
+
+   The "Owner" of a "Schedulable" component is equivalent to the
+   "Organizer" in [RFC5546].  As such, there may be only one "Owner"
+   though future specifications may relax or extend that constraint.
+   The "Owner" is indicated by a role of "OWNER".
+
+3.  iCalendar Extensions
+
+3.1.  New Property Parameters
+
+3.1.1.  Required
+
+   Parameter name  REQUIRED
+
+   Purpose  To specify whether the associated property is required in
+      the current context.
+
+   Format Definition  This parameter is defined by the following
+      notation:
+
+   requirededparam = "REQUIRED"  "=" ("TRUE" / "FALSE")
+     ; Default is FALSE
+
+   Description  This parameter MAY be specified on "REPLY-URL" property
+      and, if the value is TRUE, indicates the "Owner" requires all
+      replies to be made via the specified service rather than iTip
+      replies.
+
+3.2.  New Properties
+
+3.2.1.  Reply-URL
+
+   Property name  REPLY-URL
+
+   Purpose  This property may be used in scheduling messages to indicate
+      additional reply methods, for example a web-service.
+
+   Value type  URI
+
+   Property Parameters  Non-standard, required or iana parameters can be
+      specified on this property.
+
+   Conformance  This property MAY be specified once in any schedulable
+      component.
+
+   Description  When used in a scheduling message this property
+
+
+
+
+Douglass                  Expires 19 April 2025                 [Page 4]
+
+Internet-Draft              iTip participants               October 2024
+
+
+      indicates an additional or required service that can be used to
+      reply.  Typically, this would be a web service of some form.
+
+      When the "REQUIRED" property parameter is absent then this
+      property provides an alternative to standard iTip based
+      scheduling.
+
+      When the "REQUIRED" property parameter is present then this
+      property provides the only mechanism by which participants can
+      reply.  This allows the implementation of a web-based service
+      without the ability to accept incoming mail for example.
+
+   Format Definition  This property is defined by the following
+      notation:
+
+   reply-url = "REPLY-URL" reply-urlparams ":" uri CRLF
+
+   reply-urlparams = *(
+                     (";" requiredparam) /
+                     (";" other-param)
+                     )
+
+3.3.  Redefined participation type
+
+   This specification redefines the "PARTICIPANT-TYPE" property allowing
+   it to take multiple values and extending those values to align with
+   [RFC8984] roles.  There are also changes to the description to
+   clarify its use defining the roles that participant takes.
+
+   Property name  PARTICIPANT-TYPE
+
+   Purpose  This property is equivalent to the [RFC5545] "ROLE" property
+      parameter but includes more values to align with [RFC8984].
+
+   Value Type  The value type for this property is TEXT.  The allowable
+      values are defined below.
+
+   Property Parameters  Non-standard or iana parameters can be specified
+      on this property.
+
+   Conformance  This property MUST be specified once within a
+      "PARTICIPANT" calendar component.
+
+   Description  This property defines the type of participation, that is
+      the roles the participant takes.
+
+      It includes the values defined in [RFC8984].
+
+
+
+
+Douglass                  Expires 19 April 2025                 [Page 5]
+
+Internet-Draft              iTip participants               October 2024
+
+
+      Note that the kind of participant, for example individual or
+      group, is defined in the "KIND" property specified here.
+
+      Some of the roles are required for the participant to be a
+      "schedulable" object.  These are the roles that are shown below.
+
+   Format Definition  This property is defined by the following
+      notation:
+
+   participanttype   = "PARTICIPANT-TYPE" partvalueparam ":"
+                        partvalue
+                        *("," partvalue) CRLF
+
+   partvalue    = ("OWNER"
+                  / "ATTENDEE"
+                  / "OPTIONAL"
+                  / "INFORMATIONAL"
+                  / "CHAIR"
+                  / "ACTIVE"
+                  / "INACTIVE"
+                  / "SPONSOR"
+                  / "CONTACT"
+                  / "BOOKING-CONTACT"
+                  / "EMERGENCY-CONTACT"
+                  / "PUBLICITY-CONTACT"
+                  / "PLANNER-CONTACT"
+                  / "PERFORMER"
+                  / "SPEAKER"
+                  / iana-token)     ; Other IANA-registered
+                                    ; values
+
+   partvalueparam   = *(";" other-param)
+
+   The values have the same meaning as defined in [RFC8984] and
+   [RFC9073].
+
+   Other roles defined here have no direct equivalent in [RFC5545]
+
+   To map [RFC5545] "ROLE" property parameter values to "PARTICIPANT-
+   TYPE" property values use the following.
+
+
+
+
+
+
+
+
+
+
+
+Douglass                  Expires 19 April 2025                 [Page 6]
+
+Internet-Draft              iTip participants               October 2024
+
+
+                  +=================+==================+
+                  | RFC5545 ROLE    | PARTICIPANT-TYPE |
+                  +=================+==================+
+                  | CHAIR           | CHAIR            |
+                  +-----------------+------------------+
+                  | REQ-PARTICIPANT | ATTENDEE         |
+                  +-----------------+------------------+
+                  | OPT-PARTICIPANT | OPTIONAL         |
+                  +-----------------+------------------+
+                  | NON-PARTICIPANT | INFORMATIONAL    |
+                  +-----------------+------------------+
+
+                                 Table 1
+
+   The following table shows those roles that MUST appear in the
+   "PARTICIPANT-TYPE" property for group-scheduling.  Additionally, the
+   mapping for "PARTICIPANT-TYPE" property values to [RFC5545] values
+   are shown.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Douglass                  Expires 19 April 2025                 [Page 7]
+
+Internet-Draft              iTip participants               October 2024
+
+
+            +=============================+==================+
+            | PARTICIPANT-TYPE            | RFC5545 ROLE     |
+            +=============================+==================+
+            | OWNER                       | Create ORGANIZER |
+            +-----------------------------+------------------+
+            | ATTENDEE                    | REQ-PARTICIPANT  |
+            +-----------------------------+------------------+
+            | OPTIONAL                    | OPT-PARTICIPANT  |
+            +-----------------------------+------------------+
+            | INFORMATIONAL               | NON-PARTICIPANT  |
+            +-----------------------------+------------------+
+            | CHAIR                       | CHAIR            |
+            +-----------------------------+------------------+
+            | Subsequent values have no [RFC5545] equivalent |
+            +-----------------------------+------------------+
+            | CONTACT                     |                  |
+            +-----------------------------+------------------+
+            | VOTER                       |                  |
+            +-----------------------------+------------------+
+            | ACTIVE                      |                  |
+            +-----------------------------+------------------+
+            | INACTIVE                    |                  |
+            +-----------------------------+------------------+
+            | SPONSOR                     |                  |
+            +-----------------------------+------------------+
+            | BOOKING-CONTACT             |                  |
+            +-----------------------------+------------------+
+            | EMERGENCY-CONTACT           |                  |
+            +-----------------------------+------------------+
+            | PUBLICITY-CONTACT           |                  |
+            +-----------------------------+------------------+
+            | PLANNER-CONTACT             |                  |
+            +-----------------------------+------------------+
+            | PERFORMER                   |                  |
+            +-----------------------------+------------------+
+            | SPEAKER                     |                  |
+            +-----------------------------+------------------+
+
+                                 Table 2
+
+   Examples
+      *  PARTICIPANT-TYPE=OWNER,... equivalent to an ORGANIZER
+
+      *  PARTICIPANT-TYPE=ATTENDEE,... equivalent to the ATTENDEE
+         property
+
+
+
+
+
+
+Douglass                  Expires 19 April 2025                 [Page 8]
+
+Internet-Draft              iTip participants               October 2024
+
+
+4.  New Participant Properties for iTip
+
+   The following properties are defined to be used within PARTICIPANT
+   during scheduling and take the place of ATTENDEE and ORGANIZER
+   properties and parameters.
+
+4.1.  Kind
+
+   Property name  KIND
+
+   Purpose  This is what kind of entity this participant is, if known.
+
+   Property Parameters  Non-standard or iana parameters can be specified
+      on this property.
+
+   Conformance  This property MAY be specified in a "PARTICIPANT"
+      calendar component.
+
+   Description  When used in a "PARTICIPANT" calendar component this
+      property indicates the kind of entity, individual, group etc.
+
+      It takes the values shown below which are a redefinition of the
+      CUTYPE parameter values defined in [RFC5545] and aligned with
+      [RFC8984] .
+
+   Format Definition  This property is defined by the following
+      notation:
+
+   kind = "KIND" kindparams ":"
+                   "INDIVIDUAL"   ; An individual
+                 / "GROUP"        ; A group of individuals
+                 / "RESOURCE"     ; A physical resource
+                 / "LOCATION"     ; A location resource e.g a room
+                 / iana-token CRLF
+
+   kindparams = *(";" other-param)
+
+4.2.  Participation-status
+
+   Property name  PARTICIPATION-STATUS
+
+   Purpose  This property is used in the "PARTICIPANT" calendar
+      component to indicate the participation status - if any.
+
+   Property Parameters  Non-standard or iana parameters can be specified
+      on this property.
+
+   Conformance  This property MAY be specified in a "PARTICIPANT"
+
+
+
+Douglass                  Expires 19 April 2025                 [Page 9]
+
+Internet-Draft              iTip participants               October 2024
+
+
+      calendar component.
+
+   Description  When used in a "PARTICIPANT" calendar component this
+      property indicates what status, if any, the participant has.
+
+      It takes the same values as the PARTSTAT parameter defined in
+      [RFC5545].
+
+   Format Definition  This property is defined by the following
+      notation:
+
+   participation-status = "PARTICIPATION-STATUS"
+                          participation-statusparams ":"
+                 NEEDS-ACTION / ; No status
+                       ; has yet been set by the participant.
+
+                 ACCEPTED / ; The invited
+                       ; participant will participate.
+                 DECLINED / ; The invited
+                       ; participant will not participate.
+                  TENTATIVE / ; The invited participant
+                        ; may participate.
+                   DELEGATED / ; The invited participant
+                        ; has delegated their attendance to
+                        ; another participant, as specified
+                         ; in the PARTICIPATION-DELEGATED-TO property.
+                   COMPLETED / ; The assigned task is
+                        ; completed.
+                   IN-PROCESS / ; The assigned task is
+                        ; being worked on.
+                       iana-token ("," iana-token) CRLF
+
+   participation-statusparams = *(";" other-param)
+
+4.3.  Participation delegated from
+
+   Property name  PARTICIPATION-DELEGATED-FROM
+
+   Purpose  This property is used in the "PARTICIPANT" calendar
+      component to indicate who has delegated their participation to
+      this participant.
+
+   Property Parameters  Non-standard or iana parameters can be specified
+      on this property.
+
+   Conformance  This property MAY be specified in a "PARTICIPANT"
+      calendar component 0 or more times.
+
+
+
+
+Douglass                  Expires 19 April 2025                [Page 10]
+
+Internet-Draft              iTip participants               October 2024
+
+
+   Description  This property specifies a calendar user that has
+      delegated their participation in a group-scheduled component to
+      the calendar user specified by the component.
+
+   Format Definition  This property is defined by the following
+      notation:
+
+   participation-delfrom = "PARTICIPATION-DELEGATED-FROM"
+                           participation-delfromparams ":"
+                 CAL-ADDRESS
+                 iana-token ("," iana-token) CRLF
+
+   participation-delfromparams = *(";" other-param)
+
+4.4.  Participation delegated to
+
+   Property name  PARTICIPATION-DELEGATED-TO
+
+   Purpose  To specify the calendar user to whom the calendar user
+      specified by the component has delegated participation.
+
+   Property Parameters  Non-standard or iana parameters can be specified
+      on this property.
+
+   Conformance  This property MAY be specified in a "PARTICIPANT"
+      calendar component 0 or more times.
+
+   Description  This property specifies the calendar user that has been
+      delegated participation in a group-scheduled component by the
+      calendar user specified by the component.
+
+   Format Definition  This property is defined by the following
+      notation:
+
+   participation-delto = "PARTICIPATION-DELEGATED-TO"
+                         participation-deltoparams ":"
+                 CAL-ADDRESS
+                 iana-token ("," iana-token) CRLF
+
+   participation-deltoparams = *(";" other-param)
+
+4.5.  Member of
+
+   Property name  MEMBER-OF
+
+   Purpose  To specify the group or list membership of the calendar user
+      specified by the component.
+
+
+
+
+Douglass                  Expires 19 April 2025                [Page 11]
+
+Internet-Draft              iTip participants               October 2024
+
+
+   Property Parameters  Non-standard or iana parameters can be specified
+      on this property.
+
+   Conformance  This property MAY be specified in a "PARTICIPANT"
+      calendar component 0 or more times.
+
+   Description  This property identifies the group or list membership
+      for the calendar user specified by the component.
+
+   Format Definition  This property is defined by the following
+      notation:
+
+   member-of = "MEMBER-OF" member-ogparams ":"
+                 CAL-ADDRESS
+                 iana-token ("," iana-token) CRLF
+
+   memberofparams = *(";" other-param)
+
+4.6.  Lang
+
+   Property name  LANG
+
+   Purpose  This is the language tag, as defined in [RFC5646], that best
+      describes the participant's preferred language, if known.
+
+   Property Parameters  Non-standard or iana parameters can be specified
+      on this property.
+
+   Conformance  This property MAY be specified in any appropriate
+      component.
+
+   Format Definition  This property is defined by the following
+      notation:
+
+   lang = "LANG" langparams ":" TEXT CRLF
+
+   langparams = *(";" other-param)
+
+4.7.  Expect reply
+
+   Property name  EXPECT-REPLY
+
+   Purpose  If true, the organizer is expecting the participant to
+      notify them of their participation status.
+
+   Property Parameters  Non-standard or iana parameters can be specified
+      on this property.
+
+
+
+
+Douglass                  Expires 19 April 2025                [Page 12]
+
+Internet-Draft              iTip participants               October 2024
+
+
+   Conformance  This property MAY be specified once in the "PARTICIPANT"
+      calendar component.
+
+   Format Definition  This property is defined by the following
+      notation:
+
+   expect-reply = "EXPECT-REPLY"
+                 expect-replyparams ":"
+                 ( "TRUE" / "FALSE") CRLF
+
+   expect-replyparams = *(";" other-param)
+
+4.8.  Scheduling-agent
+
+   Property name  SCHEDULING-AGENT
+
+   Purpose  This is who is responsible for sending scheduling messages
+      with this calendar object to the participant.
+
+   Property Parameters  Non-standard or iana parameters can be specified
+      on this property.
+
+   Conformance  This property MAY be specified once in the "PARTICIPANT"
+      calendar component.
+
+   Format Definition  This property is defined by the following
+      notation:
+
+   scheduling-agent = "SCHEDULING-AGENT"
+                 scheduling-agentparams ":"
+                 ( "SERVER" /
+                   "CLIENT" /
+                   "NONE") CRLF
+
+   scheduling-agentparams = *(";" other-param)
+
+   The value MUST be one of the following values from the registry
+   defined in Section 12.4.1 of [RFC6638], or a vendor-specific value.
+
+   SERVER  The calendar server will send the scheduling messages.
+
+   CLIENT  The calendar client will send the scheduling messages.
+
+   NONE  No scheduling messages are to be sent to this participant.
+
+
+
+
+
+
+
+Douglass                  Expires 19 April 2025                [Page 13]
+
+Internet-Draft              iTip participants               October 2024
+
+
+4.9.  Scheduling-force-send
+
+   Property name  SCHEDULING-FORCE-SEND
+
+   Purpose  A client may set the property on a participant to true to
+      request that the server send a scheduling message to the
+      participant when it would not normally do so (e.g., if no
+      significant change is made the object or the scheduleAgent is set
+      to client).  The property MUST NOT be stored in the object on the
+      server or appear in a scheduling message.
+
+   Property Parameters  Non-standard or iana parameters can be specified
+      on this property.
+
+   Conformance  This property MAY be specified once in the "PARTICIPANT"
+      calendar component.
+
+   Format Definition  This property is defined by the following
+      notation:
+
+   scheduling-force-send = "SCHEDULING-FORCE-SEND"
+                 scheduling-force-sendparams ":"
+                 ( "TRUE" / "FALSE") CRLF
+
+   scheduling-force-sendparams = *(";" other-param)
+
+   Description  This property MAY be specified in "PARTICIPANT" calendar
+      components for which the "SCHEDULE-AGENT" property is set to the
+      value "SERVER" or is absent.  This property is used to force a
+      server to send a scheduling message to a specific calendar user in
+      situations where the server would not send a scheduling message
+      otherwise (e.g., when no change that warrants the delivery of a
+      new scheduling message was performed on the scheduling object
+      resource).  An "Owner" MAY specify this property for a PARTICIPANT
+      with the value "REQUEST" to force a "REQUEST" scheduling message
+      to be sent to the user.
+
+      Participants who are not the "Owner" MAY specify this property in
+      the "Owner" PARTICIPANT with the value "REPLY" to force a "REPLY"
+      scheduling message to be sent to the "Owner".
+
+      Servers MUST NOT preserve this property in scheduling object
+      resources, nor include it in any scheduling messages sent as the
+      result of a scheduling operation.
+
+      Clients MUST NOT include this property in any scheduling messages
+      that they themselves send.
+
+
+
+
+Douglass                  Expires 19 April 2025                [Page 14]
+
+Internet-Draft              iTip participants               October 2024
+
+
+      Servers MUST set the "SCHEDULING-STATUS" property of the
+      participant to 2.5 (i.e., "Success; unknown, non-standard property
+      value ignored."; see Section 3.6.6 of [RFC5546]) when the
+      "SCHEDULE-FORCE-SEND" property is set to an iana-token value they
+      do not recognize.
+
+4.10.  Scheduling-status
+
+   Property name  SCHEDULING-STATUS
+
+   Purpose  This is a list of status codes, returned from the processing
+      of the most recent scheduling message sent to this participant.
+      The status codes MUST be valid statcode values as defined in the
+      ABNF in Section 3.8.8.3 of [RFC5545].
+
+      Servers MUST only add or change this property when they send a
+      scheduling message to the participant.  Clients SHOULD NOT change
+      or remove this property if it was provided by the server.  Clients
+      MAY add, change, or remove the property for participants where the
+      client is handling the scheduling.This property MUST NOT be
+      included in scheduling messages.
+
+   Property Parameters  Non-standard or iana parameters can be specified
+      on this property.
+
+   Conformance  This property MAY be specified in any appropriate
+      component.
+
+   Format Definition  This property is defined by the following
+      notation:
+
+   scheduling-status = "SCHEDULING-STATUS"
+               scheduling-statusparams ":" TEXT CRLF
+
+   scheduling-statusparams = *(";" other-param)
+
+4.11.  Scheduling-dtstamp
+
+   Property name  SCHEDULING-DTSTAMP
+
+   Purpose  This is the timestamp for the most recent response from this
+      participant.
+
+      This is the updated property of the last response when using iTIP.
+      It can be compared to the updated property in future responses to
+      detect and discard older responses delivered out of order.
+
+   Property Parameters  Non-standard or iana parameters can be specified
+
+
+
+Douglass                  Expires 19 April 2025                [Page 15]
+
+Internet-Draft              iTip participants               October 2024
+
+
+      on this property.
+
+   Conformance  This property MAY be specified in any appropriate
+      component.
+
+   Format Definition  This property is defined by the following
+      notation:
+
+   scheduling-dtstamp = "SCHEDULING-DTSTAMP"
+               scheduling-dtstampparams ":" DATE-TIME CRLF
+
+   scheduling-dtstampparams = *(";" other-param)
+
+4.12.  Invited-by
+
+   Property name  INVITED-BY
+
+   Purpose  This is the calendar address of the participant who added
+      this participant to the entity, if known.
+
+   Property Parameters  Non-standard or iana parameters can be specified
+      on this property.
+
+   Conformance  This property MAY be specified in any appropriate
+      component.
+
+   Format Definition  This property is defined by the following
+      notation:
+
+   invited-by = "INVITED-BY"
+               invited-byparams ":" CAL-ADDRESS CRLF
+
+   invited-byparams = *(";" other-param)
+
+5.  Attendee parameters mapping
+
+      +================+===========================================+
+      | Parameter      | iCalendar PARTICIPANT                     |
+      +================+===========================================+
+      | CN             | NAME (defined in [RFC7986]                |
+      +----------------+-------------------------------------------+
+      | CUTYPE         | KIND (defined here)                       |
+      +----------------+-------------------------------------------+
+      | DELEGATED-FROM | PARTICIPATION-DELEGATED-FROM Section 4.3  |
+      +----------------+-------------------------------------------+
+      | DELEGATED-TO   | PARTICIPATION-DELEGATED-TO (Defined here) |
+      +----------------+-------------------------------------------+
+      | DIR            | LINK [RFC9253]                            |
+
+
+
+Douglass                  Expires 19 April 2025                [Page 16]
+
+Internet-Draft              iTip participants               October 2024
+
+
+      +----------------+-------------------------------------------+
+      | LANGUAGE       | LANG (defined here)                       |
+      +----------------+-------------------------------------------+
+      | MEMBER         | MEMBER-OF (defined here)                  |
+      +----------------+-------------------------------------------+
+      | PARTSTAT       | PARTICIPATION-STATUS (defined here)       |
+      +----------------+-------------------------------------------+
+      | ROLE           | PARTICIPATION-TYPE (Updated here)         |
+      +----------------+-------------------------------------------+
+      | RSVP           | EXPECT-REPLY (Defined here)               |
+      +----------------+-------------------------------------------+
+      | SENT-BY        |                                           |
+      +----------------+-------------------------------------------+
+
+                                 Table 3
+
+6.  Security Considerations
+
+   There should be no new security risks additional to those noted in
+   [RFC5546].
+
+7.  IANA Considerations
+
+7.1.  Parameter Registrations
+
+   This document defines the following new iCalendar property parameters
+   to be added to the registry defined in Section 8.2.4 of [RFC5545]:
+
+             +====================+=========+===============+
+             | Property Parameter | Status  | Reference     |
+             +====================+=========+===============+
+             | REQUIRED           | Current | Section 3.1.1 |
+             +--------------------+---------+---------------+
+
+                                 Table 4
+
+7.2.  Property Registrations
+
+   This document defines the following new iCalendar properties to be
+   added to the registry defined in Section 8.2.3 of [RFC5545]:
+
+
+
+
+
+
+
+
+
+
+
+Douglass                  Expires 19 April 2025                [Page 17]
+
+Internet-Draft              iTip participants               October 2024
+
+
+        +==============================+=========+===============+
+        | Property                     | Status  | Reference     |
+        +==============================+=========+===============+
+        | EXPECT-REPLY                 | Current | Section 4.7   |
+        +------------------------------+---------+---------------+
+        | INVITED-BY                   | Current | Section 4.12  |
+        +------------------------------+---------+---------------+
+        | KIND                         | Current | Section 4.1   |
+        +------------------------------+---------+---------------+
+        | LANG                         | Current | Section 4.6   |
+        +------------------------------+---------+---------------+
+        | MEMBER-OF                    | Current | Section 4.5   |
+        +------------------------------+---------+---------------+
+        | PARTICIPATION-DELEGATED-FROM | Current | Section 4.3   |
+        +------------------------------+---------+---------------+
+        | PARTICIPATION-DELEGATED-TO   | Current | Section 4.4   |
+        +------------------------------+---------+---------------+
+        | PARTICIPATION-STATUS         | Current | Section 4.2   |
+        +------------------------------+---------+---------------+
+        | REPLY-URL                    | Current | Section 3.2.1 |
+        +------------------------------+---------+---------------+
+        | SCHEDULING-AGENT             | Current | Section 4.8   |
+        +------------------------------+---------+---------------+
+        | SCHEDULING-DTSTAMP           | Current | Section 4.11  |
+        +------------------------------+---------+---------------+
+        | SCHEDULING-FORCE-SEND        | Current | Section 4.9   |
+        +------------------------------+---------+---------------+
+        | SCHEDULING-STATUS            | Current | Section 4.10  |
+        +------------------------------+---------+---------------+
+
+                                 Table 5
+
+7.3.  Updated Participant Type Registrations
+
+   This updates the participant types registry defined in Section 11.2.1
+   of [RFC9073]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Douglass                  Expires 19 April 2025                [Page 18]
+
+Internet-Draft              iTip participants               October 2024
+
+
+    +==================+=========+====================================+
+    | Participant Type | Status  | Reference                          |
+    +==================+=========+====================================+
+    | OWNER            | Current | RFC8984 Section 4.4.6 of [RFC8984] |
+    +------------------+---------+------------------------------------+
+    | ATTENDEE         | Current | RFC8984 Section 4.4.6 of [RFC8984] |
+    +------------------+---------+------------------------------------+
+    | OPTIONAL         | Current | RFC8984 Section 4.4.6 of [RFC8984] |
+    +------------------+---------+------------------------------------+
+    | INFORMATIONAL    | Current | RFC8984 Section 4.4.6 of [RFC8984] |
+    +------------------+---------+------------------------------------+
+    | CHAIR            | Current | RFC8984 Section 4.4.6 of [RFC8984] |
+    +------------------+---------+------------------------------------+
+
+                                  Table 6
+
+8.  Acknowledgements
+
+   The authors would like to thank the members of the Calendaring and
+   Scheduling Consortium (CalConnect) for contributing their ideas and
+   support.
+
+9.  Normative References
+
+   [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
+              Requirement Levels", IETF, DOI 10.17487/RFC2119, BCP 14,
+              RFC 2119, March 1997,
+              <https://www.rfc-editor.org/info/rfc2119>.
+
+   [RFC5234]  Overell, P. and D. Crocker, "Augmented BNF for Syntax
+              Specifications: ABNF", IETF, STD 68, DOI 10.17487/RFC5234,
+              BCP 68, RFC 5234, January 2008,
+              <https://www.rfc-editor.org/info/rfc5234>.
+
+   [RFC5545]  Desruisseaux, B., "Internet Calendaring and Scheduling
+              Core Object Specification (iCalendar)", IETF,
+              DOI 10.17487/RFC5545, RFC 5545, September 2009,
+              <https://www.rfc-editor.org/info/rfc5545>.
+
+   [RFC5546]  Daboo, C., "iCalendar Transport-Independent
+              Interoperability Protocol (iTIP)", IETF,
+              DOI 10.17487/RFC5546, RFC 5546, December 2009,
+              <https://www.rfc-editor.org/info/rfc5546>.
+
+   [RFC5646]  Phillips, A. and M. Davis, "Tags for Identifying
+              Languages", IETF, DOI 10.17487/RFC5646, BCP 47, RFC 5646,
+              September 2009, <https://www.rfc-editor.org/info/rfc5646>.
+
+
+
+
+Douglass                  Expires 19 April 2025                [Page 19]
+
+Internet-Draft              iTip participants               October 2024
+
+
+   [RFC6638]  Daboo, C. and B. Desruisseaux, "Scheduling Extensions to
+              CalDAV", IETF, DOI 10.17487/RFC6638, RFC 6638, June 2012,
+              <https://www.rfc-editor.org/info/rfc6638>.
+
+   [RFC7986]  Daboo, C., "New Properties for iCalendar", IETF,
+              DOI 10.17487/RFC7986, RFC 7986, October 2016,
+              <https://www.rfc-editor.org/info/rfc7986>.
+
+   [RFC8984]  Jenkins, N. and R. Stepanek, "JSCalendar: A JSON
+              Representation of Calendar Data", IETF,
+              DOI 10.17487/RFC8984, RFC 8984, July 2021,
+              <https://www.rfc-editor.org/info/rfc8984>.
+
+   [RFC9073]  Douglass, M., "Event Publishing Extensions to iCalendar",
+              IETF, DOI 10.17487/RFC9073, RFC 9073, August 2021,
+              <https://www.rfc-editor.org/info/rfc9073>.
+
+   [RFC9253]  Douglass, M., "Support for iCalendar Relationships", IETF,
+              DOI 10.17487/RFC9253, RFC 9253, August 2022,
+              <https://www.rfc-editor.org/info/rfc9253>.
+
+Author's Address
+
+   Michael Douglass
+   Email: mdouglass@bedework.com
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Douglass                  Expires 19 April 2025                [Page 20]

@@ -1,0 +1,585 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?rfc strict="yes"?>
+<?rfc compact="yes"?>
+<?rfc subcompact="no"?>
+<?rfc toc="yes"?>
+<?rfc tocdepth="4"?>
+<?rfc symrefs="yes"?>
+<?rfc sortrefs="yes"?>
+<rfc xmlns:xi="http://www.w3.org/2001/XInclude" docName="draft-douglass-itip-participants-02" category="std" ipr="trust200902" submissionType="IETF" xml:lang="en" version="3" >
+  <front>
+    <title abbrev="iTip participants">iTip using PARTICIPANT only</title>
+    <seriesInfo value="draft-douglass-itip-participants-02" status="Standard" stream="IETF" name="Internet-Draft" asciiName="Internet-Draft"></seriesInfo>
+    <seriesInfo name="" value="" status="full-standard"></seriesInfo>
+    <author fullname="Michael Douglass">
+      <address>
+        <postal></postal>
+        <email>mdouglass@bedework.com</email>
+      </address>
+    </author>
+    <area>Internet</area>
+    <abstract anchor="_bc34bddd-d475-d803-442a-ed04e02c105f">
+
+<t anchor="_bbfff530-985f-18ac-bb98-b4c1e411a246">This specification defines updates to RFC5546 iTip which allow scheduling using the "PARTICIPANT" calendar components specified in RFC9073.</t>
+
+<t anchor="_8078e3b6-48c2-e92e-1c3f-2412514472ac">New properties are also defined for use within the "PARTICIPANT" calendar component.</t>
+</abstract>
+  </front>
+  <middle>
+    <section anchor="introduction"><name>Introduction</name>
+
+<t anchor="_bd72b991-527e-522c-78c3-a8c43f4fb2bf">This specification details how the "PARTICIPANT" calendar component introduced in <xref target="RFC9073" section="" relative=""></xref> may be used for scheduling in place of <xref target="RFC5545" section="" relative=""></xref> "ATTENDEE" and "ORGANIZER" properties. Additionally, some properties are defined in this specification to be used within the "PARTICIPANT" calendar component.</t>
+
+<t anchor="_e979444c-4e1b-72a8-6fcc-8215e8367be4">For "VEVENT", "VTODO", "VFREEBUSY", and "VAVAILABILITY" calendar components; the "ORGANIZER" and "ATTENDEE" properties MUST be supplied as specified in <xref target="RFC5546" section="" relative=""></xref>. For new components such as the "VPOLL" calendar component, defined elsewhere, only "PARTICIPANT" calendar components MUST be used. A participant object that takes part in group scheduling MUST have the following characteristics:</t>
+
+<ul anchor="_b42ae5c0-5cb3-845c-edfc-9954f8dac97d"><li>It MUST have a calendar address as defined in <xref target="RFC9073" section="6.4" relative=""></xref>.</li>
+<li>It must have one or more scheduling roles defined in PARTICIPANT-TYPE</li>
+<li>Exactly 1 PARTICIPANT MUST have the OWNER role</li>
+</ul>
+
+<t anchor="_a7640fe8-8f6b-1a38-8ec7-7fd13031df99">Scheduling with "PARTICIPANT" calendar components behaves exactly as with "ATTENDEE" and "ORGANIZER" properties. When iTip specifies the setting of "ATTENDEE" or "ORGANIZER" property parameters then the appropriate properties will be set within the "PARTICIPANT" calendar component.</t>
+</section>
+    <section anchor="terms"><name>Terms and definitions</name>
+
+<t anchor="_84c4bc62-94bc-32d1-745a-69ddcd36a344">The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and  "OPTIONAL" in this document are to be interpreted as described in <xref target="RFC2119" section="" relative=""></xref>.</t>
+
+<t anchor="_f92ff8d0-1ecb-6b34-f6a9-4fd990fa9927">The notation used in this memo to (re-)define iCalendar elements is the ABNF notation of  <xref target="RFC5234" section="" relative=""></xref> as used by <xref target="RFC5545" section="" relative=""></xref>.  Any syntax elements shown below that are not explicitly defined in this specification come from iCalendar  <xref target="RFC5545" section="" relative=""></xref>.</t>
+
+<t anchor="_472b2f1f-828a-5eb4-df6e-dd3d8128fe31">Additionally, the following terms are used:</t>
+
+<section anchor="term-participant"><name>participant</name>
+<t anchor="_91f6a74f-87b6-ff0f-b8de-f3d8e367a0b8">Represents an agent that takes part in scheduling or publishing. A participant may be a human, for example an attendee, or a resource, for example a conference room.</t>
+ </section>
+
+<section anchor="term-publishable"><name>publishable</name>
+<t anchor="_a90dba46-eba1-4a7e-8718-f3cd8326204e">A component which takes part in <xref target="RFC5546" section="" relative=""></xref> publishing operations.</t>
+ </section>
+
+<section anchor="term-schedulable"><name>schedulable</name>
+<t anchor="_c26d3450-5ecf-b52d-8b45-ee11dc1b73e3">A component which takes part in <xref target="RFC5546" section="" relative=""></xref> scheduling operations.</t>
+ </section>
+
+<section anchor="term-owner"><name>owner</name>
+<t anchor="_e1b0fd9f-8169-48bd-47ca-654e1893a72d">The "Owner" of a "Schedulable" component is equivalent to the "Organizer" in <xref target="RFC5546" section="" relative=""></xref>. As such, there may be only one "Owner" though future specifications may relax or extend that constraint. The "Owner" is indicated by a role of "OWNER".</t>
+ </section>
+</section>
+    <section anchor="icalendar-extensions"><name>iCalendar Extensions</name>
+
+<section anchor="_new_property_parameters"><name>New Property Parameters</name>
+
+<section anchor="new-prop-para-required"><name>Required</name>
+
+<dl anchor="_b902bc3c-0692-55a9-96bd-71e3b57ea3ad"><dt>Parameter name</dt><dd><t anchor="_61a3ac36-f4e3-435a-9e0d-cb3f4af42c51">REQUIRED</t>
+</dd><dt>Purpose</dt><dd><t anchor="_8a0675f8-a4d1-c40e-8040-e5f619be3304">To specify whether the associated property is required in the current context.</t>
+</dd><dt>Format Definition</dt><dd><t anchor="_1e280a22-aa43-12fb-b2b7-f787acb03d85">This parameter is defined by the following notation:</t>
+</dd></dl>
+
+<sourcecode anchor="_d0877c1e-0f6a-4891-6059-e1d78bf70674" type="abnf"><![CDATA[requirededparam = "REQUIRED"  "=" ("TRUE" / "FALSE")
+  ; Default is FALSE]]></sourcecode>
+
+
+<dl anchor="_6e163094-7b4b-2b8b-08dd-4e14fdb1b655"><dt>Description</dt><dd><t anchor="_2e7463fa-6d8c-eb8f-7aae-2d272ceffcc4">This parameter MAY be specified on "REPLY-URL" property and, if the value is TRUE, indicates the "Owner" requires all replies to be made via the specified service rather than iTip replies.</t>
+</dd></dl>
+</section>
+</section>
+
+<section anchor="_new_properties"><name>New Properties</name>
+
+<section anchor="new-prop-reply-url"><name>Reply-URL</name>
+
+<dl anchor="_9528c276-d5bd-f16f-c0a9-aa7c9baa4a11"><dt>Property name</dt><dd><t anchor="_886ecfe5-fd0d-492e-ff7b-a08658a4577b">REPLY-URL</t>
+</dd><dt>Purpose</dt><dd><t anchor="_73dc5e8d-8bc9-94d2-1649-43f5acf48083">This property may be used in scheduling messages to indicate additional reply methods, for example a web-service.</t>
+</dd><dt>Value type</dt><dd><t anchor="_6d185990-0cd3-ab18-aa9c-c25f815ef9aa">URI</t>
+</dd><dt>Property Parameters</dt><dd><t anchor="_8974fe85-0f12-584e-6ba4-5b6bd5d043e9">Non-standard, required or iana parameters can be specified on this property.</t>
+</dd><dt>Conformance</dt><dd><t anchor="_e74ecc94-4ed0-6bb8-8ef5-0bec34e3887d">This property MAY be specified once in any schedulable component.</t>
+</dd><dt>Description</dt><dd><t anchor="_e35a5a36-eec3-9126-aff7-32a615bf8855">When used in a scheduling message this property indicates an additional or required service that can be used to reply. Typically, this would be a web service of some form.</t>
+<t anchor="_d2f85a2c-6a3c-251e-b2ae-18e6e5f827bb">When the "REQUIRED" property parameter is absent then this property provides an alternative to standard iTip based scheduling.</t>
+
+<t anchor="_b0c883c6-e418-fc0a-cdd5-23120e2c4711">When the "REQUIRED" property parameter is present then this property provides the only mechanism by which participants can reply. This allows the implementation of a web-based service without the ability to accept incoming mail for example.</t>
+</dd><dt>Format Definition</dt><dd><t anchor="_ef3b9afe-1013-0c1c-63ac-a7141c7edc73">This property is defined by the following notation:</t>
+</dd></dl>
+
+<sourcecode anchor="_33efaaa4-4894-09e5-a230-32dcb696b8ae" type="abnf"><![CDATA[reply-url = "REPLY-URL" reply-urlparams ":" uri CRLF
+
+reply-urlparams = *(
+                  (";" requiredparam) /
+                  (";" other-param)
+                  )]]></sourcecode>
+
+</section>
+</section>
+
+<section anchor="redefined-participation-type"><name>Redefined participation type</name>
+
+<t anchor="_654253dd-0ae8-805e-759f-920841d830ea">This specification redefines the "PARTICIPANT-TYPE" property allowing it to take multiple values and extending those values to align with  <xref target="RFC8984" section="" relative=""></xref> roles. There are also changes to the description to clarify its use defining the roles that participant takes.</t>
+
+<dl anchor="_b35503ce-4f95-6aa5-a5c0-3155ac675da0"><dt>Property name</dt><dd><t anchor="_ce317d95-a57a-e984-7312-edd8a325605b">PARTICIPANT-TYPE</t>
+</dd><dt>Purpose</dt><dd><t anchor="_37b4ad3c-b31c-f634-e57c-ec96b4d0ae2e">This property is equivalent to the <xref target="RFC5545" section="" relative=""></xref> "ROLE" property parameter but includes more values to align with  <xref target="RFC8984" section="" relative=""></xref>.</t>
+</dd><dt>Value Type</dt><dd><t anchor="_a1b44c27-9a59-b766-73b9-2e763669ef42">The value type for this property is TEXT. The allowable values are defined below.</t>
+</dd><dt>Property Parameters</dt><dd><t anchor="_e6b95721-1dde-26f0-e8c8-51cd2079965d">Non-standard or iana parameters can be specified on this property.</t>
+</dd><dt>Conformance</dt><dd><t anchor="_a69b3171-1f6f-a98a-345d-efb0ba039469">This property MUST be specified once within a "PARTICIPANT" calendar component.</t>
+</dd><dt>Description</dt><dd><t anchor="_ea07cb07-6be9-7a17-99d5-22de825a56e6">This property defines the type of participation, that is the roles the participant takes.<br /></t>
+<t anchor="_326911ea-0286-fe5c-d587-07a1a33bbf99">It includes the values defined in <xref target="RFC8984" section="" relative=""></xref>.</t>
+
+<t anchor="_02dee329-62a8-229a-afa6-f3d5d153c283">Note that the kind of participant, for example individual or group, is defined in the "KIND" property specified here.</t>
+
+<t anchor="_72ecaa64-9427-084f-b6d1-652ee5b25562">Some of the roles are required for the participant to be a "schedulable" object. These are the roles that are shown below.</t>
+</dd><dt>Format Definition</dt><dd><t anchor="_5bf1f088-5b6e-12f2-d8f5-3b613238d7bc">This property is defined by the following notation:</t>
+</dd></dl>
+
+<sourcecode anchor="_071ba4c6-3985-1e24-c77a-e45657e2ede5" type="abnf"><![CDATA[participanttype   = "PARTICIPANT-TYPE" partvalueparam ":"
+                     partvalue
+                     *("," partvalue) CRLF
+
+partvalue    = ("OWNER"
+               / "ATTENDEE"
+               / "OPTIONAL"
+               / "INFORMATIONAL"
+               / "CHAIR"
+               / "ACTIVE"
+               / "INACTIVE"
+               / "SPONSOR"
+               / "CONTACT"
+               / "BOOKING-CONTACT"
+               / "EMERGENCY-CONTACT"
+               / "PUBLICITY-CONTACT"
+               / "PLANNER-CONTACT"
+               / "PERFORMER"
+               / "SPEAKER"
+               / iana-token)     ; Other IANA-registered
+                                 ; values
+
+partvalueparam   = *(";" other-param)]]></sourcecode>
+
+
+<t anchor="_f9296222-0bbc-5e1d-7ca8-62a578fcf65d">The values have the same meaning as defined in <xref target="RFC8984" section="" relative=""></xref> and <xref target="RFC9073" section="" relative=""></xref>.</t>
+
+<t anchor="_ee5f042c-3031-fd11-da81-0d8c01d4ffc2">Other roles defined here have no direct equivalent in <xref target="RFC5545" section="" relative=""></xref></t>
+
+<t anchor="_16fa5d99-17ab-f07d-7da0-ac1b36298b3b">To map <xref target="RFC5545" section="" relative=""></xref> "ROLE" property parameter values to "PARTICIPANT-TYPE" property values use the following.</t>
+
+<table anchor="_0bbbfa7a-0c13-d440-fe81-9ca194412805"><thead><tr><th align="left">RFC5545 ROLE</th><th align="left">PARTICIPANT-TYPE</th></tr></thead><tbody><tr><td align="left"><t anchor="_36bc5503-e941-2c15-5ce4-66588647bc16">CHAIR</t>
+</td><td align="left"><t anchor="_f730b61f-f3d0-0ae9-01ae-3e95456b9220">CHAIR</t>
+</td></tr><tr><td align="left"><t anchor="_b3f33c37-9e62-d064-dd4f-92c96fe657d8">REQ-PARTICIPANT</t>
+</td><td align="left"><t anchor="_4251987e-102c-17f5-4ee9-8d8a7b471ff5">ATTENDEE</t>
+</td></tr><tr><td align="left"><t anchor="_923990c2-5dd3-b9a7-a9ea-1b374dee19cd">OPT-PARTICIPANT</t>
+</td><td align="left"><t anchor="_2fffd6d2-2954-312e-448d-993b37be646e">OPTIONAL</t>
+</td></tr><tr><td align="left"><t anchor="_837011f8-7e1e-18b8-c9fe-5c8334aeafee">NON-PARTICIPANT</t>
+</td><td align="left"><t anchor="_35eebf0e-fd70-acaf-1cbb-662cc49c2c48">INFORMATIONAL</t>
+</td></tr></tbody></table>
+
+<t anchor="_003caca9-f298-a8e0-3423-4fd437e1182a">The following table shows those roles that MUST appear in the "PARTICIPANT-TYPE" property for group-scheduling. Additionally, the mapping for "PARTICIPANT-TYPE" property values to  <xref target="RFC5545" section="" relative=""></xref> values are shown.</t>
+
+<table anchor="_f861da41-36bf-a223-a95e-28caad09fd91"><thead><tr><th align="left">PARTICIPANT-TYPE</th><th align="left">RFC5545 ROLE</th></tr></thead><tbody><tr><td align="left"><t anchor="_bb601269-b809-e6fa-0864-46987ddf5b6a">OWNER</t>
+</td><td align="left"><t anchor="_9896dbce-31ec-8d0b-87a3-16bae6c4c5bf">Create ORGANIZER</t>
+</td></tr><tr><td align="left"><t anchor="_faf8d50c-7d72-ba81-a63b-94e1f066eff7">ATTENDEE</t>
+</td><td align="left"><t anchor="_7dd9d806-0046-a6de-28c3-f0f1902eca2e">REQ-PARTICIPANT</t>
+</td></tr><tr><td align="left"><t anchor="_95124d0e-8b81-2c2d-885e-8b05a4058fed">OPTIONAL</t>
+</td><td align="left"><t anchor="_6cf90c65-53de-9008-2cb2-b6f3bfcd130d">OPT-PARTICIPANT</t>
+</td></tr><tr><td align="left"><t anchor="_b1a653a2-81c3-e638-c352-e48286640aee">INFORMATIONAL</t>
+</td><td align="left"><t anchor="_dcd65358-a9d7-0631-8b96-7f279c1d6edb">NON-PARTICIPANT</t>
+</td></tr><tr><td align="left"><t anchor="_7dbd462d-d1d3-eedf-c920-0222fbe3bc16">CHAIR</t>
+</td><td align="left"><t anchor="_98fe8c31-4d05-c11f-7769-7ddd725c84d3">CHAIR</t>
+</td></tr><tr><td colspan="2" align="left"><t anchor="_61a95942-7c96-f593-6001-12682a0fd41d">Subsequent values have no <xref target="RFC5545" section="" relative=""></xref> equivalent</t>
+</td></tr><tr><td align="left"><t anchor="_56206ca2-c710-c1c7-a51b-9f0b478bbea0">CONTACT</t>
+</td><td align="left"></td></tr><tr><td align="left"><t anchor="_6e31aa18-976d-1c66-fd56-4c0dd5b18cdd">VOTER</t>
+</td><td align="left"></td></tr><tr><td align="left"><t anchor="_911e7c9d-0b64-c6c5-e5d8-b3203f2c0c86">ACTIVE</t>
+</td><td align="left"></td></tr><tr><td align="left"><t anchor="_c15c1beb-a6b5-1c27-f27d-2fb44a8f8957">INACTIVE</t>
+</td><td align="left"></td></tr><tr><td align="left"><t anchor="_cc73bbe3-4fb3-470c-1fa3-b592b98154cc">SPONSOR</t>
+</td><td align="left"></td></tr><tr><td align="left"><t anchor="_7a58a02e-ac41-7116-129e-d68577eaf8cb">BOOKING-CONTACT</t>
+</td><td align="left"></td></tr><tr><td align="left"><t anchor="_fb2099d9-8808-cdf3-f527-2d51735ae025">EMERGENCY-CONTACT</t>
+</td><td align="left"></td></tr><tr><td align="left"><t anchor="_d4935b8d-70d9-01ab-26a6-7d92d1f389bc">PUBLICITY-CONTACT</t>
+</td><td align="left"></td></tr><tr><td align="left"><t anchor="_8c3c6d1f-d9db-f4e7-c4bb-76a765d3438b">PLANNER-CONTACT</t>
+</td><td align="left"></td></tr><tr><td align="left"><t anchor="_e3d7a2e5-a04b-5be2-f5b1-b68e6c02a04e">PERFORMER</t>
+</td><td align="left"></td></tr><tr><td align="left"><t anchor="_351540ee-2894-ef21-82dc-509cb4715aff">SPEAKER</t>
+</td><td align="left"></td></tr></tbody></table>
+
+<dl anchor="_d3030ffc-5357-cf66-477e-7cd84914626d"><dt>Examples</dt><dd><ul anchor="_7c85c4ad-1994-f340-e3e5-7b05249eab58"><li>PARTICIPANT-TYPE=OWNER,... equivalent to an ORGANIZER</li>
+<li>PARTICIPANT-TYPE=ATTENDEE,... equivalent to the ATTENDEE property</li>
+</ul>
+</dd></dl>
+</section>
+</section>
+    <section anchor="new-participant-properties-for-itip"><name>New Participant Properties for iTip</name>
+
+<t anchor="_1a3cccf6-df90-53da-6f3e-39bfea0a2e8f">The following properties are defined to be used within PARTICIPANT during scheduling and take the place of ATTENDEE and ORGANIZER properties and parameters.</t>
+
+<section anchor="new-prop-kind"><name>Kind</name>
+
+<dl anchor="_13fc9ae3-7dd2-f9ba-e9cf-cc4127d4f9d7"><dt>Property name</dt><dd><t anchor="_965535e4-c95a-9016-6f0f-0cf3a04913e3">KIND</t>
+</dd><dt>Purpose</dt><dd><t anchor="_65094840-9e02-d3f4-7bac-b4960c910d36">This is what kind of entity this participant is, if known.</t>
+</dd><dt>Property Parameters</dt><dd><t anchor="_6239ea13-e951-58f3-39a8-e2d0e2dfd90b">Non-standard or iana parameters can be specified on this property.</t>
+</dd><dt>Conformance</dt><dd><t anchor="_4ff8faa1-0b39-4235-02a5-628d64a4fb03">This property MAY be specified in a "PARTICIPANT" calendar component.</t>
+</dd><dt>Description</dt><dd><t anchor="_c5a4b2c6-d5c6-3f1f-0936-420b6efbf407">When used in a "PARTICIPANT" calendar component this property indicates the kind of entity, individual, group etc.<br /></t>
+<t anchor="_8e1eb347-7043-c12d-ffd5-c8fc6b986916">It takes the values shown below which are a redefinition of the CUTYPE parameter values defined in <xref target="RFC5545" section="" relative=""></xref> and aligned with <xref target="RFC8984" section="" relative=""></xref> .</t>
+</dd><dt>Format Definition</dt><dd><t anchor="_1a36425f-1b87-1563-3c2d-96f785d67ee1">This property is defined by the following notation:</t>
+</dd></dl>
+
+<sourcecode anchor="_e5368d92-99cd-586d-1d7a-b19a5a990bef" type="abnf"><![CDATA[kind = "KIND" kindparams ":"
+                "INDIVIDUAL"   ; An individual
+              / "GROUP"        ; A group of individuals
+              / "RESOURCE"     ; A physical resource
+              / "LOCATION"     ; A location resource e.g a room
+              / iana-token CRLF
+
+kindparams = *(";" other-param)]]></sourcecode>
+
+</section>
+
+<section anchor="new-prop-participation-status"><name>Participation-status</name>
+
+<dl anchor="_6e7c37b1-7459-45ae-b605-01150bb84dd8"><dt>Property name</dt><dd><t anchor="_d8caa91b-716b-9b35-f00b-7a643c4b496c">PARTICIPATION-STATUS</t>
+</dd><dt>Purpose</dt><dd><t anchor="_0f140bdf-d3ad-ea02-d59f-abd728b383d1">This property is used in the "PARTICIPANT" calendar component to indicate the participation status - if any.</t>
+</dd><dt>Property Parameters</dt><dd><t anchor="_ae0c4cbf-d95b-30cb-3a0e-7671c227c793">Non-standard or iana parameters can be specified on this property.</t>
+</dd><dt>Conformance</dt><dd><t anchor="_e0fe8430-cb2f-dd5e-821f-d4b0e1c97d9b">This property MAY be specified in a "PARTICIPANT" calendar component.</t>
+</dd><dt>Description</dt><dd><t anchor="_bc69fc1a-7153-fee1-c3f7-bdd01c2135d0">When used in a "PARTICIPANT" calendar component this property indicates what status, if any, the participant has.<br /></t>
+<t anchor="_4ee8ce3b-ff9d-cb61-c307-adb10932e64e">It takes the same values as the PARTSTAT parameter defined in <xref target="RFC5545" section="" relative=""></xref>.</t>
+</dd><dt>Format Definition</dt><dd><t anchor="_ac66f27d-5e32-23e0-861d-410e5c8b7269">This property is defined by the following notation:</t>
+</dd></dl>
+
+<sourcecode anchor="_c0e92ddf-cf47-b627-2d67-247d309e2ecc" type="abnf"><![CDATA[participation-status = "PARTICIPATION-STATUS"
+                       participation-statusparams ":"
+              NEEDS-ACTION / ; No status
+                    ; has yet been set by the participant.
+
+              ACCEPTED / ; The invited
+                    ; participant will participate.
+              DECLINED / ; The invited
+                    ; participant will not participate.
+               TENTATIVE / ; The invited participant
+                     ; may participate.
+                DELEGATED / ; The invited participant
+                     ; has delegated their attendance to
+                     ; another participant, as specified
+                      ; in the PARTICIPATION-DELEGATED-TO property.
+                COMPLETED / ; The assigned task is
+                     ; completed.
+                IN-PROCESS / ; The assigned task is
+                     ; being worked on.
+                    iana-token ("," iana-token) CRLF
+
+participation-statusparams = *(";" other-param)]]></sourcecode>
+
+</section>
+
+<section anchor="new-prop-participation-delegated-from"><name>Participation delegated from</name>
+
+<dl anchor="_aba198b5-1bb6-c376-2101-fc547bce47d4"><dt>Property name</dt><dd><t anchor="_ca418ce3-4848-927e-e27b-f368fd8a5a45">PARTICIPATION-DELEGATED-FROM</t>
+</dd><dt>Purpose</dt><dd><t anchor="_2353fee3-5a41-f230-7431-873ff783098d">This property is used in the "PARTICIPANT" calendar component to indicate who has delegated their participation to this participant.</t>
+</dd><dt>Property Parameters</dt><dd><t anchor="_d157efc2-93d1-0005-326d-9e64433e8f30">Non-standard or iana parameters can be specified on this property.</t>
+</dd><dt>Conformance</dt><dd><t anchor="_ad0667f5-dee2-5207-bc59-a2ae06cf22cf">This property MAY be specified in a "PARTICIPANT" calendar component 0 or more times.</t>
+</dd><dt>Description</dt><dd><t anchor="_697496f1-0b90-3eab-bc1c-4672a824abd2">This property specifies a calendar user that has delegated their participation in a group-scheduled component to the calendar user specified by the component.</t>
+</dd><dt>Format Definition</dt><dd><t anchor="_e7428dc1-9ce4-0768-85e5-82eba73c2bf1">This property is defined by the following notation:</t>
+</dd></dl>
+
+<sourcecode anchor="_8ddca498-3f33-c3aa-d70e-b1b16bb4c31f" type="abnf"><![CDATA[participation-delfrom = "PARTICIPATION-DELEGATED-FROM"
+                        participation-delfromparams ":"
+              CAL-ADDRESS
+              iana-token ("," iana-token) CRLF
+
+participation-delfromparams = *(";" other-param)]]></sourcecode>
+
+</section>
+
+<section anchor="new-prop-participation-delegated-to"><name>Participation delegated to</name>
+
+<dl anchor="_b8f424f5-fc1b-082b-ed06-073b56ce4f68"><dt>Property name</dt><dd><t anchor="_229f0722-7344-9d07-d989-8fcde3b7d13a">PARTICIPATION-DELEGATED-TO</t>
+</dd><dt>Purpose</dt><dd><t anchor="_adf695a6-de4d-1014-345a-047e4ebaff05">To specify the calendar user to whom the calendar user specified by the component has delegated participation.</t>
+</dd><dt>Property Parameters</dt><dd><t anchor="_24f932f2-c098-0afa-c0b6-a259a2ed1b85">Non-standard or iana parameters can be specified on this property.</t>
+</dd><dt>Conformance</dt><dd><t anchor="_9115a1fc-7510-2b19-e277-a324e4b371ed">This property MAY be specified in a "PARTICIPANT" calendar component 0 or more times.</t>
+</dd><dt>Description</dt><dd><t anchor="_b2fa443a-ff44-8315-07c9-1e55fab54897">This property specifies the calendar user that has been delegated participation in a group-scheduled component by the calendar user specified by the component.</t>
+</dd><dt>Format Definition</dt><dd><t anchor="_b89d9eff-6af9-d1d0-5d1c-287f989cc8da">This property is defined by the following notation:</t>
+</dd></dl>
+
+<sourcecode anchor="_d3fa194e-df89-24ff-934c-db91d105e5f2" type="abnf"><![CDATA[participation-delto = "PARTICIPATION-DELEGATED-TO"
+                      participation-deltoparams ":"
+              CAL-ADDRESS
+              iana-token ("," iana-token) CRLF
+
+participation-deltoparams = *(";" other-param)]]></sourcecode>
+
+</section>
+
+<section anchor="new-prop-member-of"><name>Member of</name>
+
+<dl anchor="_8733a04c-59ce-4057-9dae-ac173857be80"><dt>Property name</dt><dd><t anchor="_dccd2120-fb5c-ed5f-87bd-428fdd8096ba">MEMBER-OF</t>
+</dd><dt>Purpose</dt><dd><t anchor="_e402047f-e5ef-f04b-6217-1fcc01626906">To specify the group or list membership of the calendar user specified by the component.</t>
+</dd><dt>Property Parameters</dt><dd><t anchor="_56a4d505-f5a2-8a46-af62-a4c5d1f049b4">Non-standard or iana parameters can be specified on this property.</t>
+</dd><dt>Conformance</dt><dd><t anchor="_bc32fafd-fd23-23e8-22bf-2367ab649f6e">This property MAY be specified in a "PARTICIPANT" calendar component 0 or more times.</t>
+</dd><dt>Description</dt><dd><t anchor="_66e4e049-299f-e36e-61a7-d0823f2e61bd">This property identifies the group or list membership for the calendar user specified by the component.</t>
+</dd><dt>Format Definition</dt><dd><t anchor="_a2e0c986-abde-5085-93e6-03bae52c9299">This property is defined by the following notation:</t>
+</dd></dl>
+
+<sourcecode anchor="_99b11b66-8350-3fee-bce8-48d34bf53c65" type="abnf"><![CDATA[member-of = "MEMBER-OF" member-ogparams ":"
+              CAL-ADDRESS
+              iana-token ("," iana-token) CRLF
+
+memberofparams = *(";" other-param)]]></sourcecode>
+
+</section>
+
+<section anchor="new-prop-lang"><name>Lang</name>
+
+<dl anchor="_3cb29fd8-91f5-f5c5-f885-ca35080c51f1"><dt>Property name</dt><dd><t anchor="_20aa2fb0-5d22-7f8f-8ec7-b7e887e3fe5e">LANG</t>
+</dd><dt>Purpose</dt><dd><t anchor="_61df9544-a446-5b15-f236-4b34588d7e9f">This is the language tag, as defined in <xref target="RFC5646" section="" relative=""></xref>, that best describes the participant's preferred language, if known.</t>
+</dd><dt>Property Parameters</dt><dd><t anchor="_e655b9ab-176c-863a-6079-db9ac6bd91f2">Non-standard or iana parameters can be specified on this property.</t>
+</dd><dt>Conformance</dt><dd><t anchor="_1b6a5efc-ebb6-80bb-a371-f377effb4012">This property MAY be specified in any appropriate component.</t>
+</dd><dt>Format Definition</dt><dd><t anchor="_9bf9695e-b079-73b7-e5b8-3fb8c908d7cd">This property is defined by the following notation:</t>
+</dd></dl>
+
+<sourcecode anchor="_1bc8885b-92ae-d35a-9179-80d412df3cd0" type="abnf"><![CDATA[lang = "LANG" langparams ":" TEXT CRLF
+
+langparams = *(";" other-param)]]></sourcecode>
+
+</section>
+
+<section anchor="new-prop-expect-reply"><name>Expect reply</name>
+
+<dl anchor="_6be839a8-0ad9-1347-f6f9-9f5d4f57a285"><dt>Property name</dt><dd><t anchor="_897c5be9-b638-40fe-124a-92fda8d4b535">EXPECT-REPLY</t>
+</dd><dt>Purpose</dt><dd><t anchor="_44a4cc03-6f12-bcbb-f546-b6772f6ba4d7">If true, the organizer is expecting the participant to notify them of their participation status.</t>
+</dd><dt>Property Parameters</dt><dd><t anchor="_05cc3775-6761-f00f-b783-fe8e83cab773">Non-standard or iana parameters can be specified on this property.</t>
+</dd><dt>Conformance</dt><dd><t anchor="_0a626ede-9875-135a-3bef-7a4bb4b83284">This property MAY be specified once in the "PARTICIPANT" calendar component.</t>
+</dd><dt>Format Definition</dt><dd><t anchor="_63f078ca-dd54-60d9-1f91-1f752e3ebbbc">This property is defined by the following notation:</t>
+</dd></dl>
+
+<sourcecode anchor="_1b1ef27d-05e6-1444-218d-e6b05542bd0d" type="abnf"><![CDATA[expect-reply = "EXPECT-REPLY"
+              expect-replyparams ":"
+              ( "TRUE" / "FALSE") CRLF
+
+expect-replyparams = *(";" other-param)]]></sourcecode>
+
+</section>
+
+<section anchor="new-prop-scheduling-agent"><name>Scheduling-agent</name>
+
+<dl anchor="_4df40a19-067f-0f79-2fc1-fe78e3996292"><dt>Property name</dt><dd><t anchor="_cf11b8ad-918b-ff08-7976-660a54977a61">SCHEDULING-AGENT</t>
+</dd><dt>Purpose</dt><dd><t anchor="_01abd95f-ee30-9506-aac2-9022525aa736">This is who is responsible for sending scheduling messages with this calendar object to the participant.</t>
+</dd><dt>Property Parameters</dt><dd><t anchor="_6f51f4a5-b68b-09d0-c4ca-f7fa4edeb97e">Non-standard or iana parameters can be specified on this property.</t>
+</dd><dt>Conformance</dt><dd><t anchor="_34469f40-ac65-e74e-5801-877bcdca10d7">This property MAY be specified once in the "PARTICIPANT" calendar component.</t>
+</dd><dt>Format Definition</dt><dd><t anchor="_f9cf4c33-edfb-f828-e494-f99f82bfa908">This property is defined by the following notation:</t>
+</dd></dl>
+
+<sourcecode anchor="_fb1321b5-0c97-8e96-d1ea-e65538ba8057" type="abnf"><![CDATA[scheduling-agent = "SCHEDULING-AGENT"
+              scheduling-agentparams ":"
+              ( "SERVER" /
+                "CLIENT" /
+                "NONE") CRLF
+
+scheduling-agentparams = *(";" other-param)]]></sourcecode>
+
+
+<t anchor="_d9614e12-01a9-cc12-498c-8e8f2567ae6d">The value MUST be one of the following values from the registry defined in <xref target="RFC6638" section="12.4.1" relative=""></xref>, or a vendor-specific value.</t>
+
+<dl anchor="_61168668-68b2-b6a9-59b1-a202b6c6a7ae"><dt>SERVER</dt><dd><t anchor="_5629b824-efdf-17c0-7eb2-76f3f5cab6de">The calendar server will send the scheduling messages.</t>
+</dd><dt>CLIENT</dt><dd><t anchor="_2728a6ab-0a5d-705a-65d3-10fd89e3ec07">The calendar client will send the scheduling messages.</t>
+</dd><dt>NONE</dt><dd><t anchor="_8c8b54ac-130e-a9d0-4ae9-d8bc3529159a">No scheduling messages are to be sent to this participant.</t>
+</dd></dl>
+</section>
+
+<section anchor="new-prop-scheduling-force-send"><name>Scheduling-force-send</name>
+
+<dl anchor="_511df9e1-e924-9be7-7055-9f403cf28b39"><dt>Property name</dt><dd><t anchor="_534b5414-2cf1-5057-d9d6-83a0595e8429">SCHEDULING-FORCE-SEND</t>
+</dd><dt>Purpose</dt><dd><t anchor="_c8f94507-7651-b9a1-94f2-78a9538ae975">A client may set the property on a participant to true to request that the server send a scheduling message to the participant when it would not normally do so (e.g., if no significant change is made the object or the scheduleAgent is set to client). The property MUST NOT be stored in the object on the server or appear in a scheduling message.</t>
+</dd><dt>Property Parameters</dt><dd><t anchor="_5e37e0ab-f23b-bd8b-864f-08580dc824f7">Non-standard or iana parameters can be specified on this property.</t>
+</dd><dt>Conformance</dt><dd><t anchor="_ad71ec03-e64e-85bb-aabe-6c02bddf2d2b">This property MAY be specified once in the "PARTICIPANT" calendar component.</t>
+</dd><dt>Format Definition</dt><dd><t anchor="_ed3e2aa4-ae31-c028-8f33-af9e44c2b749">This property is defined by the following notation:</t>
+</dd></dl>
+
+<sourcecode anchor="_724c9bab-28a7-3934-d55a-9d77c31eab9f" type="abnf"><![CDATA[scheduling-force-send = "SCHEDULING-FORCE-SEND"
+              scheduling-force-sendparams ":"
+              ( "TRUE" / "FALSE") CRLF
+
+scheduling-force-sendparams = *(";" other-param)]]></sourcecode>
+
+
+<dl anchor="_618ae489-10f2-7798-6540-07f3e5bb08a4"><dt>Description</dt><dd><t anchor="_a0338c63-cfca-4f35-af0a-fa7df94b1adc">This property MAY be specified in "PARTICIPANT" calendar components for which the "SCHEDULE-AGENT" property is set to the value "SERVER" or is absent. This property is used to force a server to send a scheduling message to a specific calendar user in situations where the server would not send a scheduling message otherwise (e.g., when no change that warrants the delivery of a new scheduling message was performed on the scheduling object resource). An "Owner" MAY specify this property for a PARTICIPANT with the value "REQUEST" to force a "REQUEST" scheduling message to be sent to the user.</t>
+<t anchor="_9ac74338-e73f-cf99-336c-a384d57a21a0">Participants who are not the "Owner" MAY specify this property in the "Owner" PARTICIPANT with the value "REPLY" to force a "REPLY" scheduling message to be sent to the "Owner".</t>
+
+<t anchor="_6436b97c-5e3f-37a0-78c4-e1e978c72f85">Servers MUST NOT preserve this property in scheduling object resources, nor include it in any scheduling messages sent as the result of a scheduling operation.</t>
+
+<t anchor="_5d8c97db-099c-a50a-63cb-263fdc675fc1">Clients MUST NOT include this property in any scheduling messages  that they themselves send.</t>
+
+<t anchor="_c338b490-6490-2635-d61b-fcae20c441ca">Servers MUST set the "SCHEDULING-STATUS" property of the participant to 2.5 (i.e., "Success; unknown, non-standard property value ignored."; see  <xref target="RFC5546" section="3.6.6" relative=""></xref>) when the "SCHEDULE-FORCE-SEND" property is set to an iana-token value they do not recognize.</t>
+</dd></dl>
+</section>
+
+<section anchor="new-prop-scheduling-status"><name>Scheduling-status</name>
+
+<dl anchor="_4677e466-a7cb-b50e-f5ae-7fda6c2fc14b"><dt>Property name</dt><dd><t anchor="_9c3aeb75-a593-9da0-0735-9de5cf412d0e">SCHEDULING-STATUS</t>
+</dd><dt>Purpose</dt><dd><t anchor="_3a097db0-dfa2-035a-88de-c2fee664d9d9">This is a list of status codes, returned from the processing of the most recent scheduling message sent to this participant. The status codes MUST be valid statcode values as defined in the ABNF in Section 3.8.8.3 of [RFC5545].</t>
+<t anchor="_5a986b68-8398-eccd-d4da-aa681e2a85f4">Servers MUST only add or change this property when they send a scheduling message to the participant. Clients SHOULD NOT change or remove this property if it was provided by the server. Clients MAY add, change, or remove the property for participants where the client is handling the scheduling.This property MUST NOT be included in scheduling messages.</t>
+</dd><dt>Property Parameters</dt><dd><t anchor="_5f3b4380-501d-8f09-9714-38448bd38da4">Non-standard or iana parameters can be specified on this property.</t>
+</dd><dt>Conformance</dt><dd><t anchor="_8a725729-fddd-6297-fe97-e7bd663c1048">This property MAY be specified in any appropriate component.</t>
+</dd><dt>Format Definition</dt><dd><t anchor="_bc7f69fa-d20d-29f6-df9e-2883b18db1ec">This property is defined by the following notation:</t>
+</dd></dl>
+
+<sourcecode anchor="_faea8395-2160-7f27-7ba3-e0ce92ee7b4f" type="abnf"><![CDATA[scheduling-status = "SCHEDULING-STATUS"
+            scheduling-statusparams ":" TEXT CRLF
+
+scheduling-statusparams = *(";" other-param)]]></sourcecode>
+
+</section>
+
+<section anchor="new-prop-scheduling-dtstamp"><name>Scheduling-dtstamp</name>
+
+<dl anchor="_2b1564e7-c1df-f970-dd2a-ab84eed63b19"><dt>Property name</dt><dd><t anchor="_c6e5d27a-bed8-db24-1929-49df1a476ce5">SCHEDULING-DTSTAMP</t>
+</dd><dt>Purpose</dt><dd><t anchor="_53994b49-355b-638a-93f4-46fdc5c1c4d5">This is the timestamp for the most recent response from this participant.</t>
+<t anchor="_f685e4bb-7a46-d90b-74d8-98db7f3398f9">This is the updated property of the last response when using iTIP. It can be compared to the updated property in future responses to detect and discard older responses delivered out of order.</t>
+</dd><dt>Property Parameters</dt><dd><t anchor="_9778ddcb-91b0-f079-9cfe-e2e2402eefa7">Non-standard or iana parameters can be specified on this property.</t>
+</dd><dt>Conformance</dt><dd><t anchor="_2721bac3-9a72-f88c-c76d-f65776e2f051">This property MAY be specified in any appropriate component.</t>
+</dd><dt>Format Definition</dt><dd><t anchor="_e74bafa7-6b60-0b45-8bd9-59cbc2dc4782">This property is defined by the following notation:</t>
+</dd></dl>
+
+<sourcecode anchor="_e6d67814-5a88-65aa-9148-0947d57bc88e" type="abnf"><![CDATA[scheduling-dtstamp = "SCHEDULING-DTSTAMP"
+            scheduling-dtstampparams ":" DATE-TIME CRLF
+
+scheduling-dtstampparams = *(";" other-param)]]></sourcecode>
+
+</section>
+
+<section anchor="new-prop-invited-by"><name>Invited-by</name>
+
+<dl anchor="_ef3882d9-53d8-b55d-a84a-d5ea7208d8f3"><dt>Property name</dt><dd><t anchor="_203c0398-f71e-0d4e-0603-a464871594bd">INVITED-BY</t>
+</dd><dt>Purpose</dt><dd><t anchor="_bcfc7269-b31d-7034-9ef8-1ecf6a8a8528">This is the calendar address of the participant who added this participant to the entity, if known.</t>
+</dd><dt>Property Parameters</dt><dd><t anchor="_c44cf3f5-1f06-4e10-3461-17e4219e577c">Non-standard or iana parameters can be specified on this property.</t>
+</dd><dt>Conformance</dt><dd><t anchor="_8ea3f49f-1789-3252-c9c0-3b51eae0c672">This property MAY be specified in any appropriate component.</t>
+</dd><dt>Format Definition</dt><dd><t anchor="_c246d1f6-1379-7a3b-1831-03f5327cdfec">This property is defined by the following notation:</t>
+</dd></dl>
+
+<sourcecode anchor="_12b649ee-8889-3eb8-b043-6941f9c02197" type="abnf"><![CDATA[invited-by = "INVITED-BY"
+            invited-byparams ":" CAL-ADDRESS CRLF
+
+invited-byparams = *(";" other-param)]]></sourcecode>
+
+</section>
+</section>
+    <section anchor="attendee-params"><name>Attendee parameters mapping</name>
+
+<table anchor="_3c58d974-fa45-721b-dab7-ca26d60d7ba0"><thead><tr><th align="left">Parameter</th><th align="left">iCalendar PARTICIPANT</th></tr></thead><tbody><tr><td align="left"><t anchor="_e5e5caed-034b-f1d1-2067-317fd1f27f5a">CN</t>
+</td><td align="left"><t anchor="_65e5a537-d78c-edea-1524-4e2b5c1e3a3c">NAME (defined in <xref target="RFC7986" section="" relative=""></xref></t>
+</td></tr><tr><td align="left"><t anchor="_f73b57ad-64c3-4425-12ee-464ff525d0bf">CUTYPE</t>
+</td><td align="left"><t anchor="_7c4d7f99-d289-d5c1-19eb-3729c85b45fc">KIND (defined here)</t>
+</td></tr><tr><td align="left"><t anchor="_1c28df6c-b4fb-226f-ba92-79d7deea84d2">DELEGATED-FROM</t>
+</td><td align="left"><t anchor="_17f4a1b8-7bb0-34d8-2917-8576e69c8259">PARTICIPATION-DELEGATED-FROM <xref target="new-prop-participation-delegated-from"></xref></t>
+</td></tr><tr><td align="left"><t anchor="_76dce3c9-9ed6-91f7-73e8-b9d86afdb5ea">DELEGATED-TO</t>
+</td><td align="left"><t anchor="_5d859952-2264-9075-65ff-d1218d81e59e">PARTICIPATION-DELEGATED-TO (Defined here)</t>
+</td></tr><tr><td align="left"><t anchor="_eed1e294-7321-d78e-5c4d-37141c4b244f">DIR</t>
+</td><td align="left"><t anchor="_1be38b3f-0869-67df-77ae-47e33c75625e">LINK <xref target="RFC9253" section="" relative=""></xref></t>
+</td></tr><tr><td align="left"><t anchor="_7f46f231-dd6e-f5c9-34d0-8ee6513a09ca">LANGUAGE</t>
+</td><td align="left"><t anchor="_d5a90eee-4572-9d0c-f4cd-fd4e62134d94">LANG (defined here)</t>
+</td></tr><tr><td align="left"><t anchor="_2d9d4e28-ff65-1d95-d1a7-3c8bf31be229">MEMBER</t>
+</td><td align="left"><t anchor="_a0e1424a-58d8-2638-f5f3-e28479775cf7">MEMBER-OF (defined here)</t>
+</td></tr><tr><td align="left"><t anchor="_30585e3d-a30e-6875-ae8c-f9c005981c0d">PARTSTAT</t>
+</td><td align="left"><t anchor="_22907370-6625-4dbd-8af7-325ec171958f">PARTICIPATION-STATUS (defined here)</t>
+</td></tr><tr><td align="left"><t anchor="_8575b1e2-0a67-008b-2118-c1299a5bb6d5">ROLE</t>
+</td><td align="left"><t anchor="_df3496fb-1ab6-5737-bc49-71e12929930c">PARTICIPATION-TYPE (Updated here)</t>
+</td></tr><tr><td align="left"><t anchor="_0a072f89-1f64-a0be-6ab7-abef89b232df">RSVP</t>
+</td><td align="left"><t anchor="_442a6d02-7202-74dd-db31-c1d74e3a33bd">EXPECT-REPLY (Defined here)</t>
+</td></tr><tr><td align="left"><t anchor="_132307e3-7b33-8236-d7b9-2c2659f5c36a">SENT-BY</t>
+</td><td align="left"></td></tr></tbody></table>
+</section>
+    <section anchor="security"><name>Security Considerations</name>
+
+<t anchor="_629a6d99-4acd-9e90-dede-90adc5a83d67">There should be no new security risks additional to those noted in  <xref target="RFC5546" section="" relative=""></xref>.</t>
+</section>
+    <section anchor="iana"><name>IANA Considerations</name>
+
+<section anchor="_parameter_registrations"><name>Parameter Registrations</name>
+
+<t anchor="_57da327f-bfcd-c1a2-75fe-03fbc34ce80d">This document defines the following new iCalendar property parameters to be added to the registry defined in  <xref target="RFC5545" section="8.2.4" relative=""></xref>:</t>
+
+<table anchor="_9b543981-7ec5-072e-3859-9e92f3c87a2b"><thead><tr><th align="left">Property Parameter</th><th align="left">Status</th><th align="left">Reference</th></tr></thead><tbody><tr><td align="left"><t anchor="_18bf8000-dbcd-2815-56fe-131f0581df3e">REQUIRED</t>
+</td><td align="left"><t anchor="_05be6a14-be0a-7560-2e85-f0d042e3acd4">Current</t>
+</td><td align="left"><t anchor="_724aae30-171d-5ca8-0ffa-7fd2f13cc17d"><xref target="new-prop-para-required"></xref></t>
+</td></tr></tbody></table>
+</section>
+
+<section anchor="_property_registrations"><name>Property Registrations</name>
+
+<t anchor="_b2a8e200-fc3f-472f-0967-339f5c66aa24">This document defines the following new iCalendar properties to be added to the registry defined in  <xref target="RFC5545" section="8.2.3" relative=""></xref>:</t>
+
+<table anchor="_084d4efd-f888-276f-79c7-a12144891f12"><thead><tr><th align="left">Property</th><th align="left">Status</th><th align="left">Reference</th></tr></thead><tbody><tr><td align="left"><t anchor="_d45ce7a2-06e6-db2d-607a-124c8c84c104">EXPECT-REPLY</t>
+</td><td align="left"><t anchor="_67c6b53a-2dbc-6fe2-7871-2a7ab8088849">Current</t>
+</td><td align="left"><t anchor="_5147ff1e-7803-a742-65d7-c97cb8fead0e"><xref target="new-prop-expect-reply"></xref></t>
+</td></tr><tr><td align="left"><t anchor="_4c74b995-b120-5984-2e5b-282c9bf48df7">INVITED-BY</t>
+</td><td align="left"><t anchor="_21006180-1b2a-91df-1f8f-5859d97a36e3">Current</t>
+</td><td align="left"><t anchor="_9bf1718a-9e2f-d0e9-71b9-0626f957956b"><xref target="new-prop-invited-by"></xref></t>
+</td></tr><tr><td align="left"><t anchor="_ba1909db-df56-2970-7f9f-72da030f7110">KIND</t>
+</td><td align="left"><t anchor="_36a002a0-6eff-e14c-9e81-8db9660d87a8">Current</t>
+</td><td align="left"><t anchor="_aad5d32c-db09-518f-22c7-ec9a4d8dd540"><xref target="new-prop-kind"></xref></t>
+</td></tr><tr><td align="left"><t anchor="_3621b7cb-4e7b-aad0-3cb5-42babdd43e49">LANG</t>
+</td><td align="left"><t anchor="_7477cd65-addb-35ac-e6e0-b7fadddc6f83">Current</t>
+</td><td align="left"><t anchor="_2365e7a9-7510-0c0a-212a-d699ce367613"><xref target="new-prop-lang"></xref></t>
+</td></tr><tr><td align="left"><t anchor="_6f613267-2ab8-e88f-c882-cd63ce16108b">MEMBER-OF</t>
+</td><td align="left"><t anchor="_19939dcb-4bf8-2059-6d5e-5065c36d55c1">Current</t>
+</td><td align="left"><t anchor="_bfc6b48a-a87a-c916-65dc-f4c3f26813f3"><xref target="new-prop-member-of"></xref></t>
+</td></tr><tr><td align="left"><t anchor="_4dcb9ff7-f992-a6c8-fb10-f55db2eaa478">PARTICIPATION-DELEGATED-FROM</t>
+</td><td align="left"><t anchor="_1c80a543-8492-458e-6814-96d82f39f7cc">Current</t>
+</td><td align="left"><t anchor="_3cd55316-f7b0-3393-8751-d4241169b948"><xref target="new-prop-participation-delegated-from"></xref></t>
+</td></tr><tr><td align="left"><t anchor="_999ab9a0-0906-a54f-01c4-e09d43730f6e">PARTICIPATION-DELEGATED-TO</t>
+</td><td align="left"><t anchor="_d85d2ea3-539b-72a4-f018-f33dadc20f61">Current</t>
+</td><td align="left"><t anchor="_4be51f81-3c2f-96b1-974f-78e11488402b"><xref target="new-prop-participation-delegated-to"></xref></t>
+</td></tr><tr><td align="left"><t anchor="_1e8b933e-34b5-5216-de61-519dc9701172">PARTICIPATION-STATUS</t>
+</td><td align="left"><t anchor="_21dc3cd2-102c-df93-4542-184f23a18107">Current</t>
+</td><td align="left"><t anchor="_071c9701-311d-d520-b2bc-1ea19255da92"><xref target="new-prop-participation-status"></xref></t>
+</td></tr><tr><td align="left"><t anchor="_aa5e11f9-0b4b-db24-304b-bb978911e4e5">REPLY-URL</t>
+</td><td align="left"><t anchor="_2dec68d9-d4c7-8cb4-cbec-622cfe7b8e70">Current</t>
+</td><td align="left"><t anchor="_37451b37-c227-5a7e-149f-fef5497a3722"><xref target="new-prop-reply-url"></xref></t>
+</td></tr><tr><td align="left"><t anchor="_85556fcf-4b7c-17b1-b415-f5383a97beda">SCHEDULING-AGENT</t>
+</td><td align="left"><t anchor="_f025916f-ab2f-8096-d21a-3abee0ca5ae9">Current</t>
+</td><td align="left"><t anchor="_00eb373f-bfad-0c1c-10d6-3b9ac37a5d9e"><xref target="new-prop-scheduling-agent"></xref></t>
+</td></tr><tr><td align="left"><t anchor="_222bf2bb-9625-fe06-a538-ddd964d1a66a">SCHEDULING-DTSTAMP</t>
+</td><td align="left"><t anchor="_dc138870-8a0b-dccd-194a-9f93c596fbdd">Current</t>
+</td><td align="left"><t anchor="_a33b7b18-59ab-ddfe-ad94-151b9d0289c8"><xref target="new-prop-scheduling-dtstamp"></xref></t>
+</td></tr><tr><td align="left"><t anchor="_a144cf3b-fbc9-812f-76f8-9238c0ef6ca7">SCHEDULING-FORCE-SEND</t>
+</td><td align="left"><t anchor="_b88dd4db-4079-64ac-bd49-0b84d38d36df">Current</t>
+</td><td align="left"><t anchor="_ff378e00-6e1d-1fd7-dfa8-9aad60786c05"><xref target="new-prop-scheduling-force-send"></xref></t>
+</td></tr><tr><td align="left"><t anchor="_df3a6136-68b3-8cbd-f2d8-3fd4d4cd2d89">SCHEDULING-STATUS</t>
+</td><td align="left"><t anchor="_f6793074-ea97-2199-3c28-47c3d89b6d02">Current</t>
+</td><td align="left"><t anchor="_c27e31ee-2730-ae5b-95cf-176fb1f5b763"><xref target="new-prop-scheduling-status"></xref></t>
+</td></tr></tbody></table>
+</section>
+
+<section anchor="_updated_participant_type_registrations"><name>Updated Participant Type Registrations</name>
+
+<t anchor="_216b4bdc-ec7c-220f-f98c-45a5b3bfa84a">This updates the participant types registry defined in <xref target="RFC9073" section="11.2.1" relative=""></xref></t>
+
+<table anchor="_126d307d-f767-5ae5-3645-cb28b8222f03"><thead><tr><th align="left">Participant Type</th><th align="left">Status</th><th align="left">Reference</th></tr></thead><tbody><tr><td align="left"><t anchor="_6f0047cb-2b2d-299a-637b-71302924bce8">OWNER</t>
+</td><td align="left"><t anchor="_f54b8091-cc41-baa2-aecb-0e0d37e9d8f6">Current</t>
+</td><td align="left"><t anchor="_48f24ae0-a71c-efaa-60cd-d1b66b3e3b00">RFC8984 <xref target="RFC8984" section="4.4.6" relative=""></xref></t>
+</td></tr><tr><td align="left"><t anchor="_d082c43e-2c95-0e76-5a58-38ba9a234811">ATTENDEE</t>
+</td><td align="left"><t anchor="_3715adee-da08-b34c-4ff1-cce014e1795d">Current</t>
+</td><td align="left"><t anchor="_a3fa32c5-f1de-7729-b895-5084f095a6a9">RFC8984 <xref target="RFC8984" section="4.4.6" relative=""></xref></t>
+</td></tr><tr><td align="left"><t anchor="_1a8980d0-5bfb-7c15-13fd-3adf229fbce2">OPTIONAL</t>
+</td><td align="left"><t anchor="_7b8e3c44-13d6-8733-b76b-5b1048a773bc">Current</t>
+</td><td align="left"><t anchor="_696d6840-d61a-60de-c869-7e72db188452">RFC8984 <xref target="RFC8984" section="4.4.6" relative=""></xref></t>
+</td></tr><tr><td align="left"><t anchor="_43f87dac-4698-00d2-7828-0a98c0396c1a">INFORMATIONAL</t>
+</td><td align="left"><t anchor="_16a5b54a-a9c5-f959-1360-9ff5f7bc3566">Current</t>
+</td><td align="left"><t anchor="_d298be11-077c-4220-6b43-6a63aa1ba5c6">RFC8984 <xref target="RFC8984" section="4.4.6" relative=""></xref></t>
+</td></tr><tr><td align="left"><t anchor="_a940853c-9f85-b43b-b662-b27808ac4b35">CHAIR</t>
+</td><td align="left"><t anchor="_7fa34973-f271-1fe9-e277-819e2f97afb9">Current</t>
+</td><td align="left"><t anchor="_eecf5836-a928-9c2a-478f-d0ea6e0735a8">RFC8984 <xref target="RFC8984" section="4.4.6" relative=""></xref></t>
+</td></tr></tbody></table>
+</section>
+</section>
+    <section anchor="acknowledgements"><name>Acknowledgements</name>
+
+<t anchor="_cceedf47-b653-3d9e-923d-be609ae35071">The authors would like to thank the members of the Calendaring and Scheduling Consortium (CalConnect) for contributing their ideas and support.</t>
+</section>
+  </middle>
+  <back>
+    <references anchor="_normative_references">
+      <name>Normative References</name>
+      <reference target="https://www.rfc-editor.org/info/rfc2119" anchor="RFC2119"><stream>IETF</stream> <front> <title>Key words for use in RFCs to Indicate Requirement Levels</title> <author fullname="S. Bradner" asciiFullname="S. Bradner"></author> <date month="March" year="1997"></date> <keyword>Standards</keyword><keyword>Track</keyword><keyword>Documents</keyword> <abstract>  <t anchor="_349eae68-a8a3-0c01-e665-a6dc84c36d2e">In many standards track documents several words are used to signify the requirements in the specification. These words are often capitalized. This document defines these words as they should be interpreted in IETF documents. This document specifies an Internet Best Current Practices for the Internet Community, and requests discussion and suggestions for improvements.</t></abstract> </front> <format target="https://www.rfc-editor.org/info/rfc2119" type="src"></format> <seriesInfo value=" 10.17487/RFC2119" name="DOI"></seriesInfo> <seriesInfo value="14" name="BCP"></seriesInfo> <seriesInfo value="2119" name="RFC"></seriesInfo></reference>
+      <reference target="https://www.rfc-editor.org/info/rfc5234" anchor="RFC5234"><stream>IETF</stream> <front> <title>Augmented BNF for Syntax Specifications: ABNF</title> <author fullname="P. Overell" asciiFullname="P. Overell"></author> <author fullname="D. Crocker" asciiFullname="D. Crocker"></author> <date month="January" year="2008"></date> <keyword>ABNF</keyword><keyword>backus-naur form</keyword><keyword>augmented backus-naur form</keyword><keyword>rule definitions</keyword><keyword>encoding</keyword><keyword>core lexical analyzer</keyword> <abstract>  <t anchor="_17836bdc-ff56-24bf-fbfe-9cbd5a350f52">Internet technical specifications often need to define a formal syntax. Over the years, a modified version of Backus-Naur Form (BNF), called Augmented BNF (ABNF), has been popular among many Internet specifications. The current specification documents ABNF. It balances compactness and simplicity with reasonable representational power. The differences between standard BNF and ABNF involve naming rules, repetition, alternatives, order-independence, and value ranges. This specification also supplies additional rule definitions and encoding for a core lexical analyzer of the type common to several Internet specifications. [STANDARDS-TRACK]</t></abstract> </front> <format target="https://www.rfc-editor.org/info/rfc5234" type="src"></format> <seriesInfo name="STD" value="68"></seriesInfo> <seriesInfo value=" 10.17487/RFC5234" name="DOI"></seriesInfo> <seriesInfo value="68" name="BCP"></seriesInfo> <seriesInfo value="5234" name="RFC"></seriesInfo></reference>
+      <reference target="https://www.rfc-editor.org/info/rfc5545" anchor="RFC5545"><stream>IETF</stream> <front> <title>Internet Calendaring and Scheduling Core Object Specification (iCalendar)</title> <author fullname="B. Desruisseaux" asciiFullname="B. Desruisseaux"></author> <date month="September" year="2009"></date> <keyword>calsify</keyword><keyword>calsched</keyword><keyword>calsch</keyword><keyword>caldav</keyword><keyword>calendar</keyword><keyword>calendaring</keyword><keyword>meeting</keyword><keyword>event</keyword><keyword>task</keyword><keyword>to-do</keyword><keyword>journal</keyword><keyword>appointment</keyword><keyword>agenda</keyword><keyword>schedule</keyword><keyword>scheduling</keyword><keyword>ical</keyword><keyword>icalendar</keyword><keyword>itip</keyword><keyword>imip</keyword><keyword>text/calendar</keyword><keyword>ischedule</keyword><keyword>xCalendar</keyword> <abstract>  <t anchor="_811cc9c8-9775-e7c0-b656-80ef8aa26b59">This document defines the iCalendar data format for representing and exchanging calendaring and scheduling information such as events, to-dos, journal entries, and free/busy information, independent of any particular calendar service or protocol. [STANDARDS-TRACK]</t></abstract> </front> <format target="https://www.rfc-editor.org/info/rfc5545" type="src"></format> <seriesInfo value=" 10.17487/RFC5545" name="DOI"></seriesInfo> <seriesInfo value="5545" name="RFC"></seriesInfo></reference>
+      <reference target="https://www.rfc-editor.org/info/rfc5546" anchor="RFC5546"><stream>IETF</stream> <front> <title>iCalendar Transport-Independent Interoperability Protocol (iTIP)</title> <author fullname="C. Daboo" asciiFullname="C. Daboo"></author> <date month="December" year="2009"></date> <keyword>calendar</keyword><keyword>scheduling</keyword> <abstract>  <t anchor="_850cde8e-d6e8-b113-9354-ebf6d315f42f">This document specifies a protocol that uses the iCalendar object specification to provide scheduling interoperability between different calendaring systems. This is done without reference to a specific transport protocol so as to allow multiple methods of communication between systems. Subsequent documents will define profiles of this protocol that use specific, interoperable methods of communication between systems.</t>  <t anchor="_aae666b1-37c9-0dd0-96bd-7903030d47a2">The iCalendar Transport-Independent Interoperability Protocol (iTIP) complements the iCalendar object specification by adding semantics for group scheduling methods commonly available in current calendaring systems. These scheduling methods permit two or more calendaring systems to perform transactions such as publishing, scheduling, rescheduling, responding to scheduling requests, negotiating changes, or canceling. [STANDARDS-TRACK]</t></abstract> </front> <format target="https://www.rfc-editor.org/info/rfc5546" type="src"></format> <seriesInfo value=" 10.17487/RFC5546" name="DOI"></seriesInfo> <seriesInfo value="5546" name="RFC"></seriesInfo></reference>
+      <reference target="https://www.rfc-editor.org/info/rfc5646" anchor="RFC5646"><stream>IETF</stream> <front> <title>Tags for Identifying Languages</title> <author fullname="A. Phillips" asciiFullname="A. Phillips"></author> <author fullname="M. Davis" asciiFullname="M. Davis"></author> <date month="September" year="2009"></date> <keyword>language tags</keyword><keyword>private interchange</keyword> <abstract>  <t anchor="_5df02d4e-d874-bcc4-0850-07ec48163179">This document describes the structure, content, construction, and semantics of language tags for use in cases where it is desirable to indicate the language used in an information object. It also describes how to register values for use in language tags and the creation of user-defined extensions for private interchange. This document specifies an Internet Best Current Practices for the Internet Community, and requests discussion and suggestions for improvements.</t></abstract> </front> <format target="https://www.rfc-editor.org/info/rfc5646" type="src"></format> <seriesInfo value=" 10.17487/RFC5646" name="DOI"></seriesInfo> <seriesInfo value="47" name="BCP"></seriesInfo> <seriesInfo value="5646" name="RFC"></seriesInfo></reference>
+      <reference target="https://www.rfc-editor.org/info/rfc6638" anchor="RFC6638"><stream>IETF</stream> <front> <title>Scheduling Extensions to CalDAV</title> <author fullname="C. Daboo" asciiFullname="C. Daboo"></author> <author fullname="B. Desruisseaux" asciiFullname="B. Desruisseaux"></author> <date month="June" year="2012"></date> <keyword>calsify</keyword><keyword>calsched</keyword><keyword>calsch</keyword><keyword>calendar</keyword><keyword>calendaring</keyword><keyword>webcal</keyword><keyword>ical</keyword><keyword>icalendar</keyword><keyword>ischedule</keyword><keyword>itip</keyword><keyword>imip</keyword><keyword>text/calendar</keyword><keyword>http</keyword> <abstract>  <t anchor="_0646881b-4dfd-6d32-c303-a9c29ce77a74">This document defines extensions to the Calendaring Extensions to WebDAV (CalDAV) "calendar-access" feature to specify a standard way of performing scheduling operations with iCalendar-based calendar components. This document defines the "calendar-auto-schedule" feature of CalDAV. [STANDARDS-TRACK]</t></abstract> </front> <format target="https://www.rfc-editor.org/info/rfc6638" type="src"></format> <seriesInfo value=" 10.17487/RFC6638" name="DOI"></seriesInfo> <seriesInfo value="6638" name="RFC"></seriesInfo></reference>
+      <reference target="https://www.rfc-editor.org/info/rfc7986" anchor="RFC7986"><stream>IETF</stream> <front> <title>New Properties for iCalendar</title> <author fullname="C. Daboo" asciiFullname="C. Daboo"></author> <date month="October" year="2016"></date> <keyword>alarms</keyword><keyword>calendaring</keyword><keyword>iCalendar</keyword> <abstract>  <t anchor="_ae81d3a0-d953-01fe-5613-55d7a0f46ddd">This document defines a set of new properties for iCalendar data and extends the use of some existing properties to the entire iCalendar object.</t></abstract> </front> <format target="https://www.rfc-editor.org/info/rfc7986" type="src"></format> <seriesInfo value=" 10.17487/RFC7986" name="DOI"></seriesInfo> <seriesInfo value="7986" name="RFC"></seriesInfo></reference>
+      <reference target="https://www.rfc-editor.org/info/rfc8984" anchor="RFC8984"><stream>IETF</stream> <front> <title>JSCalendar: A JSON Representation of Calendar Data</title> <author fullname="N. Jenkins" asciiFullname="N. Jenkins"></author> <author fullname="R. Stepanek" asciiFullname="R. Stepanek"></author> <date month="July" year="2021"></date> <keyword>JSON</keyword><keyword>iCalendar</keyword><keyword>calendar</keyword><keyword>events</keyword><keyword>date</keyword><keyword>time</keyword> <abstract>  <t anchor="_7f0e041c-b6e4-e375-8c67-b8436f56ac50">This specification defines a data model and JSON representation of calendar data that can be used for storage and data exchange in a calendaring and scheduling environment. It aims to be an alternative and, over time, successor to the widely deployed iCalendar data format. It also aims to be unambiguous, extendable, and simple to process. In contrast to the jCal format, which is also based on JSON, JSCalendar is not a direct mapping from iCalendar but defines the data model independently and expands semantics where appropriate.</t></abstract> </front> <format target="https://www.rfc-editor.org/info/rfc8984" type="src"></format> <seriesInfo value=" 10.17487/RFC8984" name="DOI"></seriesInfo> <seriesInfo value="8984" name="RFC"></seriesInfo></reference>
+      <reference target="https://www.rfc-editor.org/info/rfc9073" anchor="RFC9073"><stream>IETF</stream> <front> <title>Event Publishing Extensions to iCalendar</title> <author fullname="M. Douglass" asciiFullname="M. Douglass"></author> <date month="August" year="2021"></date> <keyword>iCalendar</keyword><keyword>properties</keyword> <abstract>  <t anchor="_4125aa8e-d778-ad2a-32ac-6a8b28c2f355">This specification updates RFC 5545 by introducing a number of new iCalendar properties and components that are of particular use for event publishers and in social networking.</t>  <t anchor="_74dab0dc-4e30-2adb-b31c-a8d82d3a1138">This specification also defines a new "STRUCTURED-DATA" property for iCalendar (RFC 5545) to allow for data that is directly pertinent to an event or task to be included with the calendar data.</t></abstract> </front> <format target="https://www.rfc-editor.org/info/rfc9073" type="src"></format> <seriesInfo value=" 10.17487/RFC9073" name="DOI"></seriesInfo> <seriesInfo value="9073" name="RFC"></seriesInfo></reference>
+      <reference target="https://www.rfc-editor.org/info/rfc9253" anchor="RFC9253"><stream>IETF</stream> <front> <title>Support for iCalendar Relationships</title> <author fullname="M. Douglass" asciiFullname="M. Douglass"></author> <date month="August" year="2022"></date> <keyword>iCalendar</keyword><keyword>link</keyword><keyword>related-to</keyword><keyword>relationships</keyword> <abstract>  <t anchor="_1a5f9fea-f43b-346e-c419-4878252b6c32">This specification updates the iCalendar RELATED-TO property defined in RFC 5545 by adding new relation types and introduces new iCalendar properties (LINK, CONCEPT, and REFID) to allow better linking and grouping of iCalendar components and related data.</t></abstract> </front> <format target="https://www.rfc-editor.org/info/rfc9253" type="src"></format> <seriesInfo value=" 10.17487/RFC9253" name="DOI"></seriesInfo> <seriesInfo value="9253" name="RFC"></seriesInfo></reference>
+    </references>
+  </back>
+</rfc>
