@@ -10,6 +10,31 @@ This document is available in its rendered forms here:
 
 * https://calconnect.github.io/cc-itip-participants/[CalConnect+IETF: Calendaring and scheduling -- iTip scheduling using participants (HTML)]
 
+== General
+
+This document specifies a new iTip method, "PARTICIPANTS", which is used to
+request a list of participants for a calendar object. The "PARTICIPANTS" method
+enables clients to query the organizer or other authoritative source for the
+current list of participants associated with a calendar event. This method is
+particularly useful in scenarios where the participant list may change over
+time, and clients need to ensure they have the most up-to-date information.
+
+The "PARTICIPANTS" method is used in the same way as the existing iTip methods
+"REQUEST", "REPLY", "CANCEL", "ADD", "REFRESH", and "COUNTER". It follows the
+same iTip message structure and transport mechanisms, ensuring compatibility
+with existing calendaring and scheduling systems.
+
+When a "PARTICIPANTS" request is sent, the recipient processes the request and
+responds with a list of participants, including their roles and statuses. This
+response allows the requesting client to update its local representation of the
+event's participant list, ensuring consistency across different clients and
+systems.
+
+In summary, the "PARTICIPANTS" method enhances the iTip protocol by providing a
+standardized way to query and synchronize participant information for calendar
+events, improving the accuracy and reliability of scheduling data.
+
+
 == Fetching the document
 
 [source,sh]
