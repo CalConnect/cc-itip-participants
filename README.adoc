@@ -1,23 +1,24 @@
-:repo-name: csd-itip-participants
+:repo-name: cc-itip-participants
 
 = CalConnect Standard: Calendaring and scheduling -- iTip scheduling using participants
 
-This work item belongs to TC FREEBUSY.
+This work item belongs to CalConnect TC FREEBUSY.
 
-image:https://travis-ci.com/CalConnect/csd-itip-participants.svg?branch=master["Build Status", link="https://travis-ci.com/calconnect/csd-itip-participants"]
+image:https://github.com/CalConnect/cc-itip-participants/workflows/generate/badge.svg["Build Status", link="https://github.com/CalConnect/cc-itip-participants/actions?workflow=generate"]
 
 This document is available in its rendered forms here:
 
-* https://calconnect.github.io/csd-itip-participants/[CalConnect+IETF: Calendaring and scheduling -- iTip scheduling using participants (HTML)]
+* https://calconnect.github.io/cc-itip-participants/[CalConnect+IETF: Calendaring and scheduling -- iTip scheduling using participants (HTML)]
 
 == Fetching the document
 
 [source,sh]
 ----
-git clone https://github.com/CalConnect/csd-itip-participants/
+git clone https://github.com/CalConnect/cc-itip-participants/
 ----
 
-== Installing Build Tools
+
+== Installing build tools
 
 See https://www.metanorma.com/author/topics/install/
 
@@ -27,38 +28,44 @@ See https://www.metanorma.com/author/topics/install/
 If you have installed the build tools locally, and wish to run the
 locally-installed compilation tools, there is nothing further to set.
 
-If you don't want to deal with local dependencies, use the docker
-version by:
+If you don't want to deal with local dependencies, use the docker:
 
 [source,sh]
 ----
-export METANORMA_DOCKER=1
+docker run -v "$(pwd)":/metanorma -w /metanorma -it metanorma/mn metanorma site generate --agree-to-terms
 ----
 
-The `Makefile` will automatically choose the proper command to
-execute.
 
-
-== Building The Document
+== Building the document
 
 [source,sh]
 ----
-make clean all
+metanorma site generate --agree-to-terms
 ----
 
-The following outputs will be built:
-
-* CSD XML (https://github.com/calconnect/metanorma-model-csd) (`[filename].xml`)
-* HTML (`[filename].html`)
-* PDF (`[filename].pdf`)
-* Word DOC (`[filename].doc`)
+The generated documents are accessible under `_site/`.
 
 
 == Iterating the document
 
 [source,sh]
 ----
-make html
-open csd-*.html
+metanorma site generate --agree-to-terms
+open _site/index.html
 ----
 
+
+== IETF: Checking against idnits
+
+https://tools.ietf.org/tools/idnits/[idnits] is the RFC checking tool prior to
+submissions.
+
+[source,sh]
+----
+idnits draft-calconnect-vobject-vformat.nits
+----
+
+
+== License
+
+Copyright its respective authors and CalConnect.

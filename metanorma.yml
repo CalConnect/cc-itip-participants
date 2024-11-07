@@ -1,8 +1,9 @@
 ---
 metanorma:
-  deploy:
-    email: "travis-ci@metanorma.org"
-relaton:
+  source:
+    files:
+      - sources/draft-douglass-itip-participants.adoc
+
   collection:
     name: Calendaring and scheduling -- iTip with participants component
     organization: CalConnect
