@@ -1,4 +1,4 @@
-= iTip using PARTICIPANT only
+= Calendaring and scheduling -- iTip using PARTICIPANT only
 :docnumber: 51011
 :copyright-year: 2024
 :language: en
