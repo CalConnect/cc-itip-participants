@@ -16,7 +16,7 @@ Format Definition::
 This parameter is defined by the following notation:
 [source,abnf]
 ----
-requirededparam = "REQUIRED"  "=" ("TRUE" / "FALSE")
+requiredparam = "REQUIRED"  "=" ("TRUE" / "FALSE")
   ; Default is FALSE
 ----
 
