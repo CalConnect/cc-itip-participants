@@ -6,13 +6,13 @@
 | Parameter
 | iCalendar PARTICIPANT
 
-| CN | NAME (defined in <<RFC7986>>
+| CN | NAME (defined in <<RFC7986>>)
 
 | CUTYPE | KIND (defined here)
 
 | DELEGATED-FROM | PARTICIPATION-DELEGATED-FROM <<new-prop-participation-delegated-from>>
 
-| DELEGATED-TO | PARTICIPATION-DELEGATED-TO (Defined here)
+| DELEGATED-TO | PARTICIPATION-DELEGATED-TO (defined here)
 
 | DIR | LINK <<RFC9253>>
 
@@ -22,9 +22,9 @@
 
 | PARTSTAT | PARTICIPATION-STATUS (defined here)
 
-| ROLE | PARTICIPATION-TYPE (Updated here)
+| ROLE | PARTICIPATION-TYPE (updated here)
 
-| RSVP | EXPECT-REPLY (Defined here)
+| RSVP | EXPECT-REPLY (defined here)
 
 | SENT-BY |
 
