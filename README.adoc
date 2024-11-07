@@ -35,6 +35,12 @@ standardized way to query and synchronize participant information for calendar
 events, improving the accuracy and reliability of scheduling data.
 
 
+The document is published as the following:
+
+* CalConnect CC 56011
+* IETF draft-douglass-itip-participants
+
+
 == Fetching the document
 
 [source,sh]

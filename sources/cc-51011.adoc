@@ -1,0 +1,45 @@
+= iTip using PARTICIPANT only
+:docnumber: 51011
+:copyright-year: 2024
+:language: en
+:doctype: standard
+:edition: 1
+:status: working-draft
+:revdate: 2024-10-14
+:published-date: 2024-10-14
+:script: Latn
+:technical-committee: FREEBUSY
+:fullname: Michael Douglass
+:surname: Douglass
+:givenname: Michael
+:mn-document-class: cc
+:mn-output-extensions: xml,html,pdf,rxl
+:local-cache-only:
+:data-uri-image:
+
+include::sections/00-abstract.adoc[]
+
+include::sections/00-foreword.adoc[]
+
+include::sections/00-intro.adoc[]
+
+include::sections/01-scope.adoc[]
+
+include::sections/02-normrefs.adoc[]
+
+include::sections/03-terms.adoc[]
+
+include::sections/30-icalendar-extensions.adoc[]
+
+include::sections/44-new-participant-properties.adoc[]
+
+include::sections/50-attendee-params.adoc[]
+
+include::sections/70-security.adoc[]
+
+include::sections/80-iana.adoc[]
+
+include::sections-ietf/50-acknowledgements.adoc[]
+
+// IETF uses special references
+include::sections/99-bibliography.adoc[]

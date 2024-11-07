@@ -1,4 +1,6 @@
 
 == Scope
 
-This document provides a mechanism in iCalendar for consensus scheduling.
+This document provides a mechanism in iCalendar for consensus scheduling of events, using the "PARTICIPANT" calendar component.
+
+This document also defines new properties for use within the "PARTICIPANT" calendar component.

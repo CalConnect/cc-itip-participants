@@ -1,3 +1,10 @@
 
 [bibliography]
 == Bibliography
+
+* [[[RFC2119,RFC 2119]]]
+* [[[RFC5646,RFC 5646]]]
+* [[[RFC6638,RFC 6638]]]
+* [[[RFC7986,RFC 7986]]]
+* [[[RFC8984,RFC 8984]]]
+* [[[RFC9253,RFC 9253]]]
