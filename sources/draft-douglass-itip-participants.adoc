@@ -18,21 +18,16 @@
 :country: United States of America
 :uri: http://bedework.com
 :email: mdouglass@bedework.com
-:docfile: draft-douglass-itip-participants.adoc
 :mn-document-class: ietf
-:mn-output-extensions: xml,txt,html
-:technical-committee: TC Freebusy
-
-:sectnums!:
+:mn-output-extensions: rfc,xml,txt,html,rxl
+:technical-committee: TC FREEBUSY
 
 include::sections/00-abstract.adoc[]
-// CSD Foreword is not used in IETF
+// CC Foreword is not used in IETF
 //include::sections/00-foreword.adoc[]
 include::sections/00-intro.adoc[]
 
-:sectnums:
-
-// CSD: these sections are not used in IETF
+// CC: these sections are not used in IETF
 //include::sections/01-scope.adoc[]
 //include::sections/02-normrefs.adoc[]
 
