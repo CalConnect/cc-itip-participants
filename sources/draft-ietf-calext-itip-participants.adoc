@@ -1,0 +1,44 @@
+= iTip using PARTICIPANT only
+:doctype: internet-draft
+:docnumber: draft-ietf-calext-itip-participants-00
+:abbrev: iTip participants
+:status: standard
+:ipr: trust200902
+:submissionType: individual
+:area: Internet
+:intended-series: full-standard
+:revdate: 2024-12-01
+:fullname: Michael Douglass
+:lastname: Douglass
+:forename_initials: M.
+:organization: Bedework
+:street: 226 3rd Street
+:city: Troy
+:code: 12180
+:country: United States of America
+:uri: http://bedework.com
+:email: mdouglass@bedework.com
+:mn-document-class: ietf
+:mn-output-extensions: rfc,xml,txt,html,rxl
+:technical-committee: TC CALENDAR
+
+include::sections/00-abstract.adoc[]
+// CC Foreword is not used in IETF
+//include::sections/00-foreword.adoc[]
+include::sections/00-intro.adoc[]
+
+// CC: these sections are not used in IETF
+//include::sections/01-scope.adoc[]
+//include::sections/02-normrefs.adoc[]
+
+include::sections/03-terms.adoc[]
+include::sections/30-icalendar-extensions.adoc[]
+include::sections/44-new-participant-properties.adoc[]
+include::sections/50-attendee-params.adoc[]
+include::sections/70-security.adoc[]
+include::sections/80-iana.adoc[]
+
+include::sections-ietf/50-acknowledgements.adoc[]
+// IETF uses special references
+include::sections-ietf/98-references.adoc[]
+
