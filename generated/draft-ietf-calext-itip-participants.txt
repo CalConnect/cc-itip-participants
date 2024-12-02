@@ -3,13 +3,13 @@
 
 
 Network Working Group                                        M. Douglass
-Internet-Draft                                           16 October 2024
+Internet-Draft                                           1 December 2024
 Intended status: Standards Track                                        
-Expires: 19 April 2025
+Expires: 4 June 2025
 
 
                       iTip using PARTICIPANT only
-                  draft-douglass-itip-participants-02
+                 draft-ietf-calext-itip-participants-00
 
 Abstract
 
@@ -35,7 +35,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 19 April 2025.
+   This Internet-Draft will expire on 4 June 2025.
 
 Copyright Notice
 
@@ -53,9 +53,9 @@ Copyright Notice
 
 
 
-Douglass                  Expires 19 April 2025                 [Page 1]
+Douglass                   Expires 4 June 2025                  [Page 1]
 
-Internet-Draft              iTip participants               October 2024
+Internet-Draft              iTip participants              December 2024
 
 
 Table of Contents
@@ -109,9 +109,9 @@ Table of Contents
 
 
 
-Douglass                  Expires 19 April 2025                 [Page 2]
+Douglass                   Expires 4 June 2025                  [Page 2]
 
-Internet-Draft              iTip participants               October 2024
+Internet-Draft              iTip participants              December 2024
 
 
    "VPOLL" calendar component, defined elsewhere, only "PARTICIPANT"
@@ -165,9 +165,9 @@ Internet-Draft              iTip participants               October 2024
 
 
 
-Douglass                  Expires 19 April 2025                 [Page 3]
+Douglass                   Expires 4 June 2025                  [Page 3]
 
-Internet-Draft              iTip participants               October 2024
+Internet-Draft              iTip participants              December 2024
 
 
 2.4.  owner
@@ -191,7 +191,7 @@ Internet-Draft              iTip participants               October 2024
    Format Definition  This parameter is defined by the following
       notation:
 
-   requirededparam = "REQUIRED"  "=" ("TRUE" / "FALSE")
+   requiredparam = "REQUIRED"  "=" ("TRUE" / "FALSE")
      ; Default is FALSE
 
    Description  This parameter MAY be specified on "REPLY-URL" property
@@ -221,9 +221,9 @@ Internet-Draft              iTip participants               October 2024
 
 
 
-Douglass                  Expires 19 April 2025                 [Page 4]
+Douglass                   Expires 4 June 2025                  [Page 4]
 
-Internet-Draft              iTip participants               October 2024
+Internet-Draft              iTip participants              December 2024
 
 
       indicates an additional or required service that can be used to
@@ -277,9 +277,9 @@ Internet-Draft              iTip participants               October 2024
 
 
 
-Douglass                  Expires 19 April 2025                 [Page 5]
+Douglass                   Expires 4 June 2025                  [Page 5]
 
-Internet-Draft              iTip participants               October 2024
+Internet-Draft              iTip participants              December 2024
 
 
       Note that the kind of participant, for example individual or
@@ -333,9 +333,9 @@ Internet-Draft              iTip participants               October 2024
 
 
 
-Douglass                  Expires 19 April 2025                 [Page 6]
+Douglass                   Expires 4 June 2025                  [Page 6]
 
-Internet-Draft              iTip participants               October 2024
+Internet-Draft              iTip participants              December 2024
 
 
                   +=================+==================+
@@ -389,9 +389,9 @@ Internet-Draft              iTip participants               October 2024
 
 
 
-Douglass                  Expires 19 April 2025                 [Page 7]
+Douglass                   Expires 4 June 2025                  [Page 7]
 
-Internet-Draft              iTip participants               October 2024
+Internet-Draft              iTip participants              December 2024
 
 
             +=============================+==================+
@@ -445,9 +445,9 @@ Internet-Draft              iTip participants               October 2024
 
 
 
-Douglass                  Expires 19 April 2025                 [Page 8]
+Douglass                   Expires 4 June 2025                  [Page 8]
 
-Internet-Draft              iTip participants               October 2024
+Internet-Draft              iTip participants              December 2024
 
 
 4.  New Participant Properties for iTip
@@ -501,9 +501,9 @@ Internet-Draft              iTip participants               October 2024
 
 
 
-Douglass                  Expires 19 April 2025                 [Page 9]
+Douglass                   Expires 4 June 2025                  [Page 9]
 
-Internet-Draft              iTip participants               October 2024
+Internet-Draft              iTip participants              December 2024
 
 
       calendar component.
@@ -557,9 +557,9 @@ Internet-Draft              iTip participants               October 2024
 
 
 
-Douglass                  Expires 19 April 2025                [Page 10]
+Douglass                   Expires 4 June 2025                 [Page 10]
 
-Internet-Draft              iTip participants               October 2024
+Internet-Draft              iTip participants              December 2024
 
 
       delegated their participation in a group-scheduled component to
@@ -613,9 +613,9 @@ Internet-Draft              iTip participants               October 2024
 
 
 
-Douglass                  Expires 19 April 2025                [Page 11]
+Douglass                   Expires 4 June 2025                 [Page 11]
 
-Internet-Draft              iTip participants               October 2024
+Internet-Draft              iTip participants              December 2024
 
 
       on this property.
@@ -669,9 +669,9 @@ Internet-Draft              iTip participants               October 2024
 
 
 
-Douglass                  Expires 19 April 2025                [Page 12]
+Douglass                   Expires 4 June 2025                 [Page 12]
 
-Internet-Draft              iTip participants               October 2024
+Internet-Draft              iTip participants              December 2024
 
 
       calendar component.
@@ -725,9 +725,9 @@ Internet-Draft              iTip participants               October 2024
 
 
 
-Douglass                  Expires 19 April 2025                [Page 13]
+Douglass                   Expires 4 June 2025                 [Page 13]
 
-Internet-Draft              iTip participants               October 2024
+Internet-Draft              iTip participants              December 2024
 
 
    Purpose  A client may set the property on a participant to true to
@@ -781,9 +781,9 @@ Internet-Draft              iTip participants               October 2024
 
 
 
-Douglass                  Expires 19 April 2025                [Page 14]
+Douglass                   Expires 4 June 2025                 [Page 14]
 
-Internet-Draft              iTip participants               October 2024
+Internet-Draft              iTip participants              December 2024
 
 
       Servers MUST set the "SCHEDULING-STATUS" property of the
@@ -837,9 +837,9 @@ Internet-Draft              iTip participants               October 2024
 
 
 
-Douglass                  Expires 19 April 2025                [Page 15]
+Douglass                   Expires 4 June 2025                 [Page 15]
 
-Internet-Draft              iTip participants               October 2024
+Internet-Draft              iTip participants              December 2024
 
 
       on this property.
@@ -881,21 +881,21 @@ Internet-Draft              iTip participants               October 2024
       +================+===========================================+
       | Parameter      | iCalendar PARTICIPANT                     |
       +================+===========================================+
-      | CN             | NAME (defined in [RFC7986]                |
+      | CN             | NAME (defined in [RFC7986])               |
       +----------------+-------------------------------------------+
       | CUTYPE         | KIND (defined here)                       |
       +----------------+-------------------------------------------+
       | DELEGATED-FROM | PARTICIPATION-DELEGATED-FROM Section 4.3  |
       +----------------+-------------------------------------------+
-      | DELEGATED-TO   | PARTICIPATION-DELEGATED-TO (Defined here) |
+      | DELEGATED-TO   | PARTICIPATION-DELEGATED-TO (defined here) |
       +----------------+-------------------------------------------+
       | DIR            | LINK [RFC9253]                            |
 
 
 
-Douglass                  Expires 19 April 2025                [Page 16]
+Douglass                   Expires 4 June 2025                 [Page 16]
 
-Internet-Draft              iTip participants               October 2024
+Internet-Draft              iTip participants              December 2024
 
 
       +----------------+-------------------------------------------+
@@ -905,9 +905,9 @@ Internet-Draft              iTip participants               October 2024
       +----------------+-------------------------------------------+
       | PARTSTAT       | PARTICIPATION-STATUS (defined here)       |
       +----------------+-------------------------------------------+
-      | ROLE           | PARTICIPATION-TYPE (Updated here)         |
+      | ROLE           | PARTICIPATION-TYPE (updated here)         |
       +----------------+-------------------------------------------+
-      | RSVP           | EXPECT-REPLY (Defined here)               |
+      | RSVP           | EXPECT-REPLY (defined here)               |
       +----------------+-------------------------------------------+
       | SENT-BY        |                                           |
       +----------------+-------------------------------------------+
@@ -949,9 +949,9 @@ Internet-Draft              iTip participants               October 2024
 
 
 
-Douglass                  Expires 19 April 2025                [Page 17]
+Douglass                   Expires 4 June 2025                 [Page 17]
 
-Internet-Draft              iTip participants               October 2024
+Internet-Draft              iTip participants              December 2024
 
 
         +==============================+=========+===============+
@@ -1005,9 +1005,9 @@ Internet-Draft              iTip participants               October 2024
 
 
 
-Douglass                  Expires 19 April 2025                [Page 18]
+Douglass                   Expires 4 June 2025                 [Page 18]
 
-Internet-Draft              iTip participants               October 2024
+Internet-Draft              iTip participants              December 2024
 
 
     +==================+=========+====================================+
@@ -1061,9 +1061,9 @@ Internet-Draft              iTip participants               October 2024
 
 
 
-Douglass                  Expires 19 April 2025                [Page 19]
+Douglass                   Expires 4 June 2025                 [Page 19]
 
-Internet-Draft              iTip participants               October 2024
+Internet-Draft              iTip participants              December 2024
 
 
    [RFC6638]  Daboo, C. and B. Desruisseaux, "Scheduling Extensions to
@@ -1117,4 +1117,4 @@ Author's Address
 
 
 
-Douglass                  Expires 19 April 2025                [Page 20]
+Douglass                   Expires 4 June 2025                 [Page 20]

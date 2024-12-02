@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ietf-standard xmlns="https://www.metanorma.org/ns/ietf" type="semantic" version="3.3.10" schema-version="v1.3.4">
+<ietf-standard xmlns="https://www.metanorma.org/ns/ietf" type="semantic" version="3.4.0" schema-version="v1.4.0">
 <bibdata type="standard">
 <title language="en" format="text/plain" type="main">iTip using PARTICIPANT only</title>
 
 <title language="en" format="text/plain" type="abbrev">iTip participants</title>
-<uri>http://bedework.com</uri><docidentifier primary="true">draft-douglass-itip-participants-02</docidentifier><docnumber>draft-douglass-itip-participants-02</docnumber><contributor><role type="author"/><person>
+<uri>http://bedework.com</uri><docidentifier primary="true">draft-ietf-calext-itip-participants-00</docidentifier><docnumber>draft-ietf-calext-itip-participants-00</docnumber><contributor><role type="author"/><person>
 <name><completename>Michael Douglass</completename></name>
 <email>mdouglass@bedework.com</email></person></contributor><contributor><role type="publisher"/><organization>
 <name>Internet Engineering Task Force</name>
-<abbreviation>IETF</abbreviation></organization></contributor><version><revision-date>2024-10-14</revision-date></version><language>en</language><script>Latn</script><status><stage>standard</stage></status><copyright><from>2024</from><owner><organization>
+<abbreviation>IETF</abbreviation></organization></contributor><version><revision-date>2024-12-01</revision-date></version><language>en</language><script>Latn</script><status><stage>standard</stage></status><copyright><from>2024</from><owner><organization>
 <name>Internet Engineering Task Force</name>
 <abbreviation>IETF</abbreviation></organization></owner></copyright><series type="stream">
 <title>IETF</title>
@@ -92,7 +92,7 @@
 </dd>
 </dl>
 
-<sourcecode id="_d0877c1e-0f6a-4891-6059-e1d78bf70674" lang="abnf">requirededparam = "REQUIRED"  "=" ("TRUE" / "FALSE")
+<sourcecode id="_52e79259-2675-afe4-0cf6-c530ffeea5aa" lang="abnf">requiredparam = "REQUIRED"  "=" ("TRUE" / "FALSE")
   ; Default is FALSE</sourcecode>
 
 
@@ -684,12 +684,12 @@ invited-byparams = *(";" other-param)</sourcecode>
 
 <clause id="attendee-params" inline-header="false" obligation="normative">
 <title>Attendee parameters mapping</title>
-<table id="_3c58d974-fa45-721b-dab7-ca26d60d7ba0"><thead><tr><th valign="top" align="left">Parameter</th>
+<table id="_6b2a002f-eb98-d5fb-5323-56550ddb6b4a"><thead><tr><th valign="top" align="left">Parameter</th>
 <th valign="top" align="left">iCalendar PARTICIPANT</th>
 </tr></thead>
 <tbody><tr><td valign="top" align="left"><p id="_e5e5caed-034b-f1d1-2067-317fd1f27f5a">CN</p>
 </td>
-<td valign="top" align="left"><p id="_65e5a537-d78c-edea-1524-4e2b5c1e3a3c">NAME (defined in <eref type="inline" bibitemid="RFC7986" citeas="RFC 7986"/></p>
+<td valign="top" align="left"><p id="_ab8bab4a-b610-0950-6a2b-4e60177cce04">NAME (defined in <eref type="inline" bibitemid="RFC7986" citeas="RFC 7986"/>)</p>
 </td>
 </tr><tr><td valign="top" align="left"><p id="_f73b57ad-64c3-4425-12ee-464ff525d0bf">CUTYPE</p>
 </td>
@@ -701,7 +701,7 @@ invited-byparams = *(";" other-param)</sourcecode>
 </td>
 </tr><tr><td valign="top" align="left"><p id="_76dce3c9-9ed6-91f7-73e8-b9d86afdb5ea">DELEGATED-TO</p>
 </td>
-<td valign="top" align="left"><p id="_5d859952-2264-9075-65ff-d1218d81e59e">PARTICIPATION-DELEGATED-TO (Defined here)</p>
+<td valign="top" align="left"><p id="_2aea8311-9f3f-9b97-db90-ae88687141df">PARTICIPATION-DELEGATED-TO (defined here)</p>
 </td>
 </tr><tr><td valign="top" align="left"><p id="_eed1e294-7321-d78e-5c4d-37141c4b244f">DIR</p>
 </td>
@@ -721,11 +721,11 @@ invited-byparams = *(";" other-param)</sourcecode>
 </td>
 </tr><tr><td valign="top" align="left"><p id="_8575b1e2-0a67-008b-2118-c1299a5bb6d5">ROLE</p>
 </td>
-<td valign="top" align="left"><p id="_df3496fb-1ab6-5737-bc49-71e12929930c">PARTICIPATION-TYPE (Updated here)</p>
+<td valign="top" align="left"><p id="_1ba3c376-78a4-ee9a-acf0-2ee714098028">PARTICIPATION-TYPE (updated here)</p>
 </td>
 </tr><tr><td valign="top" align="left"><p id="_0a072f89-1f64-a0be-6ab7-abef89b232df">RSVP</p>
 </td>
-<td valign="top" align="left"><p id="_442a6d02-7202-74dd-db31-c1d74e3a33bd">EXPECT-REPLY (Defined here)</p>
+<td valign="top" align="left"><p id="_ac514451-0a6c-7a80-7089-3668557b4835">EXPECT-REPLY (defined here)</p>
 </td>
 </tr><tr><td valign="top" align="left"><p id="_132307e3-7b33-8236-d7b9-2c2659f5c36a">SENT-BY</p>
 </td>

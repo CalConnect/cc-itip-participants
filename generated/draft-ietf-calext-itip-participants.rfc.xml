@@ -6,10 +6,10 @@
 <?rfc tocdepth="4"?>
 <?rfc symrefs="yes"?>
 <?rfc sortrefs="yes"?>
-<rfc xmlns:xi="http://www.w3.org/2001/XInclude" docName="draft-douglass-itip-participants-02" category="std" ipr="trust200902" submissionType="IETF" xml:lang="en" version="3" >
+<rfc xmlns:xi="http://www.w3.org/2001/XInclude" docName="draft-ietf-calext-itip-participants-00" category="std" ipr="trust200902" submissionType="IETF" xml:lang="en" version="3" >
   <front>
     <title abbrev="iTip participants">iTip using PARTICIPANT only</title>
-    <seriesInfo value="draft-douglass-itip-participants-02" status="Standard" stream="IETF" name="Internet-Draft" asciiName="Internet-Draft"></seriesInfo>
+    <seriesInfo value="draft-ietf-calext-itip-participants-00" status="Standard" stream="IETF" name="Internet-Draft" asciiName="Internet-Draft"></seriesInfo>
     <seriesInfo name="" value="" status="full-standard"></seriesInfo>
     <author fullname="Michael Douglass">
       <address>
@@ -74,7 +74,7 @@
 </dd><dt>Format Definition</dt><dd><t anchor="_1e280a22-aa43-12fb-b2b7-f787acb03d85">This parameter is defined by the following notation:</t>
 </dd></dl>
 
-<sourcecode anchor="_d0877c1e-0f6a-4891-6059-e1d78bf70674" type="abnf"><![CDATA[requirededparam = "REQUIRED"  "=" ("TRUE" / "FALSE")
+<sourcecode anchor="_52e79259-2675-afe4-0cf6-c530ffeea5aa" type="abnf"><![CDATA[requiredparam = "REQUIRED"  "=" ("TRUE" / "FALSE")
   ; Default is FALSE]]></sourcecode>
 
 
@@ -454,14 +454,14 @@ invited-byparams = *(";" other-param)]]></sourcecode>
 </section>
     <section anchor="attendee-params"><name>Attendee parameters mapping</name>
 
-<table anchor="_3c58d974-fa45-721b-dab7-ca26d60d7ba0"><thead><tr><th align="left">Parameter</th><th align="left">iCalendar PARTICIPANT</th></tr></thead><tbody><tr><td align="left"><t anchor="_e5e5caed-034b-f1d1-2067-317fd1f27f5a">CN</t>
-</td><td align="left"><t anchor="_65e5a537-d78c-edea-1524-4e2b5c1e3a3c">NAME (defined in <xref target="RFC7986" section="" relative=""></xref></t>
+<table anchor="_6b2a002f-eb98-d5fb-5323-56550ddb6b4a"><thead><tr><th align="left">Parameter</th><th align="left">iCalendar PARTICIPANT</th></tr></thead><tbody><tr><td align="left"><t anchor="_e5e5caed-034b-f1d1-2067-317fd1f27f5a">CN</t>
+</td><td align="left"><t anchor="_ab8bab4a-b610-0950-6a2b-4e60177cce04">NAME (defined in <xref target="RFC7986" section="" relative=""></xref>)</t>
 </td></tr><tr><td align="left"><t anchor="_f73b57ad-64c3-4425-12ee-464ff525d0bf">CUTYPE</t>
 </td><td align="left"><t anchor="_7c4d7f99-d289-d5c1-19eb-3729c85b45fc">KIND (defined here)</t>
 </td></tr><tr><td align="left"><t anchor="_1c28df6c-b4fb-226f-ba92-79d7deea84d2">DELEGATED-FROM</t>
 </td><td align="left"><t anchor="_17f4a1b8-7bb0-34d8-2917-8576e69c8259">PARTICIPATION-DELEGATED-FROM <xref target="new-prop-participation-delegated-from"></xref></t>
 </td></tr><tr><td align="left"><t anchor="_76dce3c9-9ed6-91f7-73e8-b9d86afdb5ea">DELEGATED-TO</t>
-</td><td align="left"><t anchor="_5d859952-2264-9075-65ff-d1218d81e59e">PARTICIPATION-DELEGATED-TO (Defined here)</t>
+</td><td align="left"><t anchor="_2aea8311-9f3f-9b97-db90-ae88687141df">PARTICIPATION-DELEGATED-TO (defined here)</t>
 </td></tr><tr><td align="left"><t anchor="_eed1e294-7321-d78e-5c4d-37141c4b244f">DIR</t>
 </td><td align="left"><t anchor="_1be38b3f-0869-67df-77ae-47e33c75625e">LINK <xref target="RFC9253" section="" relative=""></xref></t>
 </td></tr><tr><td align="left"><t anchor="_7f46f231-dd6e-f5c9-34d0-8ee6513a09ca">LANGUAGE</t>
@@ -471,9 +471,9 @@ invited-byparams = *(";" other-param)]]></sourcecode>
 </td></tr><tr><td align="left"><t anchor="_30585e3d-a30e-6875-ae8c-f9c005981c0d">PARTSTAT</t>
 </td><td align="left"><t anchor="_22907370-6625-4dbd-8af7-325ec171958f">PARTICIPATION-STATUS (defined here)</t>
 </td></tr><tr><td align="left"><t anchor="_8575b1e2-0a67-008b-2118-c1299a5bb6d5">ROLE</t>
-</td><td align="left"><t anchor="_df3496fb-1ab6-5737-bc49-71e12929930c">PARTICIPATION-TYPE (Updated here)</t>
+</td><td align="left"><t anchor="_1ba3c376-78a4-ee9a-acf0-2ee714098028">PARTICIPATION-TYPE (updated here)</t>
 </td></tr><tr><td align="left"><t anchor="_0a072f89-1f64-a0be-6ab7-abef89b232df">RSVP</t>
-</td><td align="left"><t anchor="_442a6d02-7202-74dd-db31-c1d74e3a33bd">EXPECT-REPLY (Defined here)</t>
+</td><td align="left"><t anchor="_ac514451-0a6c-7a80-7089-3668557b4835">EXPECT-REPLY (defined here)</t>
 </td></tr><tr><td align="left"><t anchor="_132307e3-7b33-8236-d7b9-2c2659f5c36a">SENT-BY</t>
 </td><td align="left"></td></tr></tbody></table>
 </section>
