@@ -4,14 +4,14 @@
 :language: en
 :doctype: standard
 :edition: 1
-:status: working-draft
-:revdate: 2024-10-14
-:published-date: 2024-10-14
-:script: Latn
-:technical-committee: FREEBUSY
 :fullname: Michael Douglass
 :surname: Douglass
 :givenname: Michael
+:status: committee-draft
+:revdate: 2024-12-01
+:published-date: 2024-12-01
+:script: Latn
+:technical-committee: FREEBUSY
 :mn-document-class: cc
 :mn-output-extensions: xml,html,pdf,rxl
 :local-cache-only:
