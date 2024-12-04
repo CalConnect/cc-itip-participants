@@ -1,5 +1,3 @@
-:repo-name: cc-itip-participants
-
 = CalConnect Standard: Calendaring and scheduling -- iTip scheduling using participants
 
 This work item belongs to CalConnect TC FREEBUSY.
@@ -41,6 +39,25 @@ The document is published as the following:
 * IETF draft-douglass-itip-participants
 
 
+== Structure
+
+`sources/`::
+source of documents and models
+
+`sources/cc-51011.adoc`::
+CalConnect CC 51011 standard.
+
+`sources/draft-douglass-itip-participants.adoc`::
+(obsolete) IETF draft-douglass-itip-participants, dual-published from CC 51011.
+
+`sources/draft-ietf-calext-itip-participants.adoc`::
+IETF draft-ietf-calext-subscription-upgrade, adopted by calext WG, dual-published from CC 51011.
+
+`_site/`::
+(automatically generated using `metanorma site generate`) published document.
+
+
+
 == Fetching the document
 
 [source,sh]
@@ -51,7 +68,7 @@ git clone https://github.com/CalConnect/cc-itip-participants/
 
 == Installing build tools
 
-See https://www.metanorma.com/author/topics/install/
+See https://www.metanorma.org/install/
 
 
 == Running via Docker or locally
@@ -93,7 +110,7 @@ submissions.
 
 [source,sh]
 ----
-idnits draft-calconnect-vobject-vformat.nits
+idnits draft-ietf-calext-itip-participants.nits
 ----
 
 
