@@ -6,5 +6,5 @@ metanorma:
       - sources/draft-douglass-itip-participants.adoc
 
   collection:
-    name: Calendaring and scheduling -- iTip with participants component
     organization: CalConnect
+    name: Calendaring and scheduling -- iTip with participants component
