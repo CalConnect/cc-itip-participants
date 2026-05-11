@@ -1,0 +1,4 @@
+documents:
+  - source: sources/cc-51011.adoc
+  - source: sources/draft-douglass-itip-participants.adoc
+  - source: sources/draft-ietf-calext-itip-participants.adoc
