@@ -1,5 +1,0 @@
-# .metanorma/channels.yml — cc-itip-participants
-
-channels:
-  - name: public/standards
-    description: "CalConnect documents from cc-itip-participants"
