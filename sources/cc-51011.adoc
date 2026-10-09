@@ -21,6 +21,12 @@ include::sections/00-abstract.adoc[]
 
 include::sections/00-foreword.adoc[]
 
+[abstract]
+== Abstract
+
+This document provides a mechanism in iCalendar for consensus scheduling of events, using the PARTICIPANT calendar component. It also defines new properties for use within the PARTICIPANT calendar component.
+
+
 include::sections/00-intro.adoc[]
 
 include::sections/01-scope.adoc[]
